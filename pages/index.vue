@@ -28,9 +28,34 @@
             </div>
 
         </div>
-        <div class="flex justify-center"> <button class="call-btn">Create Your plan</button></div>
+        <div class="flex justify-center"> <button class="call-btn bt-shake">Create Your plan</button></div>
+        <div class="text-center">
+            <v-dialog v-model="dialog" width="auto">
+                <template v-slot:activator="{ props }">
+                    <v-btn color="primary" v-bind="props">
+                        Open Dialog
+                    </v-btn>
+                </template>
+
+                <v-card>
+                    <v-card-text>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                        et
+                        dolore magna aliqua.
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn color="primary" block @click="dialog = false">Close Dialog</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </div>
+
     </div>
 </template>
+
+<script setup>
+let dialog = ref(false)
+</script>
 <style scoped>
 .conatiner {
     margin: 0 auto;
@@ -84,5 +109,75 @@
     padding: 2rem;
     font-size: 3rem;
     border: 2px solid black;
+    box-shadow: 8px 4px 4px rgba(0, 0, 0, 0.25);
 }
+
+.bt-shake {
+    position: relative;
+    animation: shakeMe 4s infinite ease-in-out;
+}
+
+@keyframes shakeMe {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    20% {
+        transform: rotate(3deg);
+    }
+
+    40% {
+        transform: rotate(-3deg);
+    }
+
+    60% {
+        transform: rotate(3deg);
+    }
+
+    80% {
+        transform: rotate(0);
+    }
+
+    100% {
+        transform: rotate(0);
+    }
+}
+
+/* an other animation
+@keyframes wobble {
+    0% {
+        transform: none;
+        transform-origin: center;
+    }
+
+    15% {
+        transform: translate3d(0, -25%, 0) rotate3d(0, 0, 1, -5deg);
+        transform-origin: center;
+    }
+
+    30% {
+        transform: translate3d(0, 20%, 0) rotate3d(0, 0, 1, 3deg);
+        transform-origin: center;
+    }
+
+    45% {
+        transform: translate3d(0, -15%, 0) rotate3d(0, 0, 1, -3deg);
+        transform-origin: center;
+    }
+
+    60% {
+        transform: translate3d(0, 10%, 0) rotate3d(0, 0, 1, 2deg);
+        transform-origin: center;
+    }
+
+    75% {
+        transform: translate3d(0, -5%, 0) rotate3d(0, 0, 1, -1deg);
+        transform-origin: center;
+    }
+
+    100% {
+        transform: none;
+        transform-origin: center;
+    }
+}*/
 </style>
