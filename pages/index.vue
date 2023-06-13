@@ -28,20 +28,19 @@
             </div>
 
         </div>
-        <div class="flex justify-center"> <button class="call-btn bt-shake">Create Your plan</button></div>
+
         <div class="text-center">
             <v-dialog v-model="dialog" width="auto">
                 <template v-slot:activator="{ props }">
-                    <v-btn color="primary" v-bind="props">
-                        Open Dialog
-                    </v-btn>
+
+                    <div class="flex justify-center"> <button class="call-btn bt-shake" v-bind="props"> Create Your
+                            plan</button>
+                    </div>
                 </template>
 
                 <v-card>
                     <v-card-text>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                        et
-                        dolore magna aliqua.
+                        <PlanInfos />
                     </v-card-text>
                     <v-card-actions>
                         <v-btn color="primary" block @click="dialog = false">Close Dialog</v-btn>
