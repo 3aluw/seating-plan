@@ -30,9 +30,8 @@
         </div>
 
         <div class="text-center">
-            <v-dialog v-model="dialog" width="auto">
+            <v-dialog v-model="dialog" width="auto" theme="dark">
                 <template v-slot:activator="{ props }">
-
                     <div class="flex justify-center"> <button class="call-btn bt-shake" v-bind="props"> Create Your
                             plan</button>
                     </div>
@@ -42,9 +41,6 @@
                     <v-card-text>
                         <PlanInfos />
                     </v-card-text>
-                    <v-card-actions>
-                        <v-btn color="primary" block @click="dialog = false">Close Dialog</v-btn>
-                    </v-card-actions>
                 </v-card>
             </v-dialog>
         </div>
@@ -179,4 +175,10 @@ let dialog = ref(false)
         transform-origin: center;
     }
 }*/
+
+/*Form */
+.v-card-text {
+    background: #1B1C24;
+    color: #A8A6A7;
+}
 </style>
