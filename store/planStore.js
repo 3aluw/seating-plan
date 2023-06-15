@@ -17,6 +17,7 @@ let plans = ref({})
 
 
 const plansCreator = (planName,description,number,seatType,students)=>{
+
 plansNames.value.push(planName);
 plans.value[`${planName}`] = {
   description :  description,
