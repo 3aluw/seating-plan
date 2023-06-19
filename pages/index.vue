@@ -1,5 +1,6 @@
 <template>
     <div class="conatiner">
+        {{ planInfos }}
         <nav class="flex justify-around">
             <v-btn variant="text">upload a plan</v-btn>
             <v-btn variant="text">Create a new plan</v-btn>
@@ -39,7 +40,8 @@
 
                 <v-card>
                     <v-card-text>
-                        <PlanInfos />
+
+                        <PlanInfos v-model="planInfos" />
                         <AddStudents />
                     </v-card-text>
                 </v-card>
@@ -50,7 +52,19 @@
 </template>
 
 <script setup>
-let dialog = ref(false)
+//Emited Data from child components
+let planInfos = ref({
+    planName: "",
+    description: '',
+    planType: '',
+})
+
+
+
+
+let dialog = ref(false);
+
+
 </script>
 <style scoped>
 .conatiner {

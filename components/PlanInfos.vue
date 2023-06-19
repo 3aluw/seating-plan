@@ -2,10 +2,9 @@
     <v-sheet width="1000" class="mx-auto">
         <h1 class="text-center text-3xl my-2 mb-10 text-blue-500">Fill plan infos</h1>
         <v-form @submit.prevent v-model="form">
-            <v-text-field v-model="planName" :rules="nameRule" :counter="10" label="Plan name*"></v-text-field>
-            <v-text-field v-model="description" label="Description (optional)"></v-text-field>
-            <v-text-field v-model="studentsNumber" type="number" :rules="reqiuiredRule"
-                label="Number of students (enter a number)*"></v-text-field>
+            <v-text-field v-model="planInfos.planName" :rules="nameRule" :counter="10" label="Plan name*"></v-text-field>
+            <v-text-field v-model="planInfos.description" label="Description (optional)"></v-text-field>
+
 
             chose a sitting plan model :
 
@@ -13,7 +12,7 @@
                 <v-row>
                     <v-col cols="4">
 
-                        <v-checkbox v-model="planType" value="1" :rules="checkTypeRule">
+                        <v-checkbox v-model="planInfos.planType" value="1" :rules="checkTypeRule">
                             <template v-slot:label>
                                 <div>
                                     <v-tooltip location="bottom">
@@ -28,7 +27,7 @@
 
 
                     <v-col>
-                        <v-checkbox v-model="planType" value="2">
+                        <v-checkbox v-model="planInfos.planType" value="2">
                             <template v-slot:label>
                                 <div>
                                     <v-tooltip location="bottom">
@@ -41,7 +40,7 @@
                         </v-checkbox> </v-col>
 
                     <v-col>
-                        <v-checkbox v-model="planType" value="3">
+                        <v-checkbox v-model="planInfos.planType" value="3">
                             <template v-slot:label>
                                 <div>
                                     <v-tooltip location="bottom">
@@ -67,16 +66,26 @@ import { usePlanStore } from '@/store/planStore'
 const planStore = usePlanStore()
 
 
+// emit and update planInfos
+const props = defineProps({
+    modelValue: Object,
+})
+const emit = defineEmits(['update:modelValue'])
+const planInfos = computed({
+    get() { return props.modelValue },
+    set(newValue) { emit("update:modelValue", newValue) }
+}
+)
+
+
 /*form inputs */
-let planName = ref('')
-let description = ref('')
-let studentsNumber = ref()
-let planType = ref('')
 const form = ref()
+
+
 
 const submitPlan = () => {
 
-    if (form.value == true) { planStore.plansCreator(planName, description, studentsNumber, "pairs", ["Ali", "moh"]) }
+    if (form.value == true) { planStore.plansCreator(planName, description, "pairs", ["Ali", "moh"]) }
 }
 
 
