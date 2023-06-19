@@ -39,6 +39,7 @@
 
                 <v-card>
                     <v-card-text>
+                        <PlanInfos />
                         <AddStudents />
                     </v-card-text>
                 </v-card>

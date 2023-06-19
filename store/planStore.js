@@ -2,7 +2,7 @@ import { defineStore, acceptHMRUpdate } from "pinia";
 
 
 export const usePlanStore = defineStore("PlanStore", () => {
-const count = 0;
+
 /*class plan {
   constructor(planName,description,number,students) {  
     this.planName = planName;

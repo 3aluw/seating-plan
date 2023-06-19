@@ -56,7 +56,7 @@
                 </v-row>
             </v-container>
             <div class="flex justify-center">
-                <v-btn append-icon="$next" variant="outlined" type="submit" @click='submitPlan'>send</v-btn>
+                <v-btn append-icon="$next" variant="outlined" type="submit" @click='submitPlan'>NEXT</v-btn>
             </div>
         </v-form>
     </v-sheet>
