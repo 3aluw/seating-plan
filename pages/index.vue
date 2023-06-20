@@ -1,6 +1,6 @@
 <template>
     <div class="conatiner">
-        {{ planInfos }}
+
         <nav class="flex justify-around">
             <v-btn variant="text">upload a plan</v-btn>
             <v-btn variant="text">Create a new plan</v-btn>
@@ -52,19 +52,29 @@
 </template>
 
 <script setup>
-//Emited Data from child components
+//Emited Data from child components :
+//(PlanInfos comp)
 let planInfos = ref({
     planName: "",
     description: '',
     planType: '',
 })
+// AddStudents comp
+let namesTable = ref({
+    criteriaOne: "",
+    names: []
+})
 
 
-
-
+//dialog logic
 let dialog = ref(false);
+//delete entered data after closing the dialog
+watch(dialog, () => {
+    if (dialog.value === false) {
+        Object.keys(planInfos.value).forEach(key => planInfos.value[key] = "");
+    }
 
-
+})
 </script>
 <style scoped>
 .conatiner {
