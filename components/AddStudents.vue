@@ -9,7 +9,7 @@
                     <th class="text-left">Names</th>
                     <th class="text-left"><v-text-field :rules="nameCriteriaRule" maxlength="10" :counter="10"
                             placeholder="this will help you to sort. ie: marks" label="Add a criteria title ..."
-                            v-model="fieldOneTitle"></v-text-field></th>
+                            v-model="namesTable.criteriaOneTitle"></v-text-field></th>
                 </tr>
             </thead>
             <tbody>
@@ -49,6 +49,22 @@ const addNewData = () => {
     })
     newStudents.value = newMarks.value = "";
 }
+
+
+// emit and update planInfos
+const props = defineProps({
+    modelValue: Object,
+})
+const emit = defineEmits(['update:modelValue'])
+const namesTable = computed({
+    get() { return props.modelValue },
+    set(newValue) { emit("update:modelValue", newValue) }
+}
+)
+
+
+
+
 
 
 /*From rule */

@@ -1,6 +1,6 @@
 <template>
     <div class="conatiner">
-
+        {{ namesTable }}
         <nav class="flex justify-around">
             <v-btn variant="text">upload a plan</v-btn>
             <v-btn variant="text">Create a new plan</v-btn>
@@ -42,7 +42,7 @@
                     <v-card-text>
 
                         <PlanInfos v-model="planInfos" />
-                        <AddStudents />
+                        <AddStudents v-model="namesTable" />
                     </v-card-text>
                 </v-card>
             </v-dialog>
@@ -61,8 +61,8 @@ let planInfos = ref({
 })
 // AddStudents comp
 let namesTable = ref({
-    criteriaOne: "",
-    names: []
+    criteriaOneTitle: "s",
+    tableData: []
 })
 
 
