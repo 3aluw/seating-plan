@@ -13,7 +13,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="student in students" :key="student.name">
+                <tr v-for="student in  namesTable.tableData" :key="student.name">
                     <td>{{ student.name }}</td>
                     <td>{{ student.fieldOne }}</td>
                 </tr>
@@ -32,25 +32,6 @@
 </template>
 
 <script setup>
-
-let students = ref([])
-let newStudents = ref('');
-let newMarks = ref('')
-let fieldOneTitle = ref('A Criteria')
-
-const addNewData = () => {
-    const newStudentsArray = newStudents.value.split('\n')
-    const newMarksArray = newMarks.value.split('\n')
-    newStudentsArray.forEach((el, i) => {
-        students.value.push({
-            name: el,
-            fieldOne: newMarksArray[i],
-        })
-    })
-    newStudents.value = newMarks.value = "";
-}
-
-
 // emit and update planInfos
 const props = defineProps({
     modelValue: Object,
@@ -61,6 +42,26 @@ const namesTable = computed({
     set(newValue) { emit("update:modelValue", newValue) }
 }
 )
+
+let students = ref([])
+let newStudents = ref('');
+let newMarks = ref('')
+
+
+const addNewData = () => {
+    const newStudentsArray = newStudents.value.split('\n')
+    const newMarksArray = newMarks.value.split('\n')
+    newStudentsArray.forEach((el, i) => {
+        namesTable.value.tableData.push({
+            name: el,
+            fieldOne: newMarksArray[i],
+        })
+    })
+    newStudents.value = newMarks.value = "";
+}
+
+
+
 
 
 

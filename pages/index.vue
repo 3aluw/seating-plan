@@ -1,6 +1,5 @@
 <template>
     <div class="conatiner">
-        {{ namesTable }}
         <nav class="flex justify-around">
             <v-btn variant="text">upload a plan</v-btn>
             <v-btn variant="text">Create a new plan</v-btn>
@@ -61,7 +60,7 @@ let planInfos = ref({
 })
 // AddStudents comp
 let namesTable = ref({
-    criteriaOneTitle: "s",
+    criteriaOneTitle: "",
     tableData: []
 })
 
@@ -72,6 +71,8 @@ let dialog = ref(false);
 watch(dialog, () => {
     if (dialog.value === false) {
         Object.keys(planInfos.value).forEach(key => planInfos.value[key] = "");
+        namesTable.value.criteriaOneTitle = ""
+        namesTable.value.tableData = [];
     }
 
 })
