@@ -1,7 +1,7 @@
 <template>
     <v-sheet width="1000" class="mx-auto">
         <h1 class="text-center text-3xl my-2 mb-10 text-blue-500">Fill plan infos</h1>
-        <v-form @submit.prevent v-model="form">
+        <v-form @submit.prevent>
             <v-text-field v-model="planInfos.planName" :rules="nameRule" :counter="10" label="Plan name*"
                 maxlength="10"></v-text-field>
             <v-text-field v-model="planInfos.description" label="Description (optional)"></v-text-field>
@@ -13,7 +13,7 @@
                 <v-row>
                     <v-col cols="4">
 
-                        <v-checkbox v-model="planInfos.planType" value="1" :rules="checkTypeRule">
+                        <v-checkbox v-model="planInfos.planType" value="0" :rules="checkTypeRule">
                             <template v-slot:label>
                                 <div>
                                     <v-tooltip location="bottom">
@@ -28,7 +28,7 @@
 
 
                     <v-col>
-                        <v-checkbox v-model="planInfos.planType" value="2">
+                        <v-checkbox v-model="planInfos.planType" value="1">
                             <template v-slot:label>
                                 <div>
                                     <v-tooltip location="bottom">
@@ -41,7 +41,7 @@
                         </v-checkbox> </v-col>
 
                     <v-col>
-                        <v-checkbox v-model="planInfos.planType" value="3">
+                        <v-checkbox v-model="planInfos.planType" value="2">
                             <template v-slot:label>
                                 <div>
                                     <v-tooltip location="bottom">
@@ -55,9 +55,8 @@
                     </v-col>
                 </v-row>
             </v-container>
-            <div class="flex justify-center">
-                <v-btn append-icon="$next" variant="outlined" type="submit" @click='submitPlan'>NEXT</v-btn>
-            </div>
+
+
         </v-form>
     </v-sheet>
 </template>
@@ -79,15 +78,6 @@ const planInfos = computed({
 )
 
 
-/*form inputs */
-const form = ref()
-
-
-
-const submitPlan = () => {
-
-    if (form.value == true) { planStore.plansCreator(planName, description, "pairs", ["Ali", "moh"]) }
-}
 
 
 
@@ -101,7 +91,7 @@ const reqiuiredRule = [
     }]
 const checkTypeRule = [
     () => {
-        return planType.value ? true : "Chose a type"
+        return planInfos.value.planType ? true : "Chose a type"
     }
 ]
 const nameRule = [

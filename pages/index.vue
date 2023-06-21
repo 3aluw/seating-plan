@@ -39,9 +39,22 @@
 
                 <v-card>
                     <v-card-text>
+                        <PlanInfos v-model="planInfos" v-if="step == 1" />
+                        <AddStudents v-model="namesTable" v-if="step == 2" />
+                        <ConfirmPlan :planInfos="planInfos" :namesTable="namesTable" v-if="step == 3" />
 
-                        <PlanInfos v-model="planInfos" />
-                        <AddStudents v-model="namesTable" />
+
+                        <!--Form navigation buttons-->
+                        <div class="flex justify-center gap-4">
+                            <v-btn prepend-icon="mdi:mdi-arrow-left" variant="outlined" color="white" :disabled="step == 1"
+                                @click="step -= 1">BACK</v-btn>
+                            <v-btn append-icon="$next" variant="outlined" color="white" v-if="step < 3" @click="step += 1"
+                                :disabled="disableNextButton">NEXT</v-btn>
+                            <v-btn append-icon="$next" variant="flat" color="green-darken-2" v-if="step == 3"
+                                @click="step += 1">Finnish</v-btn>
+
+                        </div>
+
                     </v-card-text>
                 </v-card>
             </v-dialog>
@@ -51,6 +64,10 @@
 </template>
 
 <script setup>
+
+
+
+
 //Emited Data from child components :
 //(PlanInfos comp)
 let planInfos = ref({
@@ -63,6 +80,27 @@ let namesTable = ref({
     criteriaOneTitle: "",
     tableData: []
 })
+
+
+
+//form steps
+let step = ref(1)
+//Enable NEXT button
+const disableNextButton = computed(() => {
+    if (step.value === 1 && isFormComplete(planInfos.value)) { return false }
+    else if (step.value === 2 && isFormComplete(namesTable.value)) { return false }
+    return true
+}
+)
+const isFormComplete = (obj) => {
+    return Object.keys(obj).every(key => obj[key].length > 0)
+}
+
+
+
+
+
+
 
 
 //dialog logic
