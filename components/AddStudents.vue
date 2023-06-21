@@ -7,7 +7,7 @@
             <thead>
                 <tr>
                     <th class="text-left">Names</th>
-                    <th class="text-left"><v-text-field :rules="nameCriteriaRule" maxlength="10" :counter="10"
+                    <th class="text-left"><v-text-field maxlength="10" :counter="10"
                             placeholder="this will help you to sort. ie: marks" label="Add a criteria title ..."
                             v-model="namesTable.criteriaOneTitle"></v-text-field></th>
                 </tr>
@@ -43,7 +43,8 @@ const namesTable = computed({
 }
 )
 
-let students = ref([])
+
+
 let newStudents = ref('');
 let newMarks = ref('')
 
@@ -79,7 +80,7 @@ const nameCriteriaRule = [
 
 const fieldOneTitleRule = [
     value => {
-        if (value && fieldOneTitle.value || !value) return true;
+        if (value && namesTable.value.criteriaOneTitle || !value) return true;
         return "Enter a criteria name"
     }
 ]

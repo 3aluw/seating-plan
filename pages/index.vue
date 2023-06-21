@@ -41,7 +41,8 @@
                     <v-card-text>
                         <PlanInfos v-model="planInfos" v-if="step == 1" />
                         <AddStudents v-model="namesTable" v-if="step == 2" />
-                        <ConfirmPlan :planInfos="planInfos" :namesTable="namesTable" v-if="step == 3" />
+                        <ConfirmPlan :planInfos="planInfos" :namesTable="namesTable" @changeStep="changeStep"
+                            v-if="step == 3" />
 
 
                         <!--Form navigation buttons-->
@@ -88,17 +89,17 @@ let step = ref(1)
 //Enable NEXT button
 const disableNextButton = computed(() => {
     if (step.value === 1 && isFormComplete(planInfos.value)) { return false }
-    else if (step.value === 2 && isFormComplete(namesTable.value)) { return false }
+    else if (step.value === 2 && namesTable.value.tableData.length > 4) { return false }
     return true
 }
 )
 const isFormComplete = (obj) => {
     return Object.keys(obj).every(key => obj[key].length > 0)
 }
-
-
-
-
+//listen to modify emits from the confirmPlan component 
+const changeStep = (toStep) => {
+    step.value = toStep
+}
 
 
 
@@ -111,6 +112,7 @@ watch(dialog, () => {
         Object.keys(planInfos.value).forEach(key => planInfos.value[key] = "");
         namesTable.value.criteriaOneTitle = ""
         namesTable.value.tableData = [];
+        step.value = 1
     }
 
 })
