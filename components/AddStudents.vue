@@ -32,7 +32,8 @@
 
         </v-table>
         <div class="flex justify-center ">
-            <v-btn class="mx-4" @click="addNewData" variant="tonal" color="light-green-lighten-4">Add data</v-btn>
+            <v-btn class="mx-4" @click="addNewData" variant="tonal" color="light-green-lighten-4"
+                :disabled="!newStudents">Add data</v-btn>
             <v-btn class="mx-4" @click="clearTable" variant="tonal" color="red-lighten-4">clear</v-btn>
         </div>
     </v-sheet>
@@ -83,15 +84,7 @@ const clearTable = () => {
 
 
 
-/*From rule */
-const nameCriteriaRule = [
-    value => {
-        if (value?.length <= 10) return true
-
-        return 'Name must be less than 10 characters.'
-    },
-]
-
+/*From rules */
 const fieldOneTitleRule = [
     value => {
         if (value && namesTable.value.criteriaOneTitle || !value) return true;
@@ -102,11 +95,12 @@ const fieldOneTitleRule = [
 
 const namesRule = [
     value => {
-        if (value.match(/\n\n/)) return "you can't have empty row(s)"
-
+        if (value && value?.match(/\n\n/)) return "you can't have empty row(s)"
+        else if (value && value.match(/\n/g)?.length < 4 && namesTable.value.tableData?.length < 4) { return "you need to enter atleast 5 names" }
         return true
     },
-
 ]
+
+
 
 </script>
