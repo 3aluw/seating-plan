@@ -13,7 +13,7 @@
                 <v-row>
                     <v-col cols="4">
 
-                        <v-checkbox v-model="planInfos.planType" value="0" :rules="checkTypeRule">
+                        <v-checkbox v-model="planInfos.seatType" value="0" :rules="checkTypeRule">
                             <template v-slot:label>
                                 <div>
                                     <v-tooltip location="bottom">
@@ -28,7 +28,7 @@
 
 
                     <v-col>
-                        <v-checkbox v-model="planInfos.planType" value="1">
+                        <v-checkbox v-model="planInfos.seatType" value="1">
                             <template v-slot:label>
                                 <div>
                                     <v-tooltip location="bottom">
@@ -41,7 +41,7 @@
                         </v-checkbox> </v-col>
 
                     <v-col>
-                        <v-checkbox v-model="planInfos.planType" value="2">
+                        <v-checkbox v-model="planInfos.seatType" value="2">
                             <template v-slot:label>
                                 <div>
                                     <v-tooltip location="bottom">
@@ -91,7 +91,7 @@ const reqiuiredRule = [
     }]
 const checkTypeRule = [
     () => {
-        return planInfos.value.planType ? true : "Chose a type"
+        return planInfos.value.seatType ? true : "Chose a type"
     }
 ]
 const nameRule = [

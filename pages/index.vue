@@ -73,8 +73,10 @@
 </template>
 
 <script setup>
+import { usePlanStore } from '~/store/planStore'
 
 
+const PlanStore = usePlanStore();
 
 
 //Emited Data from child components :
@@ -82,7 +84,7 @@
 let planInfos = ref({
     planName: "",
     description: '',
-    planType: '',
+    seatType: '',
 })
 // AddStudents comp
 let namesTable = ref({
@@ -112,8 +114,13 @@ const changeStep = (toStep) => {
 //create the plan 
 const plansCreator = () => {
     if (!namesTable.value.criteriaOneTitle) namesTable.value.criteriaOneTitle = "A criteria"
-    const { planName, description, seatType } = planInfos.value
-    console.log(planName, description, seatType, namesTable)
+    const { planName, description, seatType } = planInfos.value;
+
+
+    const { tableData, criteriaOneTitle } = namesTable.value
+    PlanStore.plansCreator(planName, description, seatType, criteriaOneTitle, tableData)
+
+
 }
 
 

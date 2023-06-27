@@ -4,7 +4,7 @@
         <v-list lines="one" theme="dark">
             <v-list-item title="plan name" :subtitle="planInfos.planName"></v-list-item>
             <v-list-item title="Description" :subtitle="planInfos.description"></v-list-item>
-            <v-list-item title="plan Type" :subtitle="planTypes[planInfos.planType]"></v-list-item>
+            <v-list-item title="plan Type" :subtitle="seatTypes[planInfos.seatType]"></v-list-item>
             <v-list-item title="Number of attendants" :subtitle="namesTable.tableData.length"></v-list-item>
         </v-list>
         <div class="flex justify-center ">
@@ -37,7 +37,7 @@ const changeStep = (step) => {
     emit("changeStep", step)
 }
 
-const planTypes = ["Pairs", "U-shape", "Rows"]
+const seatTypes = ["Pairs", "U-shape", "Rows"]
 </script>
 <style>
 .v-list-item {
