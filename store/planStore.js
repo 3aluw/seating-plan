@@ -15,19 +15,19 @@ export const usePlanStore = defineStore("PlanStore", () => {
 
 
 let plansNames = ref([]);
-let plans = ref({})
+let plans = ref([])
 
 
-const plansCreator = (planName,description,seatType,students)=>{
+const plansCreator = (planName,description,seatType,namesTable)=>{
 
 plansNames.value.push(planName);
-plans.value[`${planName}`] = {
+plans.value.push({
+  planName : planName,
   description :  description,
   number: students.length,
   seatType:seatType,
-  students:students,
-
-}
+  namesTable: namesTable,
+})
 }
   return {
     plans,plansNames,plansCreator,

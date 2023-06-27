@@ -1,6 +1,6 @@
 <template>
     <v-sheet width="1000" class="mx-auto">
-        <h1 class="text-center text-3xl my-2 mb-10 text-blue-500">Check infos</h1>
+        <h1 class="text-center text-3xl my-2 mb-10 text-blue-300">Check infos</h1>
         <v-list lines="one" theme="dark">
             <v-list-item title="plan name" :subtitle="planInfos.planName"></v-list-item>
             <v-list-item title="Description" :subtitle="planInfos.description"></v-list-item>

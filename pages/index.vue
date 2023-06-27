@@ -60,7 +60,7 @@
                             <v-btn append-icon="$next" variant="outlined" color="white" v-if="step < 3" @click="step += 1"
                                 :disabled="disableNextButton">NEXT</v-btn>
                             <v-btn append-icon="$next" variant="flat" color="green-darken-2" v-if="step == 3"
-                                @click="step += 1">Finnish</v-btn>
+                                @click="plansCreator">Finnish</v-btn>
 
                         </div>
 
@@ -109,6 +109,12 @@ const changeStep = (toStep) => {
     step.value = toStep
 }
 
+//create the plan 
+const plansCreator = () => {
+    if (!namesTable.value.criteriaOneTitle) namesTable.value.criteriaOneTitle = "A criteria"
+    const { planName, description, seatType } = planInfos.value
+    console.log(planName, description, seatType, namesTable)
+}
 
 
 
