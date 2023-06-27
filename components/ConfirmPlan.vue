@@ -1,9 +1,11 @@
 <template>
     <v-sheet width="1000" class="mx-auto">
+        <h1 class="text-center text-3xl my-2 mb-10 text-blue-500">Check infos</h1>
         <v-list lines="one" theme="dark">
             <v-list-item title="plan name" :subtitle="planInfos.planName"></v-list-item>
             <v-list-item title="Description" :subtitle="planInfos.description"></v-list-item>
             <v-list-item title="plan Type" :subtitle="planTypes[planInfos.planType]"></v-list-item>
+            <v-list-item title="Number of attendants" :subtitle="namesTable.tableData.length"></v-list-item>
         </v-list>
         <div class="flex justify-center ">
             <v-btn class="mb-5" variant="outlined" color="orange-lighten-3" @click="changeStep(1)">Modify</v-btn>
@@ -22,11 +24,10 @@
                 </tr>
             </tbody>
         </v-table>
-
+        <div class="flex justify-center">
+            <v-btn class="mb-5" variant="outlined" color="orange-lighten-3" @click="changeStep(2)">Modify</v-btn>
+        </div>
     </v-sheet>
-    <div class="flex justify-center">
-        <v-btn class="mb-5" variant="outlined" color="orange-lighten-3" @click="changeStep(2)">Modify</v-btn>
-    </div>
 </template>
 <script setup>
 const props = defineProps(["planInfos", "namesTable"])
@@ -41,10 +42,12 @@ const planTypes = ["Pairs", "U-shape", "Rows"]
 <style>
 .v-list-item {
     margin-block: 1rem;
+    min-width: 30rem;
+    display: inline-block;
 }
 
 .v-list-item-title {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     margin-bottom: 0.5rem;
 }
 

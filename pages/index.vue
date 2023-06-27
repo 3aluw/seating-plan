@@ -39,10 +39,18 @@
 
                 <v-card>
                     <v-card-text>
-                        <PlanInfos v-model="planInfos" v-if="step == 1" />
-                        <AddStudents v-model="namesTable" v-if="step == 2" />
-                        <ConfirmPlan :planInfos="planInfos" :namesTable="namesTable" @changeStep="changeStep"
-                            v-if="step == 3" />
+                        <v-fade-transition :hideOnLeave=true>
+                            <PlanInfos v-model="planInfos" v-if="step == 1" />
+                        </v-fade-transition>
+
+                        <v-fade-transition :hideOnLeave=true>
+                            <AddStudents v-model="namesTable" v-if="step == 2" />
+                        </v-fade-transition>
+
+                        <v-fade-transition :hideOnLeave=true>
+                            <ConfirmPlan :planInfos="planInfos" :namesTable="namesTable" @changeStep="changeStep"
+                                v-if="step == 3" />
+                        </v-fade-transition>
 
 
                         <!--Form navigation buttons-->

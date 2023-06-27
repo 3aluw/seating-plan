@@ -101,6 +101,4 @@ const namesRule = [
     },
 ]
 
-
-
 </script>
