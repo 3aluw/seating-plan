@@ -65,11 +65,12 @@ const addNewData = () => {
         if (el) {
             namesTable.value.tableData.push({
                 name: el,
-                fieldOne: newMarksArray[i],
+                fieldOne: newMarksArray[i] ?? "",
             })
         }
     })
     newStudents.value = newMarks.value = "";
+    console.log(namesTable.value.tableData)
 }
 
 const clearTable = () => {
