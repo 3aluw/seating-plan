@@ -3,24 +3,41 @@ import { defineStore, acceptHMRUpdate } from "pinia";
 
 export const usePlanStore = defineStore("PlanStore", () => {
 
-/*class plan {
-  constructor(planName,description,number,students) {  
-    this.planName = planName;
-    this.description = description;
-    this.number = number;
-    this.students = students
-  }
-}*/
+let plans = ref([{
+  "planName": "sad",
+  "description": "sda",
+  "number": 5,
+  "seatType": "1",
+  "criteriaOneTitle": "A criteria",
+  "tableData": [
+      {
+          "name": "one",
+          "fieldOne": ""
+      },
+      {
+          "name": "two "
+      },
+      {
+          "name": "three"
+      },
+      {
+          "name": "four"
+      },
+      {
+          "name": "five"
+      }
+  ]
+}],{deep: true})
+
+let currentPlanIndex = ref(0);
+let clonedTableData = plans.value[currentPlanIndex.value].tableData.map(a => {return {...a}})
 
 
-
-let plansNames = ref([]);
-let plans = ref([],{deep: true})
 
 
 const plansCreator = (planName,description,seatType,criteriaOneTitle,tableData)=>{
 
-plansNames.value.push(planName);
+
 plans.value.push({
   planName : planName,
   description :  description,
@@ -30,10 +47,9 @@ plans.value.push({
   tableData: tableData,
 
 })
-console.log(plans.value)
 }
   return {
-    plans,plansNames,plansCreator,
+    plans,currentPlanIndex,plansCreator,clonedTableData
   };
 },
 /* Enable this to persist this store : more info : https://prazdevs.github.io/pinia-plugin-persistedstate/frameworks/nuxt-3.html
