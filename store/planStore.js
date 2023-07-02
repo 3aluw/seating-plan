@@ -15,22 +15,38 @@ let plans = ref([{
           "fieldOne": ""
       },
       {
-          "name": "two "
+          "name": "two ","fieldOne": ""
       },
       {
-          "name": "three"
+          "name": "three","fieldOne": ""
       },
       {
-          "name": "four"
+          "name": "four","fieldOne": ""
       },
       {
-          "name": "five"
-      }
+          "name": "five","fieldOne": ""
+      },
+      {
+          "name": "one",
+          "fieldOne": ""
+      },
+      {
+          "name": "two ","fieldOne": ""
+      },
+      {
+          "name": "three","fieldOne": ""
+      },
+      {
+          "name": "four","fieldOne": ""
+      },
+      {
+          "name": "five","fieldOne": ""
+      },
   ]
 }],{deep: true})
 
 let currentPlanIndex = ref(0);
-let clonedTableData = plans.value[currentPlanIndex.value].tableData.map(a => {return {...a}})
+const clonedTableData = computed(()=>plans.value[currentPlanIndex.value].tableData.map(a => {return {...a}})) 
 
 
 
@@ -49,8 +65,7 @@ plans.value.push({
 })
 }
   return {
-    plans,currentPlanIndex,plansCreator,clonedTableData
-  };
+    plans,currentPlanIndex,plansCreator,clonedTableData};
 },
 /* Enable this to persist this store : more info : https://prazdevs.github.io/pinia-plugin-persistedstate/frameworks/nuxt-3.html
 {
