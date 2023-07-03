@@ -3,11 +3,13 @@
         <nav class="flex justify-around mt-12">
             <v-btn variant="text">Home</v-btn>
             <v-btn variant="text">Modify paln</v-btn>
-            <v-btn variant="text">change plan</v-btn>
+            <v-btn variant="text" @click="showChangePlan = true">change plan</v-btn>
+            <ChosePlan v-model="showChangePlan" />
         </nav>
 
         <div style="position:relative;  margin-inline: 3rem;padding:5rem; min-height: 50rem;">
-            <div v-for="(student, index) in students" ref="studentRefs" :style="draggables[index]?.style"
+            <div v-for="(student, index) in planStore.plans[planStore.currentPlanIndex].tableData" ref="studentRefs"
+                :style="draggables[index]?.style"
                 style="position: absolute;width:100px; border:black solid 1px; height: 50px">{{ student?.name }} my x :
                 {{ draggables[index]?.x }}
             </div>
@@ -21,25 +23,16 @@
 </template>
 <script setup>
 import { usePlanStore } from '~/store/planStore'
-const { plans, currentPlanIndex, clonedTableData: students } = usePlanStore();
+
+const planStore = usePlanStore();
 
 
-/*
-const students = ref([
-    { name: "Jean" },
-    { name: "N" },
-    { name: "No" },
-    { name: "Nod" },
-    { name: "Node" },
-    { name: "N" },
-    { name: "Jeant" },
-    { name: "No" },
-    { name: "Noe" },
-    { name: "Nde" },
-    { name: "No" },
-    { name: "Ne" },
-])
-*/
+//show component  
+const showChangePlan = ref(false)
+
+
+
+
 const XObj = ref({
     //Object that has x values (assuming there are three rows in classrom )Even: +110 ; odd : +120
     0: 0,
@@ -54,7 +47,7 @@ const studentRefs = ref([])
 const draggables = ref([])
 
 onMounted(() => {
-    for (let x in students) {
+    for (let x in planStore.plans[planStore.currentPlanIndex].tableData) {
         draggables.value.push(useDraggable(studentRefs.value[x], {
             initialValue: defineLocation(x),
 
@@ -111,10 +104,10 @@ const FindNdOverlapingItem = (movingItemIndex, toXIndex) => {
 
 const swapStudents = (fromIndex, toIndex) => {
     console.log(fromIndex, toIndex)
-    const temp = students[fromIndex];
-    students[fromIndex] = students[toIndex];
-    students[toIndex] = temp;
-    console.log(students)
+    const temp = planStore.plans[planStore.currentPlanIndex].tableData[fromIndex];
+    planStore.plans[planStore.currentPlanIndex].tableData[fromIndex] = planStore.plans[planStore.currentPlanIndex].tableData[toIndex];
+    planStore.plans[planStore.currentPlanIndex].tableData[toIndex] = temp;
+    console.log(planStore.plans[planStore.currentPlanIndex].tableData)
 }
 
 
