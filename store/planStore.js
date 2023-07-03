@@ -3,13 +3,18 @@ import { defineStore, acceptHMRUpdate } from "pinia";
 
 export const usePlanStore = defineStore("PlanStore", () => {
 
-let plans = ref([{
+let plans = ref([
+    {
   "planName": "sad",
   "description": "sda",
   "number": 5,
   "seatType": "1",
   "criteriaOneTitle": "A criteria",
   "tableData": [
+      {
+          "name": "one",
+          "fieldOne": ""
+      },
       {
           "name": "one",
           "fieldOne": ""
@@ -43,10 +48,56 @@ let plans = ref([{
           "name": "five","fieldOne": ""
       },
   ]
-}],{deep: true})
+}, {
+    "planName": "sad",
+    "description": "sda",
+    "number": 5,
+    "seatType": "1",
+    "criteriaOneTitle": "A criteria",
+    "tableData": [
+        {
+            "name": "one",
+            "fieldOne": ""
+        },
+        {
+            "name": "two ","fieldOne": ""
+        },
+        {
+            "name": "two ","fieldOne": ""
+        },
+        {
+            "name": "three","fieldOne": ""
+        },
+        {
+            "name": "four","fieldOne": ""
+        },
+        {
+            "name": "five","fieldOne": ""
+        },
+        {
+            "name": "one",
+            "fieldOne": ""
+        },
+        {
+            "name": "two ","fieldOne": ""
+        },
+        {
+            "name": "three","fieldOne": ""
+        },
+        {
+            "name": "four","fieldOne": ""
+        },
+        {
+            "name": "five","fieldOne": ""
+        },
+    ]
+  },],{deep: true})
 
 let currentPlanIndex = ref(0);
-const clonedTableData = computed(()=>plans.value[currentPlanIndex.value].tableData.map(a => {return {...a}})) 
+const clonedTableData = ref()
+watch(currentPlanIndex,()=>{
+clonedTableData.value = plans.value[currentPlanIndex.value].tableData.map(a => {return {...a}})
+})
 
 
 
