@@ -1,10 +1,8 @@
 <template>
     <div class="text-center">
-
-
         <v-dialog v-model="showChangePlan" width="auto">
             <v-card>
-                <v-sheet class="m-12 d.flex gap-5 flex-wrap" maxWidth="90vw">
+                <v-sheet class="m-12 d.flex gap-5 flex-wrap " maxWidth="90vw">
                     <v-card v-for=" (plan, index)  in  plans " @click="changePlanIndex(index)" :title="plan.planName"
                         :subtitle="`number of attandents : ${plan.number}`" :text="plan.description" variant="outlined">
                     </v-card>
