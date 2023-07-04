@@ -7,7 +7,7 @@
             <ChosePlan v-model="showChangePlan" />
         </nav>
 
-        <div style="position:relative;  margin-inline: 3rem;padding:5rem; min-height: 50rem;">
+        <div style="position:relative;  margin-inline: 3rem;padding:5rem; min-height: 50rem;" class="mt-10">
             <div v-for="(student, index) in planStore.plans[planStore.currentPlanIndex].tableData" ref="studentRefs"
                 :style="draggables[index]?.style"
                 style="position: absolute;width:100px; border:black solid 1px; height: 50px">{{ student?.name }} my x :
@@ -53,7 +53,7 @@ onMounted(() => {
 
             onStart(position) {
                 //fixes coordinates snap when start dragging
-                position.y += 83.984375
+                position.y += 123.984375
                 position.x += 47.98828125
 
             },
@@ -92,8 +92,9 @@ const FindNdOverlapingItem = (movingItemIndex, toXIndex) => {
     const rect1 = studentRefs.value[movingItemIndex].getBoundingClientRect()
     console.log(studentRefs.value.length / 6)
     for (let i = 0; i < Math.ceil(studentRefs.value.length / 6); i++) {
-        const rect2 = studentRefs.value[toXIndex + (i * 6)].getBoundingClientRect();
-        if (!(
+        const rect2 = studentRefs.value[toXIndex + (i * 6)]?.getBoundingClientRect();
+
+        if (rect2 && !(
             rect1.top > rect2.bottom ||
             rect1.right < rect2.left ||
             rect1.bottom < rect2.top ||
@@ -103,11 +104,11 @@ const FindNdOverlapingItem = (movingItemIndex, toXIndex) => {
 }
 
 const swapStudents = (fromIndex, toIndex) => {
-    console.log(fromIndex, toIndex)
-    const temp = planStore.plans[planStore.currentPlanIndex].tableData[fromIndex];
-    planStore.plans[planStore.currentPlanIndex].tableData[fromIndex] = planStore.plans[planStore.currentPlanIndex].tableData[toIndex];
-    planStore.plans[planStore.currentPlanIndex].tableData[toIndex] = temp;
-    console.log(planStore.plans[planStore.currentPlanIndex].tableData)
+    if (toIndex >= 0) {
+        const temp = planStore.plans[planStore.currentPlanIndex].tableData[fromIndex];
+        planStore.plans[planStore.currentPlanIndex].tableData[fromIndex] = planStore.plans[planStore.currentPlanIndex].tableData[toIndex];
+        planStore.plans[planStore.currentPlanIndex].tableData[toIndex] = temp;
+    }
 }
 
 
