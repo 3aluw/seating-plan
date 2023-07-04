@@ -108,7 +108,7 @@ const nameRule = [
 ]
 
 </script>
-<style>
+<style scoped>
 .v-form {
     background: #1B1C24;
 }

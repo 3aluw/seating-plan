@@ -2,7 +2,8 @@
     <div class="conatiner ">
         <nav class="flex justify-around mt-12">
             <v-btn variant="text">Home</v-btn>
-            <v-btn variant="text">Modify paln</v-btn>
+            <v-btn variant="text" @click="showModifyPlan = true">Modify paln</v-btn>
+            <ModifyPlan v-model="showModifyPlan" />
             <v-btn variant="text" @click="showChangePlan = true">change plan</v-btn>
             <ChosePlan v-model="showChangePlan" />
         </nav>
@@ -29,7 +30,7 @@ const planStore = usePlanStore();
 
 //show component  
 const showChangePlan = ref(false)
-
+const showModifyPlan = ref(false)
 
 
 
