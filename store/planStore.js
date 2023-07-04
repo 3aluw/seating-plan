@@ -93,10 +93,13 @@ let plans = ref([
     ]
   },],{deep: true})
 
+
+  //create a clone of the current table -will use it to undo changes-
 let currentPlanIndex = ref(0);
-const clonedTableData = ref()
+const clonedTableData = ref(plans.value[currentPlanIndex.value].tableData.map(a => {return {...a}}))
 watch(currentPlanIndex,()=>{
-clonedTableData.value = plans.value[currentPlanIndex.value].tableData.map(a => {return {...a}})
+
+if(currentPlanIndex.value) clonedTableData.value = plans.value[currentPlanIndex.value].tableData.map(a => {return {...a}})
 })
 
 
