@@ -2,18 +2,20 @@
     <v-dialog v-model="showChangePlan" width="auto">
         <v-sheet width="1000" class="mx-auto p-4">
             <v-form @submit.prevent class="bg-white">
+                <p class="bg-white my-6 text-xl">Change plan infos:</p>
                 <v-text-field v-model="currentPlan.planName" :counter="10" label="Plan name*" maxlength="10"></v-text-field>
                 <v-text-field v-model="currentPlan.description" label="Description (optional)"></v-text-field>
             </v-form>
 
-            <p class="bg-white mt-6 text-xl">Modify the table :</p>
-            <v-table class="mb-4" height="500px" maxWidth="90vw">
+
+            <p class="bg-white my-6 text-xl">Modify the table :</p>
+            <v-table class="mb-4 border-2" height="500px" maxWidth="90vw">
                 <thead>
                     <tr>
                         <th class="text-center">Names</th>
-                        <th class="text-center"><v-text-field maxlength="10" :counter="10"
-                                v-model="fieldOneTitle"></v-text-field>
-                        </th>
+                        <th class="text-center">{{ fieldOneTitle }}</th>
+
+
                     </tr>
                 </thead>
 
