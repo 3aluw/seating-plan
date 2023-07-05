@@ -8,7 +8,8 @@
             <ChosePlan v-model="showChangePlan" />
         </nav>
 
-        <div style="position:relative;  margin-inline: 3rem;padding:5rem; min-height: 50rem;" class="mt-10">
+        <div id="print" style="position:relative;  margin-inline: 3rem;padding:5rem; min-height: 30rem;"
+            class="playground-cont mt-10">
             <div v-for="(student, index) in planStore.plans[planStore.currentPlanIndex].tableData" ref="studentRefs"
                 :style="draggables[index]?.style"
                 style="position: absolute;width:100px; border:black solid 1px; height: 50px">{{ student?.name }} my x :
@@ -16,8 +17,8 @@
             </div>
         </div>
         <div class="action-btns flex justify-around">
-            <v-btn color="blue-darken-2" variant="tonal">Undo changes</v-btn>
-            <v-btn color="blue-darken-2" variant="tonal">download a screenshot</v-btn>
+            <v-btn color="blue-darken-2" variant="tonal" @click="undoChanges">Undo changes</v-btn>
+            <v-btn color="blue-darken-2" variant="tonal" @click="printPlan">Print</v-btn>
         </div>
 
     </div>
@@ -104,6 +105,8 @@ const FindNdOverlapingItem = (movingItemIndex, toXIndex) => {
     }
 }
 
+
+//buttons'events
 const swapStudents = (fromIndex, toIndex) => {
     if (toIndex >= 0) {
         const temp = planStore.plans[planStore.currentPlanIndex].tableData[fromIndex];
@@ -112,7 +115,41 @@ const swapStudents = (fromIndex, toIndex) => {
     }
 }
 
+const undoChanges = () => {
+    planStore.plans[planStore.currentPlanIndex].tableData = planStore.clonedTableData.map(a => { return { ...a } })
+}
 
+const printPlan = () => {
+    // Get HTML to print from element
+    const prtHtml = document.getElementById('print').innerHTML;
+
+    // Get all stylesheets HTML
+    let stylesHtml = '';
+    for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
+        stylesHtml += node.outerHTML;
+    }
+
+    // Open the print window
+    const WinPrint = window.open('', '', 'left=0,top=0,width=700,height=900,toolbar=0,scrollbars=0,status=0, ');
+
+    WinPrint.document.write(`<!DOCTYPE html>
+<html>
+  <head>
+    ${stylesHtml}
+  </head>
+  <body>
+    ${prtHtml}
+  </body>
+</html>`);
+
+
+    WinPrint.document.close();
+    WinPrint.focus();
+    WinPrint.print();
+
+    setTimeout(() => { WinPrint.close(); console.log(5) }, 1000)
+    //WinPrint.close();
+}
 </script>
 
 <style>
