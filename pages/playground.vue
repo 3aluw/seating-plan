@@ -10,14 +10,15 @@
 
         <div id="print" class="playground-cont mt-10">
             <div class="relative student-rect"
-                v-for="(student, index) in planStore.plans[planStore.currentPlanIndex].tableData" ref="studentRefs"
-                :style="draggables[index]?.style"
+                v-for="(student, index) in   planStore.plans[planStore.currentPlanIndex].tableData  " ref="studentRefs"
+                :style="draggables[index]?.style" :class="{ 'overlappedItem': index === overlappedItem }"
                 style="position: absolute;width:100px; border:black solid 1px; height: 50px">
                 <p class="h-full w-full text-center">{{ student?.name }}</p>
                 <i class="top-0 moving-btn mdi-cursor-move mdi v-icon notranslate v-theme--light v-icon--size-default"
                     aria-hidden="true"></i>
             </div>
         </div>
+
         <div class="action-btns flex justify-around">
             <v-btn color="blue-darken-2" variant="tonal" @click="undoChanges">Undo changes</v-btn>
             <v-btn color="blue-darken-2" variant="tonal" @click="printPlan">Print</v-btn>
@@ -35,6 +36,8 @@ const planStore = usePlanStore();
 const showChangePlan = ref(false)
 const showModifyPlan = ref(false)
 
+//overlapped item to change its background
+let overlappedItem = ref(null)
 
 
 const XObj = ref({
@@ -61,10 +64,23 @@ onMounted(() => {
                 position.x += 47.98828125
 
             },
+            onMove(position) {
+                let targetXIndex = null;
 
+                //find the x index of the target location
+                let i = 0;
+                while (i <= 5) {
+                    if (position.x + 50 - XObj.value[i] < 100) { targetXIndex = i; break }
+                    i++
+                }
+                const toIndex = FindNdOverlapingItem(x, targetXIndex)
+                overlappedItem.value = toIndex
+
+            },
             onEnd(position) {
                 let targetXIndex = null;
                 let inintialLocation = defineLocation(x);
+                //find the x index of the target location
                 let i = 0;
                 while (i <= 5) {
                     if (position.x + 50 - XObj.value[i] < 100) { targetXIndex = i; break }
@@ -94,7 +110,7 @@ const defineLocation = (index) => {
 
 const FindNdOverlapingItem = (movingItemIndex, toXIndex) => {
     const rect1 = studentRefs.value[movingItemIndex].getBoundingClientRect()
-    console.log(studentRefs.value.length / 6)
+
     for (let i = 0; i < Math.ceil(studentRefs.value.length / 6); i++) {
         const rect2 = studentRefs.value[toXIndex + (i * 6)]?.getBoundingClientRect();
 
@@ -174,6 +190,9 @@ const printPlan = () => {
     pointer-events: none;
 }
 
+.overlappedItem {
+    background: yellow;
+}
 
 @media print {
 
