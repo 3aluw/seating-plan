@@ -65,33 +65,34 @@ onMounted(() => {
 
             },
             onMove(position) {
-                let targetXIndex = null;
-
-                //find the x index of the target location
-                let i = 0;
-                while (i <= 5) {
-                    if (position.x + 50 - XObj.value[i] < 100) { targetXIndex = i; break }
-                    i++
-                }
+                //find the overlapped item to change its style
+                let targetXIndex = findTargetXIndex(position);
                 const toIndex = FindNdOverlapingItem(x, targetXIndex)
                 overlappedItem.value = toIndex
 
             },
             onEnd(position) {
-                let targetXIndex = null;
-                let inintialLocation = defineLocation(x);
                 //find the x index of the target location
-                let i = 0;
-                while (i <= 5) {
-                    if (position.x + 50 - XObj.value[i] < 100) { targetXIndex = i; break }
-                    i++
-                }
-                const toIndex = FindNdOverlapingItem(x, targetXIndex)
-                console.log(FindNdOverlapingItem(x, targetXIndex), 5)
+                let targetXIndex = findTargetXIndex(position);
+                //save th initial location so the item returns to it
+                let inintialLocation = defineLocation(x);
                 position.x = inintialLocation.x;
                 position.y = inintialLocation.y;
-
+                //find the index of the target item and swap them
+                const toIndex = FindNdOverlapingItem(x, targetXIndex)
                 swapStudents(x, toIndex)
+
+                //to reset teh styling of the overlapped item
+                overlappedItem.value = null
+
+                /* changed by findTargetXIndex fn 
+                let i = 0;
+                  while (i <= 5) {
+                      if (position.x + 50 - XObj.value[i] < 100) { targetXIndex = i; break }
+                      i++
+                  }*/
+                //find the index of target item
+
 
             }
         }));
@@ -106,6 +107,15 @@ const defineLocation = (index) => {
     const x = XObj.value[xIndex]
     const y = (yIndex) * 60
     return { x: x, y: y }
+}
+
+const findTargetXIndex = (position) => {
+    let i = 0;
+    while (i <= 5) {
+        if (position.x + 50 - XObj.value[i] < 100) { return i }
+        i++
+    }
+
 }
 
 const FindNdOverlapingItem = (movingItemIndex, toXIndex) => {
