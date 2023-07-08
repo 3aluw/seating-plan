@@ -20,16 +20,24 @@
                 </thead>
 
                 <tbody>
-                    <tr v-for="(student, index) in  tableData" :key="student.name">
-                        <td><v-text-field class="md:w-80" v-model="tableData[index].name"></v-text-field> </td>
-                        <td><v-text-field class="md:w-80" v-model="tableData[index].fieldOne"></v-text-field> </td>
+                    <tr v-for="(student, index) in  planStore.plans[planStore.currentPlanIndex].tableData "
+                        :key="student.name">
+                        <td><v-text-field class="md:w-80"
+                                v-model="planStore.plans[planStore.currentPlanIndex].tableData[index].name"></v-text-field>
+                        </td>
+                        <td><v-text-field class="md:w-80"
+                                v-model="planStore.plans[planStore.currentPlanIndex].tableData[index].fieldOne"></v-text-field>
+                        </td>
                         <v-btn icon="mdi-trash-can" variant="text" color="red" @click="deleteItem(index)"></v-btn>
                     </tr>
+
 
                 </tbody>
 
             </v-table>
-
+            <div class="action-btns flex justify-around">
+                <v-btn color="blue-darken-2" variant="tonal" @click="planStore.undoChanges">Undo changes</v-btn>
+            </div>
         </v-sheet>
 
     </v-dialog>
@@ -38,8 +46,8 @@
 import { usePlanStore } from '~/store/planStore'
 const planStore = usePlanStore();
 const currentPlan = planStore.plans[planStore.currentPlanIndex]
-const tableData = planStore.plans[planStore.currentPlanIndex].tableData;
 const fieldOneTitle = planStore.plans[planStore.currentPlanIndex].criteriaOneTitle
+
 const deleteItem = (index) => {
     tableData.splice(index, 1)
 }
