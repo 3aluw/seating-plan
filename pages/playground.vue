@@ -1,6 +1,6 @@
 <template>
     <div class="conatiner ">
-        <nav class="flex justify-around mt-12">
+        <nav class=" navbar flex justify-around mt-12">
             <v-btn variant="text">Home</v-btn>
             <v-btn variant="text" @click="showModifyPlan = true">Modify paln</v-btn>
             <ModifyPlan v-model="showModifyPlan" />
@@ -8,12 +8,14 @@
             <ChosePlan v-model="showChangePlan" />
         </nav>
 
-        <div id="print" style="position:relative;  margin-inline: 3rem;padding:5rem; min-height: 30rem;"
-            class="playground-cont mt-10">
-            <div v-for="(student, index) in planStore.plans[planStore.currentPlanIndex].tableData" ref="studentRefs"
+        <div id="print" class="playground-cont mt-10">
+            <div class="relative student-rect"
+                v-for="(student, index) in planStore.plans[planStore.currentPlanIndex].tableData" ref="studentRefs"
                 :style="draggables[index]?.style"
-                style="position: absolute;width:100px; border:black solid 1px; height: 50px">{{ student?.name }} my x :
-                {{ draggables[index]?.x }}
+                style="position: absolute;width:100px; border:black solid 1px; height: 50px">
+                <p class="h-full w-full text-center">{{ student?.name }}</p>
+                <i class="top-0 moving-btn mdi-cursor-move mdi v-icon notranslate v-theme--light v-icon--size-default"
+                    aria-hidden="true"></i>
             </div>
         </div>
         <div class="action-btns flex justify-around">
@@ -120,45 +122,80 @@ const undoChanges = () => {
 }
 
 const printPlan = () => {
-    // Get HTML to print from element
-    const prtHtml = document.getElementById('print').innerHTML;
-
-    // Get all stylesheets HTML
-    let stylesHtml = '';
-    for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
-        stylesHtml += node.outerHTML;
-    }
-
-    // Open the print window
-    const WinPrint = window.open('', '', 'left=0,top=0,width=700,height=900,toolbar=0,scrollbars=0,status=0, ');
-
-    WinPrint.document.write(`<!DOCTYPE html>
-<html>
-  <head>
-    ${stylesHtml}
-  </head>
-  <body>
-    ${prtHtml}
-  </body>
-</html>`);
-
-
-    WinPrint.document.close();
-    WinPrint.focus();
-    WinPrint.print();
-
-    setTimeout(() => { WinPrint.close(); console.log(5) }, 1000)
-    //WinPrint.close();
+    /*   // Get HTML to print from element
+       const prtHtml = document.getElementById('print').innerHTML;
+   
+       // Get all stylesheets HTML
+       let stylesHtml = '';
+       for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
+           stylesHtml += node.outerHTML;
+       }
+   
+       // Open the print window
+       const WinPrint = window.open('', '', 'left=0,top=0,width=700,height=900,toolbar=0,scrollbars=0,status=0, ');
+   
+       WinPrint.document.write(`<!DOCTYPE html>
+   <html>
+     <head>
+       ${stylesHtml}
+     </head>
+     <body>
+       ${prtHtml}
+     </body>
+   </html>`);
+   
+   
+       WinPrint.document.close();
+       WinPrint.focus();
+       WinPrint.print();
+       setTimeout(() => { WinPrint.close(); console.log(5) }, 1000)
+       //WinPrint.close();*/
+    window.print()
 }
 </script>
 
 <style>
-/*.playground-cont {
+.playground-cont {
     position: relative;
-    background: blue;
     margin-inline: 3rem;
     padding: 5rem;
-    min-height: 50vh;
+    min-height: 30rem;
 
-}*/
+}
+
+.moving-btn {
+    position: absolute;
+    padding: 0;
+    cursor: move;
+    pointer-events: auto;
+}
+
+.student-rect {
+    pointer-events: none;
+}
+
+
+@media print {
+
+
+    .action-btns,
+    .navbar {
+        display: none;
+    }
+
+
+    .playground-cont {
+        display: block;
+        height: 1cm;
+        max-height: 2480px;
+        width: 100%;
+        padding: 0;
+        min-height: 10rem;
+    }
+
+    .conatiner {
+        max-height: 1cm;
+    }
+
+}
 </style>
