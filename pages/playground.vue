@@ -20,7 +20,7 @@
         </div>
 
         <div class="action-btns flex justify-around">
-            <v-btn color="blue-darken-2" variant="tonal" @click="undoChanges">Undo changes</v-btn>
+            <v-btn color="blue-darken-2" variant="tonal" @click="planStore.undoChanges">Undo changes</v-btn>
             <v-btn color="blue-darken-2" variant="tonal" @click="printPlan">Print</v-btn>
         </div>
 
@@ -143,9 +143,6 @@ const swapStudents = (fromIndex, toIndex) => {
     }
 }
 
-const undoChanges = () => {
-    planStore.plans[planStore.currentPlanIndex].tableData = planStore.clonedTableData.map(a => { return { ...a } })
-}
 
 const printPlan = () => {
     /*   // Get HTML to print from element

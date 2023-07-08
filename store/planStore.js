@@ -98,11 +98,13 @@ let plans = ref([
 let currentPlanIndex = ref(0);
 const clonedTableData = ref(plans.value[currentPlanIndex.value].tableData.map(a => {return {...a}}))
 watch(currentPlanIndex,()=>{
-
 if(currentPlanIndex.value) clonedTableData.value = plans.value[currentPlanIndex.value].tableData.map(a => {return {...a}})
 })
 
+const undoChanges = ()=>{
+   plans.value[currentPlanIndex.value].tableData = clonedTableData.value.map(a => { return { ...a } })
 
+}
 
 
 const plansCreator = (planName,description,seatType,criteriaOneTitle,tableData)=>{
@@ -119,7 +121,7 @@ plans.value.push({
 })
 }
   return {
-    plans,currentPlanIndex,plansCreator,clonedTableData};
+    plans,currentPlanIndex,plansCreator,clonedTableData,undoChanges};
 },
 /* Enable this to persist this store : more info : https://prazdevs.github.io/pinia-plugin-persistedstate/frameworks/nuxt-3.html
 {
