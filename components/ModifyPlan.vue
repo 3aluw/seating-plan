@@ -38,8 +38,9 @@
                 </tbody>
 
             </v-table>
-            <div class="action-btns flex justify-around">
+            <div class="action-btns flex justify-around my-4">
                 <v-btn color="blue-darken-2" variant="tonal" @click="planStore.undoChanges">Undo changes</v-btn>
+                <v-btn color="blue-darken-2" variant="tonal" @click="showChangePlan = false">apply</v-btn>
             </div>
         </v-sheet>
 
