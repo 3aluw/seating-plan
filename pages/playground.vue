@@ -223,5 +223,9 @@ const printPlan = () => {
         max-height: 1cm;
     }
 
+    .mdi-cursor-move {
+        display: none;
+    }
+
 }
 </style>
