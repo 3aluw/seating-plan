@@ -106,6 +106,31 @@ const undoChanges = ()=>{
 
 }
 
+const sortItems =(sortType)=>{
+    let tableData =  plans.value[currentPlanIndex.value].tableData;
+    const asc = sortType === "asc";
+    
+    tableData.sort(function(a, b) { 
+        
+        //check if it is a number
+        const isNumeric= (n)=> {
+            return !isNaN(parseFloat(n)) && isFinite(n);
+        }
+        const itemA =  isNumeric(a.fieldOne) ? Number(a.fieldOne) : a.fieldOne
+        const itemB =  isNumeric(b.fieldOne) ? Number(b.fieldOne) : b.fieldOne 
+           
+
+        if (itemA < itemB) {
+          return asc ? -1 : 1;
+        }
+        else if (itemA > itemB) {
+          return asc?  1: -1;
+        }
+        // items must be equal
+        return 0;
+      }); 
+}
+
 
 const plansCreator = (planName,description,seatType,criteriaOneTitle,tableData)=>{
 
@@ -121,7 +146,7 @@ plans.value.push({
 })
 }
   return {
-    plans,currentPlanIndex,plansCreator,clonedTableData,undoChanges};
+    plans,currentPlanIndex,plansCreator,clonedTableData,undoChanges, sortItems};
 },
 /* Enable this to persist this store : more info : https://prazdevs.github.io/pinia-plugin-persistedstate/frameworks/nuxt-3.html
 {

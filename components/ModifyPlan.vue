@@ -2,17 +2,21 @@
     <v-dialog v-model="showChangePlan" width="auto">
         <v-sheet width="1000" class="mx-auto p-4">
             <v-form @submit.prevent class="bg-white">
-                <p class="bg-white my-6 text-xl">Change plan infos:</p>
+                <p class="bg-white my-6 text-2xl">Change plan infos:</p>
                 <v-text-field v-model="currentPlan.planName" :counter="10" label="Plan name*" maxlength="10"></v-text-field>
                 <v-text-field v-model="currentPlan.description" label="Description (optional)"></v-text-field>
             </v-form>
 
 
-            <p class="bg-white my-6 text-xl">Modify the table :</p>
-            <v-table class="mb-4 border-2" height="500px" maxWidth="90vw">
+            <p class="bg-white my-6 text-2xl">Modify the table :</p>
+            <div class=" flex justify-around mb-6">
+                <v-btn variant="outlined" @click="planStore.sortItems('asc')" title="ascending sort">sort (asc)</v-btn>
+                <v-btn variant="outlined" @click="planStore.sortItems('dec')" title="descending sort">sort (des)</v-btn>
+            </div>
+            <v-table class="mb-4 border-2 border-slate-500 bg-slate-500" height="700px" maxWidth="90vw">
                 <thead>
                     <tr>
-                        <th class="text-center">Names</th>
+                        <th class="text-center ">Names</th>
                         <th class="text-center">{{ fieldOneTitle }}</th>
 
 
@@ -20,8 +24,7 @@
                 </thead>
 
                 <tbody>
-                    <tr v-for="(student, index) in  planStore.plans[planStore.currentPlanIndex].tableData "
-                        :key="student.name">
+                    <tr v-for="(student, index) in  planStore.plans[planStore.currentPlanIndex].tableData ">
                         <td><v-text-field class="md:w-80"
                                 v-model="planStore.plans[planStore.currentPlanIndex].tableData[index].name"></v-text-field>
                         </td>
@@ -49,7 +52,7 @@ const currentPlan = planStore.plans[planStore.currentPlanIndex]
 const fieldOneTitle = planStore.plans[planStore.currentPlanIndex].criteriaOneTitle
 
 const deleteItem = (index) => {
-    tableData.splice(index, 1)
+    planStore.plans[planStore.currentPlanIndex].tableData.splice(index, 1)
 }
 
 //dialog logic
@@ -67,3 +70,8 @@ const showChangePlan = computed({
 })
 
 </script>
+<style>
+.v-table {
+    background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
+}
+</style>
