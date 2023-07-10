@@ -8,20 +8,27 @@
             <ChosePlan v-model="showChangePlan" />
         </nav>
 
-        <div id="print" class="playground-cont mt-10">
+        <div id="print" class="playground-cont shadow-lg mt-10 mb-5">
             <div class="relative student-rect"
                 v-for="(student, index) in   planStore.plans[planStore.currentPlanIndex].tableData  " ref="studentRefs"
                 :style="draggables[index]?.style" :class="{ 'overlappedItem': index === overlappedItem }"
                 style="position: absolute;width:100px; border:black solid 1px; height: 50px">
-                <p class="h-full w-full text-center">{{ student?.name }}</p>
+                <p class="h-full w-full text-center">{{ student?.name }} </p>
                 <i class="top-0 moving-btn mdi-cursor-move mdi v-icon notranslate v-theme--light v-icon--size-default"
                     aria-hidden="true"></i>
+                <i class="bottom-0 right-0 info-icon mdi-information-outline fa-1x mdi notranslate v-theme--light v-icon--size-default"
+                    aria-hidden="true"> <v-tooltip activator="parent" location="bottom">{{ student?.fieldOne }}
+                    </v-tooltip></i>
             </div>
         </div>
 
         <div class="action-btns flex justify-around">
-            <v-btn color="blue-darken-2" variant="tonal" @click="planStore.undoChanges">Undo changes</v-btn>
-            <v-btn color="blue-darken-2" variant="tonal" @click="printPlan">Print</v-btn>
+            <v-btn prepend-icon="mdi-undo" color="blue-darken-4" variant="outlined" @click="planStore.undoChanges">Undo
+                changes</v-btn>
+
+            <v-btn prepend-icon="mdi-autorenew" color="blue-darken-4" variant="outlined"
+                @click="planStore.shufflePlan">randomize</v-btn>
+            <v-btn prepend-icon="mdi-printer" color="blue-darken-4" variant="outlined" @click="printPlan">Print</v-btn>
         </div>
 
     </div>
@@ -183,6 +190,10 @@ const printPlan = () => {
     margin-inline: 3rem;
     padding: 5rem;
     min-height: 30rem;
+    background: rgba(222, 219, 219, 0.50);
+    /*transform: scale(1.5);
+    transform-origin: 0 0;
+*/
 
 }
 
@@ -190,6 +201,13 @@ const printPlan = () => {
     position: absolute;
     padding: 0;
     cursor: move;
+    pointer-events: auto;
+}
+
+.info-icon {
+    position: absolute;
+    padding: 0;
+    cursor: default;
     pointer-events: auto;
 }
 
