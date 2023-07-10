@@ -101,6 +101,8 @@ watch(currentPlanIndex,()=>{
 if(currentPlanIndex.value) clonedTableData.value = plans.value[currentPlanIndex.value].tableData.map(a => {return {...a}})
 })
 
+
+//state functions
 const undoChanges = ()=>{
    plans.value[currentPlanIndex.value].tableData = clonedTableData.value.map(a => { return { ...a } })
 
@@ -109,17 +111,14 @@ const undoChanges = ()=>{
 const sortItems =(sortType)=>{
     let tableData =  plans.value[currentPlanIndex.value].tableData;
     const asc = sortType === "asc";
-    
-    tableData.sort(function(a, b) { 
-        
+
+    tableData.sort(function(a, b) {   
         //check if it is a number
         const isNumeric= (n)=> {
             return !isNaN(parseFloat(n)) && isFinite(n);
         }
         const itemA =  isNumeric(a.fieldOne) ? Number(a.fieldOne) : a.fieldOne
         const itemB =  isNumeric(b.fieldOne) ? Number(b.fieldOne) : b.fieldOne 
-           
-
         if (itemA < itemB) {
           return asc ? -1 : 1;
         }
@@ -145,8 +144,9 @@ plans.value.push({
 
 })
 }
+const deletePlan= (index)=>{plans.value.splice(index, 1)}
   return {
-    plans,currentPlanIndex,plansCreator,clonedTableData,undoChanges, sortItems};
+    plans,currentPlanIndex,plansCreator,clonedTableData,undoChanges, sortItems,deletePlan};
 },
 /* Enable this to persist this store : more info : https://prazdevs.github.io/pinia-plugin-persistedstate/frameworks/nuxt-3.html
 {
