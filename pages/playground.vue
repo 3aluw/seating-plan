@@ -1,10 +1,10 @@
 <template>
-    <div class="conatiner ">
-        <nav class=" navbar flex justify-around mt-12">
-            <v-btn variant="text">Home</v-btn>
-            <v-btn variant="text" @click="showModifyPlan = true">Modify paln</v-btn>
+    <div class="conatiner">
+        <nav class="navbar flex justify-around mt-12">
+            <v-btn variant="plain">Home</v-btn>
+            <v-btn variant="plain" @click="showModifyPlan = true">Modify paln</v-btn>
             <ModifyPlan v-model="showModifyPlan" />
-            <v-btn variant="text" @click="showChangePlan = true">change plan</v-btn>
+            <v-btn variant="plain" @click="showChangePlan = true">change plan</v-btn>
             <ChosePlan v-model="showChangePlan" />
         </nav>
 
@@ -185,6 +185,11 @@ const printPlan = () => {
 </script>
 
 <style>
+/*deleting a    weird teleport item */
+.navbar>div {
+    display: none;
+}
+
 .playground-cont {
     position: relative;
     margin-inline: 3rem;
