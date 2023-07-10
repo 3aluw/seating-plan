@@ -145,8 +145,19 @@ plans.value.push({
 })
 }
 const deletePlan= (index)=>{plans.value.splice(index, 1)}
+
+const shufflePlan = () => {
+    let deck =  plans.value[currentPlanIndex.value].tableData;
+    for (var i = deck.length - 1; i > 0; i--) {
+      const swapIndex = Math.floor(Math.random() * (i + 1))
+      const currentCard = deck[i]
+      const cardToSwap = deck[swapIndex]
+      deck[i] = cardToSwap
+      deck[swapIndex] = currentCard
+    }
+  }
   return {
-    plans,currentPlanIndex,plansCreator,clonedTableData,undoChanges, sortItems,deletePlan};
+    plans,currentPlanIndex,plansCreator,clonedTableData,undoChanges, sortItems,deletePlan, shufflePlan};
 },
 /* Enable this to persist this store : more info : https://prazdevs.github.io/pinia-plugin-persistedstate/frameworks/nuxt-3.html
 {
