@@ -9,15 +9,16 @@
         </nav>
 
         <div id="print" class="playground-cont shadow-lg mt-10 mb-5">
-            <div class="relative student-rect"
+            <div class="relative student-rect" v-show="showPlayground"
                 v-for="(student, index) in   planStore.plans[planStore.currentPlanIndex].tableData  " ref="studentRefs"
                 :style="draggables[index]?.style" :class="{ 'overlappedItem': index === overlappedItem }"
                 style="position: absolute;width:100px; border:black solid 1px; height: 50px">
                 <p class="h-full w-full text-center">{{ student?.name }} </p>
                 <i class="top-0 moving-btn mdi-cursor-move mdi v-icon notranslate v-theme--light v-icon--size-default"
                     aria-hidden="true"></i>
-                <i class="bottom-0 right-0 info-icon mdi-information-outline fa-1x mdi notranslate v-theme--light v-icon--size-default"
-                    aria-hidden="true"> <v-tooltip activator="parent" location="bottom">{{ student?.fieldOne }}
+                <i v-if="student.fieldOne"
+                    class="bottom-0 right-0 info-icon mdi-information-outline fa-1x mdi notranslate v-theme--light v-icon--size-default"
+                    aria-hidden="true"> <v-tooltip activator="parent" location="bottom">{{ student.fieldOne }}
                     </v-tooltip></i>
             </div>
         </div>
@@ -35,13 +36,13 @@
 </template>
 <script setup>
 import { usePlanStore } from '~/store/planStore'
-
 const planStore = usePlanStore();
 
 
 //show component  
 const showChangePlan = ref(false)
 const showModifyPlan = ref(false)
+const showPlayground = ref(false)
 
 //overlapped item to change its background
 let overlappedItem = ref(null)
@@ -104,6 +105,7 @@ onMounted(() => {
             }
         }));
     }
+    showPlayground.value = true
 })
 
 
