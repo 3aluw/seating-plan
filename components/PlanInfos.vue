@@ -27,21 +27,10 @@
                     </v-col>
 
 
-                    <v-col>
-                        <v-checkbox v-model="planInfos.seatType" value="1">
-                            <template v-slot:label>
-                                <div>
-                                    <v-tooltip location="bottom">
-                                        <template v-slot:activator="{ props }">
-                                            <img src="U-shape.png" />
-                                        </template>
-                                    </v-tooltip>
-                                </div>
-                            </template>
-                        </v-checkbox> </v-col>
+
 
                     <v-col>
-                        <v-checkbox v-model="planInfos.seatType" value="2">
+                        <v-checkbox v-model="planInfos.seatType" value="1">
                             <template v-slot:label>
                                 <div>
                                     <v-tooltip location="bottom">
@@ -53,6 +42,18 @@
                             </template>
                         </v-checkbox>
                     </v-col>
+                    <v-col>
+                        <v-checkbox v-model="planInfos.seatType" value="2">
+                            <template v-slot:label>
+                                <div>
+                                    <v-tooltip location="bottom">
+                                        <template v-slot:activator="{ props }">
+                                            <img src="U-shape.png" />
+                                        </template>
+                                    </v-tooltip>
+                                </div>
+                            </template>
+                        </v-checkbox> </v-col>
                 </v-row>
             </v-container>
 

@@ -8,11 +8,11 @@
             <ChosePlan v-model="showChangePlan" />
         </nav>
 
-        <div id="print" class="playground-cont shadow-lg mt-10 mb-5 outline outline-offset-0  ">
+        <div id="print" class="playground-cont shadow-lg mt-10 mb-5">
             <div class="relative student-rect" v-show="showPlayground"
                 v-for="(student, index) in   planStore.plans[planStore.currentPlanIndex].tableData  " ref="studentRefs"
                 :style="draggables[index]?.style" :class="{ 'overlappedItem': index === overlappedItem }"
-                style="position: absolute;width:150px; border:black solid 1px; height: 50px">
+                style="position: absolute;width:100px; border:black solid 1px; height: 50px">
                 <p class="h-full w-full text-center">{{ student?.name }} </p>
                 <i class="top-0 moving-btn mdi-cursor-move mdi v-icon notranslate v-theme--light v-icon--size-default"
                     aria-hidden="true"></i>
@@ -38,39 +38,16 @@
 import { usePlanStore } from '~/store/planStore'
 const planStore = usePlanStore();
 
-//chek if it is larger than md screen
-import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-const breakpoints = useBreakpoints(breakpointsTailwind)
-const largerThanSm = breakpoints.greater('sm')
-
 
 //show component  
 const showChangePlan = ref(false)
 const showModifyPlan = ref(false)
 const showPlayground = ref(false)
+
 //overlapped item to change its background
 let overlappedItem = ref(null)
 
 
-const columns = ref(4)
-const studentsPerRow = computed(() => columns.value * 2)
-
-
-const itemWidth = ref(150)
-const itemHeight = ref(90)
-const singleMargin = ref(20)
-
-const XObj = ref([0])
-const generateXObj = () => {
-    for (let i = 1; i < studentsPerRow.value; i++) {
-        let lastItemX = XObj.value[i - 1]
-        i % 2 === 0 ? XObj.value.push(lastItemX + itemWidth.value + singleMargin.value * 2.5) : XObj.value.push(lastItemX + itemWidth.value + singleMargin.value)
-    }
-    console.log(XObj.value)
-}
-generateXObj()
-
-/*
 const XObj = ref({
     //Object that has x values (assuming there are three rows in classrom )Even: +110 ; odd : +120
     0: 0,
@@ -80,7 +57,7 @@ const XObj = ref({
     4: 460,
     5: 570,
 })
-*/
+
 const studentRefs = ref([])
 const draggables = ref([])
 
@@ -221,8 +198,6 @@ const printPlan = () => {
     padding: 5rem;
     min-height: 30rem;
     background: rgba(222, 219, 219, 0.50);
-    outline-color: rgba(222, 219, 219, 0.50);
-    outline-width: 1.3rem;
     /*transform: scale(1.5);
     transform-origin: 0 0;
 */

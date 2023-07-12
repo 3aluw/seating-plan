@@ -5,6 +5,10 @@
                 <p class="bg-white my-6 text-2xl">Change plan infos:</p>
                 <v-text-field v-model="currentPlan.planName" :counter="10" label="Plan name*" maxlength="10"></v-text-field>
                 <v-text-field v-model="currentPlan.description" label="Description (optional)"></v-text-field>
+                <p>change you seating type:</p>
+                <v-select class="p-4" v-model="planStore.plans[planStore.currentPlanIndex].seatType" :items="seaTypes"
+                    item-title="name" item-value="value" label="Select" variant="outlined" single-line></v-select>
+
             </v-form>
 
 
@@ -51,6 +55,10 @@ import { usePlanStore } from '~/store/planStore'
 const planStore = usePlanStore();
 const currentPlan = planStore.plans[planStore.currentPlanIndex]
 const fieldOneTitle = planStore.plans[planStore.currentPlanIndex].criteriaOneTitle
+
+const seaTypes = [{ name: "pairs", value: "0" }, { name: "rows", value: "1" }, { name: "U-shape", value: "2" },
+]
+
 
 const deleteItem = (index) => {
     planStore.plans[planStore.currentPlanIndex].tableData.splice(index, 1)
