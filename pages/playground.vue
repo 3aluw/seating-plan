@@ -8,11 +8,10 @@
             <ChosePlan v-model="showChangePlan" />
         </nav>
 
-        <div id="print" class="playground-cont shadow-lg mt-10 mb-5">
-            <div class="relative student-rect" v-show="showPlayground"
+        <div id="print" class="playground-cont shadow-lg mt-10 mb-5 outline outline-offset-0  ">
+            <div class="relative playground-item" v-show="showPlayground"
                 v-for="(student, index) in   planStore.plans[planStore.currentPlanIndex].tableData  " ref="studentRefs"
-                :style="draggables[index]?.style" :class="{ 'overlappedItem': index === overlappedItem }"
-                style="position: absolute;width:100px; border:black solid 1px; height: 50px">
+                :style="draggables[index]?.style" :class="{ 'overlappedItem': index === overlappedItem }">
                 <p class="h-full w-full text-center">{{ student?.name }} </p>
                 <i class="top-0 moving-btn mdi-cursor-move mdi v-icon notranslate v-theme--light v-icon--size-default"
                     aria-hidden="true"></i>
@@ -39,15 +38,50 @@ import { usePlanStore } from '~/store/planStore'
 const planStore = usePlanStore();
 
 
+
+//chek if it is larger than md screen
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const largerThanSm = breakpoints.greater('sm')
+
+
 //show component  
 const showChangePlan = ref(false)
 const showModifyPlan = ref(false)
 const showPlayground = ref(false)
-
 //overlapped item to change its background
 let overlappedItem = ref(null)
 
 
+const columns = ref(3)
+const studentsPerRow = computed(() => columns.value * 2)
+
+
+const itemWidth = ref(150)
+const itemHeight = ref(60)
+const singleMargin = ref(20)
+const XObj = ref([0])
+
+
+
+const generateXObj = () => {
+    if (planStore.plans[planStore.currentPlanIndex].seatType == "0") {
+        for (let i = 1; i < studentsPerRow.value; i++) {
+            let lastItemX = XObj.value[i - 1]
+            i % 2 === 0 ? XObj.value.push(lastItemX + itemWidth.value + singleMargin.value * 2.5) : XObj.value.push(lastItemX + itemWidth.value + singleMargin.value * 0.8)
+        }
+    }
+    else if (planStore.plans[planStore.currentPlanIndex].seatType == "1") {
+        for (let i = 1; i < studentsPerRow.value; i++) {
+            let lastItemX = XObj.value[i - 1]
+            XObj.value.push(lastItemX + itemWidth.value + singleMargin.value)
+        }
+    }
+
+}
+generateXObj()
+
+/*
 const XObj = ref({
     //Object that has x values (assuming there are three rows in classrom )Even: +110 ; odd : +120
     0: 0,
@@ -57,7 +91,7 @@ const XObj = ref({
     4: 460,
     5: 570,
 })
-
+*/
 const studentRefs = ref([])
 const draggables = ref([])
 
@@ -110,8 +144,8 @@ onMounted(() => {
 
 
 const defineLocation = (index) => {
-    const yIndex = Math.floor(index / 6)
-    const xIndex = index - 6 * yIndex
+    const yIndex = Math.floor(index / studentsPerRow.value)
+    const xIndex = index - studentsPerRow.value * yIndex
 
     const x = XObj.value[xIndex]
     const y = (yIndex) * 60
@@ -120,8 +154,9 @@ const defineLocation = (index) => {
 
 const findTargetXIndex = (position) => {
     let i = 0;
-    while (i <= 5) {
-        if (position.x + 50 - XObj.value[i] < 100) { return i }
+    const halfWidth = itemWidth.value / 2
+    while (i <= studentsPerRow.value) {
+        if (position.x + halfWidth - XObj.value[i] < itemWidth.value) { return i }
         i++
     }
 
@@ -130,15 +165,15 @@ const findTargetXIndex = (position) => {
 const FindNdOverlapingItem = (movingItemIndex, toXIndex) => {
     const rect1 = studentRefs.value[movingItemIndex].getBoundingClientRect()
 
-    for (let i = 0; i < Math.ceil(studentRefs.value.length / 6); i++) {
-        const rect2 = studentRefs.value[toXIndex + (i * 6)]?.getBoundingClientRect();
+    for (let i = 0; i < Math.ceil(studentRefs.value.length / studentsPerRow.value); i++) {
+        const rect2 = studentRefs.value[toXIndex + (i * studentsPerRow.value)]?.getBoundingClientRect();
 
         if (rect2 && !(
             rect1.top > rect2.bottom ||
             rect1.right < rect2.left ||
             rect1.bottom < rect2.top ||
             rect1.left > rect2.right
-        ) && !(movingItemIndex == toXIndex + (i * 6))) { return toXIndex + (i * 6); }
+        ) && !(movingItemIndex == toXIndex + (i * studentsPerRow.value))) { return toXIndex + (i * studentsPerRow.value); }
     }
 }
 
@@ -198,9 +233,13 @@ const printPlan = () => {
     padding: 5rem;
     min-height: 30rem;
     background: rgba(222, 219, 219, 0.50);
+    outline-color: rgba(222, 219, 219, 0.50);
+    outline-width: 1.3rem;
     /*transform: scale(1.5);
     transform-origin: 0 0;
+    
 */
+    overflow: scroll;
 
 }
 
@@ -218,12 +257,17 @@ const printPlan = () => {
     pointer-events: auto;
 }
 
-.student-rect {
+.playground-item {
     pointer-events: none;
+    position: absolute;
+    width: 150px;
+    border: black solid 1px;
+    height: 50px
 }
 
 .overlappedItem {
     background: yellow;
+    opacity: 0.8;
 }
 
 @media print {
