@@ -8,7 +8,7 @@ let plans = ref([
   "planName": "sad",
   "description": "sda",
   "number": 5,
-  "seatType": "1",
+  "seatType": "2",
   "criteriaOneTitle": "A criteria",
   "tableData": [
       {
