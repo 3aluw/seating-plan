@@ -133,7 +133,7 @@ onMounted(() => {
 
     for (let x in planStore.plans[planStore.currentPlanIndex].tableData) {
         draggables.value.push(useDraggable(studentRefs.value[x], {
-            initialValue: defineULocation(x),
+            initialValue: defineLocation(x),
 
             onStart(position) {
                 //fixes coordinates snap when start dragging
@@ -179,12 +179,15 @@ onMounted(() => {
 
 
 const defineLocation = (index) => {
-    const yIndex = Math.floor(index / studentsPerRow.value)
-    const xIndex = index - studentsPerRow.value * yIndex
+    //check if we aren't using U-shape type
+    if (planStore.plans[planStore.currentPlanIndex].seatType !== "2") {
+        const yIndex = Math.floor(index / studentsPerRow.value)
+        const xIndex = index - studentsPerRow.value * yIndex
 
-    const x = XObj.value[xIndex]
-    const y = (yIndex) * 60
-    return { x: x, y: y }
+        const x = XObj.value[xIndex]
+        const y = (yIndex) * 60
+        return { x: x, y: y }
+    } else { return defineULocation(index) }
 }
 
 
