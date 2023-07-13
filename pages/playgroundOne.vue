@@ -8,10 +8,13 @@
             <ChosePlan v-model="showChangePlan" />
         </nav>
 
-        <div id="print" class="playground-cont shadow-lg mt-10 mb-5 outline outline-offset-0  ">
+        <div id="print" class="playground-cont shadow-lg mt-10 mb-5  ">
             <div class="relative playground-item" v-show="showPlayground"
-                v-for="(student, index) in   planStore.plans[planStore.currentPlanIndex].tableData  " ref="studentRefs"
-                :style="draggables[index]?.style" :class="{ 'overlappedItem': index === overlappedItem }">
+                v-for="(student, index) in    planStore.plans[planStore.currentPlanIndex].tableData   " ref="studentRefs"
+                :style="draggables[index]?.style" :class="{
+                    'overlappedItem': index === overlappedItem,
+                    'UShapeRotatedItem': rotateItem(index)
+                }">
                 <p class="h-full w-full text-center">{{ student?.name }} </p>
                 <i class="top-0 moving-btn mdi-cursor-move mdi v-icon notranslate v-theme--light v-icon--size-default"
                     aria-hidden="true"></i>
@@ -62,13 +65,21 @@ let overlappedItem = ref(null)
 
 
 const itemWidth = ref(150)
-const itemHeight = ref(60)
+const itemHeight = ref(50)
 const singleMargin = ref(20)
 const XObj = ref([0])
 
 //U-shape logic
 const studentsNumberBaseLine = computed(() => Math.ceil(planStore.plans[planStore.currentPlanIndex].tableData.length / 3))
 const studentsnumberLeftLine = computed(() => Math.ceil((planStore.plans[planStore.currentPlanIndex].tableData.length - studentsNumberBaseLine.value) / 2))
+const rightLineStartIndex = computed(() => studentsnumberLeftLine.value + studentsNumberBaseLine.value)
+//roatate items if it is in the left or right line U-Shape
+const rotateItem = (index) => {
+    const baseLineStartIndex = rightLineStartIndex.value - studentsNumberBaseLine.value;
+    console.log(baseLineStartIndex, rightLineStartIndex.value, studentsNumberBaseLine.value, studentsnumberLeftLine.value)
+    return index < baseLineStartIndex || index > rightLineStartIndex.value - 1 ? true : false
+}
+
 
 
 //Rows and pairs logic
@@ -90,8 +101,9 @@ const generateXObj = () => {
         }
     }
     else if (planStore.plans[planStore.currentPlanIndex].seatType == "2") {
-        const baseLineStartX = itemHeight.value
-        const leftLineStartX = baseLineStartX + itemWidth.value * studentsNumberBaseLine.value
+        //added some weird math to make the left and rotate possible
+        const baseLineStartX = itemHeight.value / 2 + itemWidth.value / 2
+        const leftLineStartX = baseLineStartX + itemWidth.value * studentsNumberBaseLine.value - itemWidth.value / 3
         XObj.value.push(baseLineStartX, leftLineStartX)
     }
 
@@ -121,7 +133,7 @@ onMounted(() => {
 
     for (let x in planStore.plans[planStore.currentPlanIndex].tableData) {
         draggables.value.push(useDraggable(studentRefs.value[x], {
-            initialValue: defineLocation(x),
+            initialValue: defineULocation(x),
 
             onStart(position) {
                 //fixes coordinates snap when start dragging
@@ -177,20 +189,19 @@ const defineLocation = (index) => {
 
 
 const defineULocation = (index) => {
-    const rightLineStartIndex = computed(() => studentsnumberLeftLine.value + studentsNumberBaseLine.value)
 
     if (index < studentsnumberLeftLine.value) {
         const x = XObj.value[0];
-        const y = itemWidth.value * index;
+        const y = itemWidth.value * index + (itemWidth.value / 3);
         return { x: x, y: y }
     }
     else if (index < rightLineStartIndex.value) {
-        const y = studentsnumberLeftLine.value * itemWidth.value
-        const x = XObj.value[1] + itemWidth.value * (index - studentsnumberLeftLine.value + 1);
+        const y = studentsnumberLeftLine.value * itemWidth.value;
+        const x = XObj.value[1] + itemWidth.value * (index - studentsnumberLeftLine.value);
         return { x: x, y: y }
     } else {
         const x = XObj.value[2];
-        const y = studentsnumberLeftLine.value * itemWidth.value - (itemWidth.value * (index - rightLineStartIndex.value));
+        const y = (studentsnumberLeftLine.value * itemWidth.value) - (itemWidth.value * (index - rightLineStartIndex.value + 1)) + (itemWidth.value / 3);
         return { x: x, y: y }
     }
 }
@@ -276,8 +287,8 @@ const printPlan = () => {
     padding: 5rem;
     min-height: 30rem;
     background: rgba(222, 219, 219, 0.50);
-    outline-color: rgba(222, 219, 219, 0.50);
-    outline-width: 1.3rem;
+    /* outline-color: rgba(222, 219, 219, 0.50);
+    outline-width: 1.3rem;*/
     /*transform: scale(1.5);
     transform-origin: 0 0;
     
@@ -312,6 +323,10 @@ const printPlan = () => {
 .overlappedItem {
     background: yellow;
     opacity: 0.8;
+}
+
+.UShapeRotatedItem {
+    transform: rotate(90deg);
 }
 
 @media print {
