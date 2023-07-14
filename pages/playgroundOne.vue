@@ -8,14 +8,16 @@
             <ChosePlan v-model="showChangePlan" />
         </nav>
 
-        <div id="print" class="playground-cont shadow-lg mt-10 mb-5  ">
+        <div id="print" ref="playgroundRef" class="playground-cont shadow-lg mt-10 mb-5  ">
             <div class="relative playground-item" v-show="showPlayground"
-                v-for="(student, index) in    planStore.plans[planStore.currentPlanIndex].tableData   " ref="studentRefs"
+                v-for="(student, index) in    planStore.plans[planStore.currentPlanIndex].tableData" ref="studentRefs"
                 :style="draggables[index]?.style" :class="{
                     'overlappedItem': index === overlappedItem,
                     'UShapeRotatedItem': rotateItem(index)
                 }">
                 <p class="h-full w-full text-center">{{ student?.name }} </p>
+
+
                 <i class="top-0 moving-btn mdi-cursor-move mdi v-icon notranslate v-theme--light v-icon--size-default"
                     aria-hidden="true"></i>
                 <i v-if="student.fieldOne"
@@ -76,7 +78,6 @@ const rightLineStartIndex = computed(() => studentsnumberLeftLine.value + studen
 //roatate items if it is in the left or right line U-Shape
 const rotateItem = (index) => {
     const baseLineStartIndex = rightLineStartIndex.value - studentsNumberBaseLine.value;
-    console.log(baseLineStartIndex, rightLineStartIndex.value, studentsNumberBaseLine.value, studentsnumberLeftLine.value)
     return index < baseLineStartIndex || index > rightLineStartIndex.value - 1 ? true : false
 }
 
@@ -85,6 +86,7 @@ const rotateItem = (index) => {
 //Rows and pairs logic
 const columns = ref(3)
 const studentsPerRow = computed(() => columns.value * 2)
+
 
 
 const generateXObj = () => {
@@ -102,8 +104,8 @@ const generateXObj = () => {
     }
     else if (planStore.plans[planStore.currentPlanIndex].seatType == "2") {
         //added some weird math to make the left and rotate possible
-        const baseLineStartX = itemHeight.value / 2 + itemWidth.value / 2
-        const leftLineStartX = baseLineStartX + itemWidth.value * studentsNumberBaseLine.value - itemWidth.value / 3
+        const baseLineStartX = itemHeight.value
+        const leftLineStartX = baseLineStartX + itemWidth.value * studentsNumberBaseLine.value
         XObj.value.push(baseLineStartX, leftLineStartX)
     }
 
@@ -123,12 +125,10 @@ const XObj = ref({
 */
 const studentRefs = ref([])
 const draggables = ref([])
+const playgroundRef = ref(null)
 
 onMounted(() => {
     generateXObj();
-    for (let i = 0; i < planStore.plans[planStore.currentPlanIndex].tableData.length; i++) {
-        console.log(defineULocation(i))
-    }
 
 
     for (let x in planStore.plans[planStore.currentPlanIndex].tableData) {
@@ -137,11 +137,13 @@ onMounted(() => {
 
             onStart(position) {
                 //fixes coordinates snap when start dragging
-                position.y += 123.984375
-                position.x += 47.98828125
-
+                position.y += (playgroundRef.value.getBoundingClientRect().top - playgroundRef.value.scrollTop)
+                position.x += (playgroundRef.value.getBoundingClientRect().left - playgroundRef.value.scrollLeft)
             },
             onMove(position) {
+
+
+
                 //find the overlapped item to change its style
                 let targetXIndex = findTargetXIndex(position);
                 const toIndex = FindNdOverlapingItem(x, targetXIndex)
@@ -149,6 +151,7 @@ onMounted(() => {
 
             },
             onEnd(position) {
+
                 //find the x index of the target location
                 let targetXIndex = findTargetXIndex(position);
                 //save th initial location so the item returns to it
@@ -162,21 +165,14 @@ onMounted(() => {
                 //to reset teh styling of the overlapped item
                 overlappedItem.value = null
 
-                /* changed by findTargetXIndex fn 
-                let i = 0;
-                  while (i <= 5) {
-                      if (position.x + 50 - XObj.value[i] < 100) { targetXIndex = i; break }
-                      i++
-                  }*/
-                //find the index of target item
-
 
             }
         }));
     }
-    showPlayground.value = true
-})
 
+    showPlayground.value = true
+
+})
 
 const defineLocation = (index) => {
     //check if we aren't using U-shape type
@@ -187,7 +183,9 @@ const defineLocation = (index) => {
         const x = XObj.value[xIndex]
         const y = (yIndex) * 60
         return { x: x, y: y }
-    } else { return defineULocation(index) }
+    } else {
+        return defineULocation(index)
+    }
 }
 
 
@@ -195,7 +193,7 @@ const defineULocation = (index) => {
 
     if (index < studentsnumberLeftLine.value) {
         const x = XObj.value[0];
-        const y = itemWidth.value * index + (itemWidth.value / 3);
+        const y = itemWidth.value * index
         return { x: x, y: y }
     }
     else if (index < rightLineStartIndex.value) {
@@ -204,7 +202,7 @@ const defineULocation = (index) => {
         return { x: x, y: y }
     } else {
         const x = XObj.value[2];
-        const y = (studentsnumberLeftLine.value * itemWidth.value) - (itemWidth.value * (index - rightLineStartIndex.value + 1)) + (itemWidth.value / 3);
+        const y = (studentsnumberLeftLine.value * itemWidth.value) - (itemWidth.value * (index - rightLineStartIndex.value + 1))
         return { x: x, y: y }
     }
 }
@@ -297,7 +295,22 @@ const printPlan = () => {
     
 */
     overflow: scroll;
+}
 
+.playground-cont::-webkit-scrollbar {
+    width: 5px;
+    /* Width of the scrollbar */
+}
+
+.playground-cont::-webkit-scrollbar-track {
+    background-color: rgb(170, 167, 167);
+    /* Color of the scrollbar track */
+}
+
+.playground-cont::-webkit-scrollbar-thumb {
+    background-color: rgb(104, 103, 103);
+    /* Color of the scrollbar thumb */
+    border-radius: 5px;
 }
 
 .moving-btn {
@@ -323,14 +336,21 @@ const printPlan = () => {
 
 }
 
+.UShapeRotatedItem {
+    pointer-events: none;
+    position: absolute;
+    width: 50px;
+    border: black solid 1px;
+    height: 150px;
+
+}
+
 .overlappedItem {
     background: yellow;
     opacity: 0.8;
 }
 
-.UShapeRotatedItem {
-    transform: rotate(90deg);
-}
+
 
 @media print {
 
