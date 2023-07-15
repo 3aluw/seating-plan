@@ -8,12 +8,13 @@
             <ChosePlan v-model="showChangePlan" />
         </nav>
 
-        <div id="print" ref="playgroundRef" class="playground-cont shadow-lg mt-10 mb-5  ">
+        <div id="print" ref="playgroundRef" class="playground-cont outline shadow-lg mt-10 mb-5  ">
             <div class="relative playground-item" v-show="showPlayground"
                 v-for="(student, index) in    planStore.plans[planStore.currentPlanIndex].tableData" ref="studentRefs"
                 :style="draggables[index]?.style" :class="{
                     'overlappedItem': index === overlappedItem,
-                    'UShapeRotatedItem': rotateItem(index)
+                    'UShapeLeftRotatedItem ': rotateItem(index) == 'left',
+                    'UShapeRightRotatedItem': rotateItem(index) == 'right',
                 }">
                 <p class="h-full w-full text-center">{{ student?.name }} </p>
 
@@ -49,6 +50,14 @@ import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const largerThanSm = breakpoints.greater('sm')
 
+const Darkmode = ref(false)
+const playgroundMode = ref([
+    { bg: "url('./ep_naturalblack.png')" },
+    { bg: "url('./dot-grid.png')" },
+])
+const usedStyles = computed(() => {
+    return playgroundMode.value[0].bg
+})
 
 //show component  
 const showChangePlan = ref(false)
@@ -74,11 +83,13 @@ const XObj = ref([0])
 //U-shape logic
 const studentsNumberBaseLine = computed(() => Math.ceil(planStore.plans[planStore.currentPlanIndex].tableData.length / 3))
 const studentsnumberLeftLine = computed(() => Math.ceil((planStore.plans[planStore.currentPlanIndex].tableData.length - studentsNumberBaseLine.value) / 2))
+const studentsNumberRightLine = computed(() => planStore.plans[planStore.currentPlanIndex].tableData.length - studentsNumberBaseLine.value - studentsnumberLeftLine.value)
 const rightLineStartIndex = computed(() => studentsnumberLeftLine.value + studentsNumberBaseLine.value)
+const baseLineStartIndex = computed(() => rightLineStartIndex.value - studentsNumberBaseLine.value)
+
 //roatate items if it is in the left or right line U-Shape
 const rotateItem = (index) => {
-    const baseLineStartIndex = rightLineStartIndex.value - studentsNumberBaseLine.value;
-    return index < baseLineStartIndex || index > rightLineStartIndex.value - 1 ? true : false
+    return index < baseLineStartIndex.value ? 'left' : index > rightLineStartIndex.value - 1 ? "right" : false
 }
 
 
@@ -103,7 +114,7 @@ const generateXObj = () => {
         }
     }
     else if (planStore.plans[planStore.currentPlanIndex].seatType == "2") {
-        //added some weird math to make the left and rotate possible
+
         const baseLineStartX = itemHeight.value
         const leftLineStartX = baseLineStartX + itemWidth.value * studentsNumberBaseLine.value
         XObj.value.push(baseLineStartX, leftLineStartX)
@@ -160,6 +171,7 @@ onMounted(() => {
                 position.y = inintialLocation.y;
                 //find the index of the target item and swap them
                 const toIndex = FindNdOverlapingItem(x, targetXIndex)
+
                 swapStudents(x, toIndex)
 
                 //to reset teh styling of the overlapped item
@@ -183,7 +195,9 @@ const defineLocation = (index) => {
         const x = XObj.value[xIndex]
         const y = (yIndex) * 60
         return { x: x, y: y }
-    } else {
+    }
+    //if the plan is U-shape
+    else {
         return defineULocation(index)
     }
 }
@@ -209,30 +223,87 @@ const defineULocation = (index) => {
 
 
 const findTargetXIndex = (position) => {
-    let i = 0;
-    const halfWidth = itemWidth.value / 2
-    while (i <= studentsPerRow.value) {
-        if (position.x + halfWidth - XObj.value[i] < itemWidth.value) { return i }
-        i++
+    if (planStore.plans[planStore.currentPlanIndex].seatType !== "2") {
+        let i = 0;
+        const halfWidth = itemWidth.value / 2
+        while (i <= studentsPerRow.value) {
+            if (position.x + halfWidth - XObj.value[i] < itemWidth.value) { return i }
+            i++
+        }
     }
+    //if using U-shape
+    else { return findUTargetXIndex(position) }
 }
 
+const findUTargetXIndex = (position) => {
+    const x = position.x
+    if (x < XObj.value[1]) { return 0 }
+    else if (x < XObj.value[2]) {
+        return Math.floor(baseLineStartIndex.value + (x - XObj.value[1]) / itemWidth.value)
+    }
+    else {
+        return rightLineStartIndex.value
+    }
+
+}
 const FindNdOverlapingItem = (movingItemIndex, toXIndex) => {
-    const rect1 = studentRefs.value[movingItemIndex].getBoundingClientRect()
+    if (planStore.plans[planStore.currentPlanIndex].seatType !== "2") {
+        const rect1 = studentRefs.value[movingItemIndex].getBoundingClientRect()
+        for (let i = 0; i < Math.ceil(studentRefs.value.length / studentsPerRow.value); i++) {
+            const rect2 = studentRefs.value[toXIndex + (i * studentsPerRow.value)]?.getBoundingClientRect();
 
-    for (let i = 0; i < Math.ceil(studentRefs.value.length / studentsPerRow.value); i++) {
-        const rect2 = studentRefs.value[toXIndex + (i * studentsPerRow.value)]?.getBoundingClientRect();
+            if (rect2 && !(
+                rect1.top > rect2.bottom ||
+                rect1.right < rect2.left ||
+                rect1.bottom < rect2.top ||
+                rect1.left > rect2.right
+            ) && !(movingItemIndex == toXIndex + (i * studentsPerRow.value))) { return toXIndex + (i * studentsPerRow.value); }
+        }
+    } //if using U-shape
+    else { return FindNdOverlapingUItem(movingItemIndex, toXIndex) }
+}
 
-        if (rect2 && !(
-            rect1.top > rect2.bottom ||
-            rect1.right < rect2.left ||
-            rect1.bottom < rect2.top ||
-            rect1.left > rect2.right
-        ) && !(movingItemIndex == toXIndex + (i * studentsPerRow.value))) { return toXIndex + (i * studentsPerRow.value); }
+const FindNdOverlapingUItem = (movingItemIndex, toXIndex) => {
+    const rect1 = studentRefs.value[movingItemIndex].getBoundingClientRect();
+    //left line
+    if (toXIndex == 0) {
+        for (let i = 0; i < studentsnumberLeftLine.value; i++) {
+            const rect2 = studentRefs.value[i]?.getBoundingClientRect();
+            //to not execute only on exact match
+            rect2.y -= itemWidth.value / 2
+            if (areItemsOverlaping(rect1, rect2))
+                return i
+        }
+    }
+    // base line
+    else if (toXIndex < rightLineStartIndex.value) {
+        const rect2 = studentRefs.value[toXIndex].getBoundingClientRect();
+        rect2.y -= itemWidth.value / 2
+        if (areItemsOverlaping(rect1, rect2)) return toXIndex
+    }
+    //right line
+    else if (toXIndex == rightLineStartIndex.value) {
+        for (let i = 0; i < studentsNumberRightLine.value; i++) {
+            const rect2 = studentRefs.value[i + rightLineStartIndex.value].getBoundingClientRect();
+            rect2.y -= itemWidth.value / 2
+
+            if (areItemsOverlaping(rect1, rect2))
+                return i + rightLineStartIndex.value
+        }
     }
 }
 
 
+const areItemsOverlaping = (rect1, rect2) => {
+    if (rect2 && !(
+        rect1.top > rect2.bottom ||
+        rect1.right < rect2.left ||
+        rect1.bottom < rect2.top ||
+        rect1.left > rect2.right
+    )) {
+        return true
+    }
+}
 //buttons'events
 const swapStudents = (fromIndex, toIndex) => {
     if (toIndex >= 0) {
@@ -288,8 +359,10 @@ const printPlan = () => {
     padding: 5rem;
     min-height: 30rem;
     background: rgba(222, 219, 219, 0.50);
-    /* outline-color: rgba(222, 219, 219, 0.50);
-    outline-width: 1.3rem;*/
+    background: v-bind(usedStyles);
+    color: white;
+    outline-color: rgb(16 21 27);
+    outline-width: 1.3rem;
     /*transform: scale(1.5);
     transform-origin: 0 0;
     
@@ -297,21 +370,7 @@ const printPlan = () => {
     overflow: scroll;
 }
 
-.playground-cont::-webkit-scrollbar {
-    width: 5px;
-    /* Width of the scrollbar */
-}
 
-.playground-cont::-webkit-scrollbar-track {
-    background-color: rgb(170, 167, 167);
-    /* Color of the scrollbar track */
-}
-
-.playground-cont::-webkit-scrollbar-thumb {
-    background-color: rgb(104, 103, 103);
-    /* Color of the scrollbar thumb */
-    border-radius: 5px;
-}
 
 .moving-btn {
     position: absolute;
@@ -336,13 +395,17 @@ const printPlan = () => {
 
 }
 
-.UShapeRotatedItem {
-    pointer-events: none;
-    position: absolute;
-    width: 50px;
-    border: black solid 1px;
-    height: 150px;
 
+.UShapeLeftRotatedItem {
+    pointer-events: none;
+    width: 50px;
+    height: 150px;
+}
+
+.UShapeRightRotatedItem {
+    pointer-events: none;
+    width: 50px;
+    height: 150px;
 }
 
 .overlappedItem {
@@ -350,7 +413,22 @@ const printPlan = () => {
     opacity: 0.8;
 }
 
+.playground-cont::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    /* Width of the scrollbar */
+}
 
+.playground-cont::-webkit-scrollbar-track {
+    background-color: rgb(170, 167, 167);
+    /* Color of the scrollbar track */
+}
+
+.playground-cont::-webkit-scrollbar-thumb {
+    background-color: rgb(104, 103, 103);
+    /* Color of the scrollbar thumb */
+    border-radius: 5px;
+}
 
 @media print {
 
@@ -368,6 +446,7 @@ const printPlan = () => {
         width: 100%;
         padding: 0;
         min-height: 10rem;
+
     }
 
     .conatiner {
