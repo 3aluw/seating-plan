@@ -160,10 +160,11 @@ onMounted(() => {
             onMove(position) {
 
 
-
                 //find the overlapped item to change its style
                 let targetXIndex = findTargetXIndex(position);
+
                 const toIndex = FindNdOverlapingItem(x, targetXIndex)
+
                 overlappedItem.value = toIndex
 
             },
@@ -244,7 +245,7 @@ const findTargetXIndex = (position) => {
 const findUTargetXIndex = (position) => {
     const x = position.x
     if (x < XObj.value[1]) { return 0 }
-    else if (x < XObj.value[2]) {
+    else if ((x + itemHeight.value) < XObj.value[2]) {
         return Math.floor(baseLineStartIndex.value + (x - XObj.value[1]) / itemWidth.value)
     }
     else {
@@ -252,6 +253,8 @@ const findUTargetXIndex = (position) => {
     }
 
 }
+
+
 const FindNdOverlapingItem = (movingItemIndex, toXIndex) => {
     if (planStore.plans[planStore.currentPlanIndex].seatType !== "2") {
         const rect1 = studentRefs.value[movingItemIndex].getBoundingClientRect()
@@ -275,26 +278,25 @@ const FindNdOverlapingUItem = (movingItemIndex, toXIndex) => {
     if (toXIndex == 0) {
         for (let i = 0; i < studentsnumberLeftLine.value; i++) {
             const rect2 = studentRefs.value[i]?.getBoundingClientRect();
-            //to not execute only on exact match
-            rect2.y -= itemWidth.value / 2
-            if (areItemsOverlaping(rect1, rect2))
+
+            if (areItemsOverlaping(rect1, rect2) && !(movingItemIndex == i))
                 return i
         }
     }
     // base line
     else if (toXIndex < rightLineStartIndex.value) {
         const rect2 = studentRefs.value[toXIndex].getBoundingClientRect();
-        rect2.y -= itemWidth.value / 2
-        if (areItemsOverlaping(rect1, rect2)) return toXIndex
+        rect2.x += itemHeight.value
+        if (areItemsOverlaping(rect1, rect2) && !(movingItemIndex == toXIndex)) return toXIndex
     }
     //right line
     else if (toXIndex == rightLineStartIndex.value) {
         for (let i = 0; i < studentsNumberRightLine.value; i++) {
             const rect2 = studentRefs.value[i + rightLineStartIndex.value].getBoundingClientRect();
-            rect2.y -= itemWidth.value / 2
 
-            if (areItemsOverlaping(rect1, rect2))
-                return i + rightLineStartIndex.value
+
+            if (areItemsOverlaping(rect1, rect2) && !(movingItemIndex == i + rightLineStartIndex.value)) return i + rightLineStartIndex.value;
+
         }
     }
 }
@@ -370,6 +372,7 @@ const printPlan = () => {
     outline-color: v-bind('usedStyles.outlineColor');
     outline-width: 1.3rem;
     overflow: scroll;
+
 }
 
 
@@ -446,7 +449,6 @@ const printPlan = () => {
     #print,
     #print * {
         padding: 0px;
-        max-height: 2480px;
         zoom: 70%;
         font-size: 1.5rem;
         overflow: visible;
