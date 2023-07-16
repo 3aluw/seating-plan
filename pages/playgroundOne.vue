@@ -129,17 +129,6 @@ const generateXObj = () => {
 }
 
 
-/*
-const XObj = ref({
-    //Object that has x values (assuming there are three rows in classrom )Even: +110 ; odd : +120
-    0: 0,
-    1: 110,
-    2: 230,
-    3: 340,
-    4: 460,
-    5: 570,
-})
-*/
 const studentRefs = ref([])
 const draggables = ref([])
 const playgroundRef = ref(null)
@@ -210,24 +199,6 @@ const defineLocation = (index) => {
 }
 
 
-const defineULocation = (index) => {
-
-    if (index < studentsnumberLeftLine.value) {
-        const x = XObj.value[0];
-        const y = itemWidth.value * index
-        return { x: x, y: y }
-    }
-    else if (index < rightLineStartIndex.value) {
-        const y = studentsnumberLeftLine.value * itemWidth.value;
-        const x = XObj.value[1] + itemWidth.value * (index - studentsnumberLeftLine.value);
-        return { x: x, y: y }
-    } else {
-        const x = XObj.value[2];
-        const y = (studentsnumberLeftLine.value * itemWidth.value) - (itemWidth.value * (index - rightLineStartIndex.value + 1))
-        return { x: x, y: y }
-    }
-}
-
 
 const findTargetXIndex = (position) => {
     if (planStore.plans[planStore.currentPlanIndex].seatType !== "2") {
@@ -240,18 +211,6 @@ const findTargetXIndex = (position) => {
     }
     //if using U-shape
     else { return findUTargetXIndex(position) }
-}
-
-const findUTargetXIndex = (position) => {
-    const x = position.x
-    if (x < XObj.value[1]) { return 0 }
-    else if ((x + itemHeight.value) < XObj.value[2]) {
-        return Math.floor(baseLineStartIndex.value + (x - XObj.value[1]) / itemWidth.value)
-    }
-    else {
-        return rightLineStartIndex.value
-    }
-
 }
 
 
@@ -271,6 +230,42 @@ const FindNdOverlapingItem = (movingItemIndex, toXIndex) => {
     } //if using U-shape
     else { return FindNdOverlapingUItem(movingItemIndex, toXIndex) }
 }
+
+
+
+// U-shape logic
+
+const defineULocation = (index) => {
+
+    if (index < studentsnumberLeftLine.value) {
+        const x = XObj.value[0];
+        const y = itemWidth.value * index
+        return { x: x, y: y }
+    }
+    else if (index < rightLineStartIndex.value) {
+        const y = studentsnumberLeftLine.value * itemWidth.value;
+        const x = XObj.value[1] + itemWidth.value * (index - studentsnumberLeftLine.value);
+        return { x: x, y: y }
+    } else {
+        const x = XObj.value[2];
+        const y = (studentsnumberLeftLine.value * itemWidth.value) - (itemWidth.value * (index - rightLineStartIndex.value + 1))
+        return { x: x, y: y }
+    }
+}
+
+
+const findUTargetXIndex = (position) => {
+    const x = position.x
+    if (x < XObj.value[1]) { return 0 }
+    else if ((x + itemHeight.value) < XObj.value[2]) {
+        return Math.floor(baseLineStartIndex.value + (x - XObj.value[1]) / itemWidth.value)
+    }
+    else {
+        return rightLineStartIndex.value
+    }
+
+}
+
 
 const FindNdOverlapingUItem = (movingItemIndex, toXIndex) => {
     const rect1 = studentRefs.value[movingItemIndex].getBoundingClientRect();
@@ -312,7 +307,9 @@ const areItemsOverlaping = (rect1, rect2) => {
         return true
     }
 }
-//buttons'events
+
+
+
 const swapStudents = (fromIndex, toIndex) => {
     if (toIndex >= 0) {
         const temp = planStore.plans[planStore.currentPlanIndex].tableData[fromIndex];
