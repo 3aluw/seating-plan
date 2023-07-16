@@ -9,14 +9,14 @@
         </nav>
 
         <div id="print" ref="playgroundRef" class="playground-cont outline shadow-lg mt-10 mb-5  ">
-            <div class="relative playground-item" v-show="showPlayground"
+            <div class="relative playground-item flex justify-center align-center" v-show="showPlayground"
                 v-for="(student, index) in    planStore.plans[planStore.currentPlanIndex].tableData" ref="studentRefs"
                 :style="draggables[index]?.style" :class="{
                     'overlappedItem': index === overlappedItem,
                     'UShapeLeftRotatedItem ': rotateItem(index) == 'left',
                     'UShapeRightRotatedItem': rotateItem(index) == 'right',
                 }">
-                <p class="h-full w-full text-center">{{ student?.name }} </p>
+                <p class="text-center">{{ student?.name }} </p>
 
 
                 <i class="top-0 moving-btn mdi-cursor-move mdi v-icon notranslate v-theme--light v-icon--size-default"
@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <div class="action-btns flex justify-around">
+        <div class="action-btns flex justify-around py-4">
             <v-btn prepend-icon="mdi-undo" color="blue-darken-4" variant="outlined" @click="planStore.undoChanges">Undo
                 changes</v-btn>
 
@@ -36,7 +36,7 @@
                 @click="planStore.shufflePlan">randomize</v-btn>
             <v-btn prepend-icon="mdi-printer" color="blue-darken-4" variant="outlined" @click="printPlan">Print</v-btn>
         </div>
-
+        <v-btn @click="Darkmode = !Darkmode">change</v-btn>
     </div>
 </template>
 <script setup>
@@ -50,14 +50,27 @@ import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const largerThanSm = breakpoints.greater('sm')
 
+
+
 const Darkmode = ref(false)
 const playgroundMode = ref([
-    { bg: "url('./ep_naturalblack.png')" },
-    { bg: "url('./dot-grid.png')" },
+    {
+        bg: "url('/naturalblack.png')",
+        border: "white solid 1px",
+        outlineColor: "rgb(16 21 27)",
+        color: "#e5e7eb"
+    },
+    {
+        bg: "url('/dot-grid.png')",
+        border: "black solid 1px",
+        outlineColor: "white",
+        color: "black"
+    },
 ])
 const usedStyles = computed(() => {
-    return playgroundMode.value[0].bg
+    return Darkmode.value === false ? playgroundMode.value[1] : playgroundMode.value[0]
 })
+
 
 //show component  
 const showChangePlan = ref(false)
@@ -65,13 +78,6 @@ const showModifyPlan = ref(false)
 const showPlayground = ref(false)
 //overlapped item to change its background
 let overlappedItem = ref(null)
-
-
-
-
-
-
-
 
 
 
@@ -358,15 +364,11 @@ const printPlan = () => {
     margin-inline: 3rem;
     padding: 5rem;
     min-height: 30rem;
-    background: rgba(222, 219, 219, 0.50);
-    background: v-bind(usedStyles);
+    background: v-bind('usedStyles.bg');
+    background-repeat: repeat;
     color: white;
-    outline-color: rgb(16 21 27);
+    outline-color: v-bind('usedStyles.outlineColor');
     outline-width: 1.3rem;
-    /*transform: scale(1.5);
-    transform-origin: 0 0;
-    
-*/
     overflow: scroll;
 }
 
@@ -374,7 +376,8 @@ const printPlan = () => {
 
 .moving-btn {
     position: absolute;
-    padding: 0;
+    left: 0;
+    top: 0;
     cursor: move;
     pointer-events: auto;
 }
@@ -390,8 +393,9 @@ const printPlan = () => {
     pointer-events: none;
     position: absolute;
     width: 150px;
-    border: black solid 1px;
+    border: v-bind('usedStyles.border');
     height: 50px;
+    color: v-bind('usedStyles.color');
 
 }
 
@@ -420,8 +424,9 @@ const printPlan = () => {
 }
 
 .playground-cont::-webkit-scrollbar-track {
-    background-color: rgb(170, 167, 167);
+    background-color: transparent;
     /* Color of the scrollbar track */
+    margin-block: 15px;
 }
 
 .playground-cont::-webkit-scrollbar-thumb {
@@ -432,26 +437,21 @@ const printPlan = () => {
 
 @media print {
 
-
     .action-btns,
     .navbar {
         display: none;
     }
 
 
-    .playground-cont {
-        display: block;
-        height: 1cm;
+    #print,
+    #print * {
+        padding: 0px;
         max-height: 2480px;
-        width: 100%;
-        padding: 0;
-        min-height: 10rem;
-
+        zoom: 70%;
+        font-size: 1.5rem;
+        overflow: visible;
     }
 
-    .conatiner {
-        max-height: 1cm;
-    }
 
     .mdi-cursor-move {
         display: none;
