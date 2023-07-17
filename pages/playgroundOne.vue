@@ -8,23 +8,55 @@
             <ChosePlan v-model="showChangePlan" />
         </nav>
 
-        <div id="print" ref="playgroundRef" class="playground-cont outline shadow-lg mt-10 mb-5  ">
-            <div class="relative playground-item flex justify-center align-center" v-show="showPlayground"
-                v-for="(student, index) in    planStore.plans[planStore.currentPlanIndex].tableData" ref="studentRefs"
-                :style="draggables[index]?.style" :class="{
-                    'overlappedItem': index === overlappedItem,
-                    'UShapeLeftRotatedItem ': rotateItem(index) == 'left',
-                    'UShapeRightRotatedItem': rotateItem(index) == 'right',
-                }">
-                <p class="text-center">{{ student?.name }} </p>
+        <div class="playground-wrapper">
+            <v-card color="grey-lighten-4" flat rounded="0">
+                <v-toolbar density="compact">
+                    <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
+                    <v-toolbar-title>Title</v-toolbar-title>
+
+                    <v-spacer></v-spacer>
+
+                    <v-btn icon>
+                        <v-icon>mdi-magnify</v-icon>
+                    </v-btn>
+
+                    <v-btn icon>
+                        <v-icon>mdi-heart</v-icon>
+                    </v-btn>
+                    <v-menu>
+                        <template v-slot:activator="{ props }">
+                            <v-btn color="primary" dark v-bind="props">
+                                <v-icon>mdi-heart</v-icon>
+                            </v-btn>
+                        </template>
+
+                        <v-list>
+                            <v-list-item v-for="(item, index) in items" :key="index">
+                                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
+                </v-toolbar>
+            </v-card>
+            <div id="print" ref="playgroundRef" class="playground-cont outline shadow-lg mt-10 mb-5   ">
+                <div class="relative playground-item flex justify-center align-center" v-show="showPlayground"
+                    v-for="(student, index) in    planStore.plans[planStore.currentPlanIndex].tableData" ref="studentRefs"
+                    :style="draggables[index]?.style" :class="{
+                        'overlappedItem': index === overlappedItem,
+                        'UShapeLeftRotatedItem ': rotateItem(index) == 'left',
+                        'UShapeRightRotatedItem': rotateItem(index) == 'right',
+                    }">
+                    <p class="text-center">{{ student?.name }} </p>
 
 
-                <i class="top-0 moving-btn mdi-cursor-move mdi v-icon notranslate v-theme--light v-icon--size-default"
-                    aria-hidden="true"></i>
-                <i v-if="student.fieldOne"
-                    class="bottom-0 right-0 info-icon mdi-information-outline fa-1x mdi notranslate v-theme--light v-icon--size-default"
-                    aria-hidden="true"> <v-tooltip activator="parent" location="bottom">{{ student.fieldOne }}
-                    </v-tooltip></i>
+                    <i class="top-0 moving-btn mdi-cursor-move mdi v-icon notranslate v-theme--light v-icon--size-default"
+                        aria-hidden="true"></i>
+                    <i v-if="student.fieldOne"
+                        class="bottom-0 right-0 info-icon mdi-information-outline fa-1x mdi notranslate v-theme--light v-icon--size-default"
+                        aria-hidden="true"> <v-tooltip activator="parent" location="bottom">{{ student.fieldOne }}
+                        </v-tooltip></i>
+                </div>
             </div>
         </div>
 
@@ -34,7 +66,7 @@
 
             <v-btn prepend-icon="mdi-autorenew" color="blue-darken-4" variant="outlined"
                 @click="planStore.shufflePlan">randomize</v-btn>
-            <v-btn prepend-icon="mdi-printer" color="blue-darken-4" variant="outlined" @click="printPlan">Print</v-btn>
+            <v-btn prepend-icon="mdi-printer" color="blue-darken-4" variant="tonal" @click="printPlan">Print</v-btn>
         </div>
         <v-btn @click="Darkmode = !Darkmode">change</v-btn>
     </div>
@@ -148,27 +180,45 @@ onMounted(() => {
             },
             onMove(position) {
 
-
-                //find the overlapped item to change its style
-                let targetXIndex = findTargetXIndex(position);
-
-                const toIndex = FindNdOverlapingItem(x, targetXIndex)
-
-                overlappedItem.value = toIndex
-
+                //check if we aren't using U-shape type
+                if (planStore.plans[planStore.currentPlanIndex].seatType !== "2") {
+                    //find the overlapped item to change its style
+                    let targetXIndex = findTargetXIndex(position);
+                    const toIndex = FindNdOverlapingItem(x, targetXIndex)
+                    overlappedItem.value = toIndex
+                }
+                //if the plan is U-shape
+                else {
+                    let targetXIndex = findUTargetXIndex(position);
+                    const toIndex = FindNdOverlapingUItem(x, targetXIndex)
+                    overlappedItem.value = toIndex
+                }
             },
             onEnd(position) {
+                //check if we aren't using U-shape type
+                if (planStore.plans[planStore.currentPlanIndex].seatType !== "2") {
+                    //find the x index of the target location
+                    let targetXIndex = findTargetXIndex(position);
+                    //save th initial location so the item returns to it
+                    let inintialLocation = defineLocation(x);
+                    position.x = inintialLocation.x;
+                    position.y = inintialLocation.y;
+                    //find the index of the target item and swap them
+                    const toIndex = FindNdOverlapingItem(x, targetXIndex)
 
-                //find the x index of the target location
-                let targetXIndex = findTargetXIndex(position);
-                //save th initial location so the item returns to it
-                let inintialLocation = defineLocation(x);
-                position.x = inintialLocation.x;
-                position.y = inintialLocation.y;
-                //find the index of the target item and swap them
-                const toIndex = FindNdOverlapingItem(x, targetXIndex)
-
-                swapStudents(x, toIndex)
+                    swapStudents(x, toIndex)
+                }
+                else {
+                    //find the x index of the target location
+                    let targetXIndex = findUTargetXIndex(position);
+                    //save th initial location so the item returns to it
+                    let inintialLocation = defineULocation(x);
+                    position.x = inintialLocation.x;
+                    position.y = inintialLocation.y;
+                    //find the index of the target item and swap them
+                    const toIndex = FindNdOverlapingUItem(x, targetXIndex)
+                    swapStudents(x, toIndex)
+                }
 
                 //to reset teh styling of the overlapped item
                 overlappedItem.value = null
@@ -201,34 +251,32 @@ const defineLocation = (index) => {
 
 
 const findTargetXIndex = (position) => {
-    if (planStore.plans[planStore.currentPlanIndex].seatType !== "2") {
-        let i = 0;
-        const halfWidth = itemWidth.value / 2
-        while (i <= studentsPerRow.value) {
-            if (position.x + halfWidth - XObj.value[i] < itemWidth.value) { return i }
-            i++
-        }
+
+    let i = 0;
+    const halfWidth = itemWidth.value / 2
+    while (i <= studentsPerRow.value) {
+        if (position.x + halfWidth - XObj.value[i] < itemWidth.value) { return i }
+        i++
+
     }
-    //if using U-shape
-    else { return findUTargetXIndex(position) }
+
 }
 
 
 const FindNdOverlapingItem = (movingItemIndex, toXIndex) => {
-    if (planStore.plans[planStore.currentPlanIndex].seatType !== "2") {
-        const rect1 = studentRefs.value[movingItemIndex].getBoundingClientRect()
-        for (let i = 0; i < Math.ceil(studentRefs.value.length / studentsPerRow.value); i++) {
-            const rect2 = studentRefs.value[toXIndex + (i * studentsPerRow.value)]?.getBoundingClientRect();
 
-            if (rect2 && !(
-                rect1.top > rect2.bottom ||
-                rect1.right < rect2.left ||
-                rect1.bottom < rect2.top ||
-                rect1.left > rect2.right
-            ) && !(movingItemIndex == toXIndex + (i * studentsPerRow.value))) { return toXIndex + (i * studentsPerRow.value); }
-        }
-    } //if using U-shape
-    else { return FindNdOverlapingUItem(movingItemIndex, toXIndex) }
+    const rect1 = studentRefs.value[movingItemIndex].getBoundingClientRect()
+    for (let i = 0; i < Math.ceil(studentRefs.value.length / studentsPerRow.value); i++) {
+        const rect2 = studentRefs.value[toXIndex + (i * studentsPerRow.value)]?.getBoundingClientRect();
+
+        if (rect2 && !(
+            rect1.top > rect2.bottom ||
+            rect1.right < rect2.left ||
+            rect1.bottom < rect2.top ||
+            rect1.left > rect2.right
+        ) && !(movingItemIndex == toXIndex + (i * studentsPerRow.value))) { return toXIndex + (i * studentsPerRow.value); }
+    }
+
 }
 
 
@@ -360,19 +408,21 @@ const printPlan = () => {
 
 .playground-cont {
     position: relative;
-    margin-inline: 3rem;
-    padding: 5rem;
+    margin-inline: 1rem;
     min-height: 30rem;
-    background: v-bind('usedStyles.bg');
-    background-repeat: repeat;
+
     color: white;
-    outline-color: v-bind('usedStyles.outlineColor');
     outline-width: 1.3rem;
     overflow: scroll;
-
 }
 
-
+.playground-wrapper {
+    margin-inline: 2rem;
+    background: v-bind('usedStyles.bg');
+    outline-color: v-bind('usedStyles.outlineColor');
+    padding: 2rem;
+    background-repeat: repeat;
+}
 
 .moving-btn {
     position: absolute;
