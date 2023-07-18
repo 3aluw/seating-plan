@@ -3,7 +3,7 @@
         <nav class="flex justify-around">
             <v-btn variant="text">Home</v-btn>
             <v-btn variant="text">upload a plan</v-btn>
-            <v-btn variant="text">Create a new plan</v-btn>
+            <v-btn @click="dialog = true" variant="text">Create a new plan</v-btn>
 
         </nav>
         <div class="main-content my-10 flex justify-between px-10 ">

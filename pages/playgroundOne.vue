@@ -2,13 +2,14 @@
     <div class="conatiner">
         <nav class="navbar flex justify-around mt-12">
             <v-btn variant="plain">Home</v-btn>
-            <v-btn variant="plain" @click="showModifyPlan = true">Modify paln</v-btn>
-            <ModifyPlan v-model="showModifyPlan" />
-            <v-btn variant="plain" @click="showChangePlan = true">change plan</v-btn>
-            <ChosePlan v-model="showChangePlan" />
+            <v-btn variant="plain">upload a plan</v-btn>
+            <v-btn variant="plain" @click="showChangePlan = true">Change plan</v-btn>
+
         </nav>
 
         <div class="playground-wrapper">
+            <ModifyPlan v-model="showModifyPlan" />
+            <ChosePlan v-model="showChangePlan" />
             <v-card color="grey-lighten-4" flat rounded="0">
                 <v-toolbar density="compact" color="blue-darken-1">
 
@@ -22,7 +23,7 @@
 
                         <v-list>
                             <v-list-item> <v-btn prepend-icon="mdi-printer" color="blue-darken-4" variant="text"
-                                    class="w-full" @click="printPlan">Print</v-btn></v-list-item>
+                                    class="w-full justify-between" @click="printPlan">Print</v-btn></v-list-item>
 
                             <v-list-item> <v-btn prepend-icon="mdi-theme-light-dark" color="blue-darken-4" variant="text"
                                     @click="Darkmode = !Darkmode">Dark/light mode</v-btn></v-list-item>
@@ -43,8 +44,8 @@
                                     class="w-full" @click="showModifyPlan = true">modify plan</v-btn>
                             </v-list-item>
                             <v-list-item>
-                                <v-btn prepend-icon="mdi-autorenew" color="blue-darken-4" variant="text" class="w-full"
-                                    @click="planStore.shufflePlan">randomize</v-btn>
+                                <v-btn prepend-icon="mdi-autorenew" color="blue-darken-4" variant="text"
+                                    class="w-full justify-between" @click="planStore.shufflePlan">randomize</v-btn>
                             </v-list-item>
                             <v-list-item>
                                 <v-btn prepend-icon="mdi-undo" color="blue-darken-4" variant="text"
@@ -58,14 +59,9 @@
                     <v-spacer></v-spacer>
                     <v-toolbar-title>{{ planStore.plans[planStore.currentPlanIndex].planName }}</v-toolbar-title>
 
-                    <v-btn prepend-icon="mdi-file-arrow-left-right-outline" @click="showChangePlan = true">
-                        change plan
+                    <v-btn prepend-icon="mdi-download" @click="planStore.downloadPlan">
+                        Download plan
                     </v-btn>
-
-
-
-
-
                 </v-toolbar>
             </v-card>
             <div id="print" ref="playgroundRef" class="playground-cont outline shadow-lg mt-10 mb-5   ">

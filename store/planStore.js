@@ -156,8 +156,19 @@ const shufflePlan = () => {
       deck[swapIndex] = currentCard
     }
   }
+  const downloadPlan = ()=>{
+    const filename = `${plans.value[currentPlanIndex.value].planName}.json`
+    const data = plans.value[currentPlanIndex.value]
+
+    const blob = new Blob([JSON.stringify(data)]);
+    const link = document.createElement("a");
+    link.download = filename;
+    link.href = window.URL.createObjectURL(blob);
+    link.click()
+
+  }
   return {
-    plans,currentPlanIndex,plansCreator,clonedTableData,undoChanges, sortItems,deletePlan, shufflePlan};
+    plans,currentPlanIndex,plansCreator,clonedTableData,undoChanges, sortItems,deletePlan, shufflePlan, downloadPlan};
 },
 /* Enable this to persist this store : more info : https://prazdevs.github.io/pinia-plugin-persistedstate/frameworks/nuxt-3.html
 {
