@@ -10,33 +10,62 @@
 
         <div class="playground-wrapper">
             <v-card color="grey-lighten-4" flat rounded="0">
-                <v-toolbar density="compact">
-                    <v-app-bar-nav-icon></v-app-bar-nav-icon>
+                <v-toolbar density="compact" color="blue-darken-1">
 
-                    <v-toolbar-title>Title</v-toolbar-title>
 
-                    <v-spacer></v-spacer>
-
-                    <v-btn icon>
-                        <v-icon>mdi-magnify</v-icon>
-                    </v-btn>
-
-                    <v-btn icon>
-                        <v-icon>mdi-heart</v-icon>
-                    </v-btn>
-                    <v-menu>
+                    <v-menu open-on-hover>
                         <template v-slot:activator="{ props }">
-                            <v-btn color="primary" dark v-bind="props">
-                                <v-icon>mdi-heart</v-icon>
+                            <v-btn dark v-bind="props" prepend-icon="mdi-eye-refresh-outline">
+                                View
                             </v-btn>
                         </template>
 
                         <v-list>
-                            <v-list-item v-for="(item, index) in items" :key="index">
-                                <v-list-item-title>{{ item.title }}</v-list-item-title>
-                            </v-list-item>
+                            <v-list-item> <v-btn prepend-icon="mdi-printer" color="blue-darken-4" variant="text"
+                                    class="w-full" @click="printPlan">Print</v-btn></v-list-item>
+
+                            <v-list-item> <v-btn prepend-icon="mdi-theme-light-dark" color="blue-darken-4" variant="text"
+                                    @click="Darkmode = !Darkmode">Dark/light mode</v-btn></v-list-item>
                         </v-list>
                     </v-menu>
+
+
+                    <v-menu open-on-hover>
+                        <template v-slot:activator="{ props }">
+                            <v-btn dark v-bind="props" prepend-icon="mdi-cog">
+                                modify
+                            </v-btn>
+                        </template>
+
+                        <v-list>
+                            <v-list-item>
+                                <v-btn prepend-icon="mdi-file-edit-outline" color="blue-darken-4" variant="text"
+                                    class="w-full" @click="showModifyPlan = true">modify plan</v-btn>
+                            </v-list-item>
+                            <v-list-item>
+                                <v-btn prepend-icon="mdi-autorenew" color="blue-darken-4" variant="text" class="w-full"
+                                    @click="planStore.shufflePlan">randomize</v-btn>
+                            </v-list-item>
+                            <v-list-item>
+                                <v-btn prepend-icon="mdi-undo" color="blue-darken-4" variant="text"
+                                    @click="planStore.undoChanges">Undo changes</v-btn>
+                            </v-list-item>
+
+                        </v-list>
+                    </v-menu>
+
+
+                    <v-spacer></v-spacer>
+                    <v-toolbar-title>{{ planStore.plans[planStore.currentPlanIndex].planName }}</v-toolbar-title>
+
+                    <v-btn prepend-icon="mdi-file-arrow-left-right-outline" @click="showChangePlan = true">
+                        change plan
+                    </v-btn>
+
+
+
+
+
                 </v-toolbar>
             </v-card>
             <div id="print" ref="playgroundRef" class="playground-cont outline shadow-lg mt-10 mb-5   ">
@@ -68,7 +97,7 @@
                 @click="planStore.shufflePlan">randomize</v-btn>
             <v-btn prepend-icon="mdi-printer" color="blue-darken-4" variant="tonal" @click="printPlan">Print</v-btn>
         </div>
-        <v-btn @click="Darkmode = !Darkmode">change</v-btn>
+
     </div>
 </template>
 <script setup>
@@ -405,6 +434,11 @@ const printPlan = () => {
 .navbar>div {
     display: none;
 }
+
+.v-list-item {
+    padding-inline: 0 !important;
+}
+
 
 .playground-cont {
     position: relative;

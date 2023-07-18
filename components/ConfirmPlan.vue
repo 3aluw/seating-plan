@@ -39,7 +39,7 @@ const changeStep = (step) => {
 
 const seatTypes = ["Pairs", "U-shape", "Rows"]
 </script>
-<style>
+<style scoped>
 .v-list-item {
     margin-block: 1rem;
     min-width: 30rem;

@@ -1,9 +1,10 @@
 <template>
     <div class="conatiner">
         <nav class="flex justify-around">
+            <v-btn variant="text">Home</v-btn>
             <v-btn variant="text">upload a plan</v-btn>
             <v-btn variant="text">Create a new plan</v-btn>
-            <v-btn variant="text">support me</v-btn>
+
         </nav>
         <div class="main-content my-10 flex justify-between px-10 ">
             <div class="fetures flex flex-col">
