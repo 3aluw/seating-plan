@@ -1,15 +1,17 @@
 <template>
     <div class="conatiner">
         <nav class="navbar flex justify-around mt-12">
-            <v-btn variant="plain">Home</v-btn>
+            <NuxtLink to="/"> <v-btn variant="plain">Home</v-btn></NuxtLink>
             <v-btn variant="plain">upload a plan</v-btn>
             <v-btn variant="plain" @click="showChangePlan = true">Change plan</v-btn>
 
         </nav>
 
         <div class="playground-wrapper">
+            <!--dialogs-->
             <ModifyPlan v-model="showModifyPlan" />
             <ChosePlan v-model="showChangePlan" />
+            <!--playground toolbar-->
             <v-card color="grey-lighten-4" flat rounded="0">
                 <v-toolbar density="compact" color="blue-darken-1">
 
@@ -64,6 +66,7 @@
                     </v-btn>
                 </v-toolbar>
             </v-card>
+
             <div id="print" ref="playgroundRef" class="playground-cont outline shadow-lg mt-10 mb-5   ">
                 <div class="relative playground-item flex justify-center align-center" v-show="showPlayground"
                     v-for="(student, index) in    planStore.plans[planStore.currentPlanIndex].tableData" ref="studentRefs"
@@ -85,14 +88,7 @@
             </div>
         </div>
 
-        <div class="action-btns flex justify-around py-4">
-            <v-btn prepend-icon="mdi-undo" color="blue-darken-4" variant="outlined" @click="planStore.undoChanges">Undo
-                changes</v-btn>
 
-            <v-btn prepend-icon="mdi-autorenew" color="blue-darken-4" variant="outlined"
-                @click="planStore.shufflePlan">randomize</v-btn>
-            <v-btn prepend-icon="mdi-printer" color="blue-darken-4" variant="tonal" @click="printPlan">Print</v-btn>
-        </div>
 
     </div>
 </template>

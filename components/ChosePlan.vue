@@ -3,11 +3,12 @@
         <v-dialog v-model="showChangePlan" width="auto" maxWidth="90vw">
             <v-card>
                 <div class="m-12 flex gap-5 flex-wrap ">
-                    <v-card v-for=" (plan, index)  in  plans " @click="changePlanIndex(index)" :title="plan.planName"
-                        :subtitle="`number of attandents : ${plan.number}`" :text="plan.description" variant="outlined">
+                    <v-card v-for=" (plan, index)  in  planStore.plans " @click="changePlanIndex(index)"
+                        :title="plan.planName" :subtitle="`number of attandents : ${plan.tableData.length}`"
+                        :text="plan.description" variant="outlined">
                         <div class=" flex justify-around pb-2">
-                            <v-btn icon="mdi-trash-can" variant="outlined" color="red"
-                                @click="planStore.deletePlan(index)"></v-btn>
+                            <v-btn icon="mdi-trash-can" variant="outlined" color="red" @click="planStore.deletePlan(index)"
+                                v-if="index !== 0"></v-btn>
                         </div>
                     </v-card>
 
@@ -21,7 +22,6 @@
 </template>
 <script setup>
 import { usePlanStore } from '~/store/planStore'
-let { plans } = usePlanStore()
 const planStore = usePlanStore();
 
 const props = defineProps(['modelValue'])

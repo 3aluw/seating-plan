@@ -5,11 +5,11 @@ export const usePlanStore = defineStore("PlanStore", () => {
 
 let plans = ref([
     {
-  "planName": "sad",
-  "description": "sda",
+  "planName": "Demo",
+  "description": "Try Me",
   "number": 5,
   "seatType": "2",
-  "criteriaOneTitle": "A criteria",
+  "criteriaOneTitle": "Math marks",
   "tableData": [
       {
           "name": "one",

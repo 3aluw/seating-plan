@@ -1,7 +1,7 @@
 <template>
     <div class="conatiner">
         <nav class="flex justify-around">
-            <v-btn variant="text">Home</v-btn>
+            <NuxtLink to="/playgroundOne"> <v-btn variant="text">playground</v-btn></NuxtLink>
 
             <v-dialog v-model="UploadDialog" width="auto" theme="dark" min-width="400px">
                 <template v-slot:activator="{ props }">
@@ -10,13 +10,12 @@
                 </template>
 
                 <UploadPlan @closeDialog="UploadDialog = false" />
-
-
             </v-dialog>
 
             <v-btn @click="dialog = true" variant="text">Create a new plan</v-btn>
 
         </nav>
+
         <div class="main-content my-10 flex justify-between px-10 ">
             <div class="fetures flex flex-col">
                 <p class="text-2xl px-10 py-5 my-5 ml-20 green-linear">BETTER RESULTS</p>
