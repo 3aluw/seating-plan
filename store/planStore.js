@@ -167,8 +167,26 @@ const shufflePlan = () => {
     link.click()
 
   }
+  
+  const uploadPlan=(upObject)=>{
+    
+    if (ValidateUplaod(upObject)) {
+        plans.value.push(upObject);
+    currentPlanIndex.value = plans.value.length -1;
+    return true
+}
+return false
+  }
+const ValidateUplaod =(upObject)=>{
+      
+        return Object.keys(plans.value[0]).length === Object.keys(upObject).length
+        && Object.keys(plans.value[0]).every(k => upObject.hasOwnProperty(k)) && upObject.tableData.length > 6
+    
+}
+
+
   return {
-    plans,currentPlanIndex,plansCreator,clonedTableData,undoChanges, sortItems,deletePlan, shufflePlan, downloadPlan};
+    plans,currentPlanIndex,plansCreator,clonedTableData,undoChanges, sortItems,deletePlan, shufflePlan, downloadPlan, uploadPlan};
 },
 /* Enable this to persist this store : more info : https://prazdevs.github.io/pinia-plugin-persistedstate/frameworks/nuxt-3.html
 {

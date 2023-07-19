@@ -2,7 +2,18 @@
     <div class="conatiner">
         <nav class="flex justify-around">
             <v-btn variant="text">Home</v-btn>
-            <v-btn variant="text">upload a plan</v-btn>
+
+            <v-dialog v-model="UploadDialog" width="auto" theme="dark" min-width="400px">
+                <template v-slot:activator="{ props }">
+                    <div class="flex justify-center"> <v-btn variant="text" v-bind="props">upload a plan</v-btn>
+                    </div>
+                </template>
+
+                <UploadPlan @closeDialog="UploadDialog = false" />
+
+
+            </v-dialog>
+
             <v-btn @click="dialog = true" variant="text">Create a new plan</v-btn>
 
         </nav>
@@ -126,6 +137,7 @@ const plansCreator = () => {
 
 //dialog logic
 let dialog = ref(false);
+let UploadDialog = ref(false);
 //delete entered data after closing the dialog
 watch(dialog, () => {
     if (dialog.value === false) {
