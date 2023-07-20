@@ -88,13 +88,18 @@
             </div>
         </div>
 
-
+        {{ scrollY }} {{ mouse.elementX }}
 
     </div>
 </template>
 <script setup>
 import { usePlanStore } from '~/store/planStore'
 const planStore = usePlanStore();
+
+
+
+
+
 
 
 
@@ -186,7 +191,19 @@ const studentRefs = ref([])
 const draggables = ref([])
 const playgroundRef = ref(null)
 
+//auto scroll implementation
+import { useMouseInElement, useScroll } from '@vueuse/core'
+let elHeight = null
+let elWidth = null
+let { x: scrollX, y: scrollY } = useScroll(playgroundRef)
+const mouse = reactive(useMouseInElement(playgroundRef))
+
+
 onMounted(() => {
+    elWidth = getComputedStyle(playgroundRef.value).width
+    elHeight = getComputedStyle(playgroundRef.value).height
+
+
     generateXObj();
 
 
@@ -251,6 +268,28 @@ onMounted(() => {
 
     showPlayground.value = true
 
+})
+
+
+watch(() => mouse.elementX, () => {
+    //do nothing if the mouse is out of el
+    if (mouse.isOutside) return
+    //scroll X
+    if (mouse.elementX > (parseFloat(elWidth) - 50)) {
+        scrollX.value += 5
+    }
+    else if (mouse.elementX < 50) {
+        scrollX.value -= 5
+    }
+})
+//scroll Y
+watch(() => mouse.elementY, () => {
+    if (mouse.elementY > (parseFloat(elHeight) - 50)) {
+        scrollY.value += 5
+    }
+    else if (mouse.elementY < 50) {
+        scrollY.value -= 5
+    }
 })
 
 const defineLocation = (index) => {
@@ -532,5 +571,4 @@ const printPlan = () => {
         display: none;
     }
 
-}
-</style>
+}</style>
