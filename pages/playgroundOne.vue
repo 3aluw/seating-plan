@@ -197,7 +197,7 @@ let elHeight = null
 let elWidth = null
 let { x: scrollX, y: scrollY } = useScroll(playgroundRef)
 const mouse = reactive(useMouseInElement(playgroundRef))
-
+const isItemMoving = ref(false)
 
 onMounted(() => {
     elWidth = getComputedStyle(playgroundRef.value).width
@@ -214,7 +214,8 @@ onMounted(() => {
             onStart(position) {
                 //fixes coordinates snap when start dragging
                 position.y += (playgroundRef.value.getBoundingClientRect().top - playgroundRef.value.scrollTop)
-                position.x += (playgroundRef.value.getBoundingClientRect().left - playgroundRef.value.scrollLeft)
+                position.x += (playgroundRef.value.getBoundingClientRect().left - playgroundRef.value.scrollLeft);
+                isItemMoving.value = true
             },
             onMove(position) {
 
@@ -261,6 +262,7 @@ onMounted(() => {
                 //to reset teh styling of the overlapped item
                 overlappedItem.value = null
 
+                isItemMoving.value = false
 
             }
         }));
@@ -272,8 +274,8 @@ onMounted(() => {
 
 
 watch(() => mouse.elementX, () => {
-    //do nothing if the mouse is out of el
-    if (mouse.isOutside) return
+    //do nothing if no item is selected
+    if (!isItemMoving.value) return
     //scroll X
     if (mouse.elementX > (parseFloat(elWidth) - 50)) {
         scrollX.value += 5
@@ -284,6 +286,7 @@ watch(() => mouse.elementX, () => {
 })
 //scroll Y
 watch(() => mouse.elementY, () => {
+    if (!isItemMoving.value) return
     if (mouse.elementY > (parseFloat(elHeight) - 50)) {
         scrollY.value += 5
     }
@@ -571,4 +574,5 @@ const printPlan = () => {
         display: none;
     }
 
-}</style>
+}
+</style>
