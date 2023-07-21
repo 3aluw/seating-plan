@@ -16,7 +16,7 @@
                 <v-toolbar density="compact" color="blue-darken-1">
 
 
-                    <v-menu open-on-hover>
+                    <v-menu>
                         <template v-slot:activator="{ props }">
                             <v-btn dark v-bind="props" prepend-icon="mdi-eye-refresh-outline">
                                 View
@@ -25,7 +25,7 @@
 
                         <v-list>
                             <v-list-item> <v-btn prepend-icon="mdi-printer" color="blue-darken-4" variant="text"
-                                    class="w-full justify-between" @click="printPlan">Print</v-btn></v-list-item>
+                                    @click="printPlan" class="w-full !justify-between">Print</v-btn></v-list-item>
 
                             <v-list-item> <v-btn prepend-icon="mdi-theme-light-dark" color="blue-darken-4" variant="text"
                                     @click="Darkmode = !Darkmode">Dark/light mode</v-btn></v-list-item>
@@ -43,11 +43,11 @@
                         <v-list>
                             <v-list-item>
                                 <v-btn prepend-icon="mdi-file-edit-outline" color="blue-darken-4" variant="text"
-                                    class="w-full" @click="showModifyPlan = true">modify plan</v-btn>
+                                    class="w-full !justify-between" @click="showModifyPlan = true">modify plan</v-btn>
                             </v-list-item>
                             <v-list-item>
                                 <v-btn prepend-icon="mdi-autorenew" color="blue-darken-4" variant="text"
-                                    class="w-full justify-between" @click="planStore.shufflePlan">randomize</v-btn>
+                                    class="w-full !justify-between" @click="planStore.shufflePlan">randomize</v-btn>
                             </v-list-item>
                             <v-list-item>
                                 <v-btn prepend-icon="mdi-undo" color="blue-darken-4" variant="text"
@@ -93,13 +93,9 @@
     </div>
 </template>
 <script setup>
+
 import { usePlanStore } from '~/store/planStore'
 const planStore = usePlanStore();
-
-
-
-
-
 
 
 
@@ -109,7 +105,7 @@ const breakpoints = useBreakpoints(breakpointsTailwind)
 const largerThanSm = breakpoints.greater('sm')
 
 
-
+//styling
 const Darkmode = ref(false)
 const playgroundMode = ref([
     {
@@ -128,21 +124,29 @@ const playgroundMode = ref([
 const usedStyles = computed(() => {
     return Darkmode.value === false ? playgroundMode.value[1] : playgroundMode.value[0]
 })
-
-
-//show component  
-const showChangePlan = ref(false)
-const showModifyPlan = ref(false)
-const showPlayground = ref(false)
-//overlapped item to change its background
-let overlappedItem = ref(null)
-
-
-
 const itemWidth = ref(150)
 const itemHeight = ref(50)
 const singleMargin = ref(20)
-const XObj = ref([0])
+//overlapped item to change its background
+let overlappedItem = ref(null)
+//roatate items if it is in the left or right line U-Shape
+const rotateItem = (index) => {
+    if (planStore.plans[planStore.currentPlanIndex].seatType !== "2") return
+    return index < baseLineStartIndex.value ? 'left' : index > rightLineStartIndex.value - 1 ? "right" : false
+}
+
+
+
+//show components
+const showChangePlan = ref(false)
+const showModifyPlan = ref(false)
+const showPlayground = ref(false)
+//used refs
+const studentRefs = ref([])
+const draggables = ref([])
+const playgroundRef = ref(null)
+
+
 
 //U-shape logic
 const studentsNumberBaseLine = computed(() => Math.ceil(planStore.plans[planStore.currentPlanIndex].tableData.length / 3))
@@ -151,10 +155,7 @@ const studentsNumberRightLine = computed(() => planStore.plans[planStore.current
 const rightLineStartIndex = computed(() => studentsnumberLeftLine.value + studentsNumberBaseLine.value)
 const baseLineStartIndex = computed(() => rightLineStartIndex.value - studentsNumberBaseLine.value)
 
-//roatate items if it is in the left or right line U-Shape
-const rotateItem = (index) => {
-    return index < baseLineStartIndex.value ? 'left' : index > rightLineStartIndex.value - 1 ? "right" : false
-}
+
 
 
 
@@ -162,9 +163,10 @@ const rotateItem = (index) => {
 const columns = ref(3)
 const studentsPerRow = computed(() => columns.value * 2)
 
-
-
+//generate items locations on the X-axis
+const XObj = ref([0])
 const generateXObj = () => {
+    XObj.value = [0]
     if (planStore.plans[planStore.currentPlanIndex].seatType == "0") {
         for (let i = 1; i < studentsPerRow.value; i++) {
             let lastItemX = XObj.value[i - 1]
@@ -187,9 +189,7 @@ const generateXObj = () => {
 }
 
 
-const studentRefs = ref([])
-const draggables = ref([])
-const playgroundRef = ref(null)
+
 
 //auto scroll implementation
 import { useMouseInElement, useScroll } from '@vueuse/core'
@@ -199,14 +199,11 @@ let { x: scrollX, y: scrollY } = useScroll(playgroundRef)
 const mouse = reactive(useMouseInElement(playgroundRef))
 const isItemMoving = ref(false)
 
-onMounted(() => {
-    elWidth = getComputedStyle(playgroundRef.value).width
-    elHeight = getComputedStyle(playgroundRef.value).height
 
 
-    generateXObj();
-
-
+const generateDraggables = () => {
+    //dragables logic
+    draggables.value = []
     for (let x in planStore.plans[planStore.currentPlanIndex].tableData) {
         draggables.value.push(useDraggable(studentRefs.value[x], {
             initialValue: defineLocation(x),
@@ -267,6 +264,17 @@ onMounted(() => {
             }
         }));
     }
+}
+//regenrate plan when the plan is changed
+watch(() => planStore.currentPlanIndex, () => { generateXObj(); generateDraggables() })
+
+onMounted(() => {
+    //calculate the demenstions of the used container (helps on auto scrolling)
+    elWidth = getComputedStyle(playgroundRef.value).width
+    elHeight = getComputedStyle(playgroundRef.value).height
+
+    generateXObj();
+    generateDraggables()
 
     showPlayground.value = true
 
@@ -295,6 +303,11 @@ watch(() => mouse.elementY, () => {
     }
 })
 
+
+
+
+
+//rows and pairs logic
 const defineLocation = (index) => {
     //check if we aren't using U-shape type
     if (planStore.plans[planStore.currentPlanIndex].seatType !== "2") {
@@ -312,7 +325,6 @@ const defineLocation = (index) => {
 }
 
 
-
 const findTargetXIndex = (position) => {
 
     let i = 0;
@@ -324,7 +336,6 @@ const findTargetXIndex = (position) => {
     }
 
 }
-
 
 const FindNdOverlapingItem = (movingItemIndex, toXIndex) => {
 
@@ -341,7 +352,6 @@ const FindNdOverlapingItem = (movingItemIndex, toXIndex) => {
     }
 
 }
-
 
 
 // U-shape logic
@@ -364,7 +374,6 @@ const defineULocation = (index) => {
     }
 }
 
-
 const findUTargetXIndex = (position) => {
     const x = position.x
     if (x < XObj.value[1]) { return 0 }
@@ -376,7 +385,6 @@ const findUTargetXIndex = (position) => {
     }
 
 }
-
 
 const FindNdOverlapingUItem = (movingItemIndex, toXIndex) => {
     const rect1 = studentRefs.value[movingItemIndex].getBoundingClientRect();
@@ -418,8 +426,6 @@ const areItemsOverlaping = (rect1, rect2) => {
         return true
     }
 }
-
-
 
 const swapStudents = (fromIndex, toIndex) => {
     if (toIndex >= 0) {
