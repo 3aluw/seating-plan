@@ -1,5 +1,6 @@
 <template>
     <div class="conatiner">
+
         <nav class="navbar flex justify-around mt-12">
             <NuxtLink to="/"> <v-btn variant="plain">Home</v-btn></NuxtLink>
             <v-btn variant="plain">upload a plan</v-btn>
@@ -12,8 +13,9 @@
             <ModifyPlan v-model="showModifyPlan" />
             <ChosePlan v-model="showChangePlan" />
             <!--playground toolbar-->
+
             <v-card color="grey-lighten-4" flat rounded="0">
-                <v-toolbar density="compact" color="blue-darken-1">
+                <v-toolbar density="compact" color="blue-darken-1" class="max-[600px]:!hidden">
 
 
                     <v-menu open-on-hover>
