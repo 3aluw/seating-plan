@@ -16,7 +16,7 @@
                 <v-toolbar density="compact" color="blue-darken-1">
 
 
-                    <v-menu>
+                    <v-menu open-on-hover>
                         <template v-slot:activator="{ props }">
                             <v-btn dark v-bind="props" prepend-icon="mdi-eye-refresh-outline">
                                 View
@@ -88,7 +88,6 @@
             </div>
         </div>
 
-        {{ scrollY }} {{ mouse.elementX }}
 
     </div>
 </template>
@@ -197,9 +196,8 @@ let elHeight = null
 let elWidth = null
 let { x: scrollX, y: scrollY } = useScroll(playgroundRef)
 const mouse = reactive(useMouseInElement(playgroundRef))
-const isItemMoving = ref(false)
 
-
+const movingItem = ref(null)
 
 const generateDraggables = () => {
     //dragables logic
@@ -212,9 +210,12 @@ const generateDraggables = () => {
                 //fixes coordinates snap when start dragging
                 position.y += (playgroundRef.value.getBoundingClientRect().top - playgroundRef.value.scrollTop)
                 position.x += (playgroundRef.value.getBoundingClientRect().left - playgroundRef.value.scrollLeft);
-                isItemMoving.value = true
+                movingItem.value = x
             },
             onMove(position) {
+                scrollYFn()
+                scrollXFn()
+
 
                 //check if we aren't using U-shape type
                 if (planStore.plans[planStore.currentPlanIndex].seatType !== "2") {
@@ -229,6 +230,7 @@ const generateDraggables = () => {
                     const toIndex = FindNdOverlapingUItem(x, targetXIndex)
                     overlappedItem.value = toIndex
                 }
+
             },
             onEnd(position) {
                 //check if we aren't using U-shape type
@@ -259,7 +261,7 @@ const generateDraggables = () => {
                 //to reset teh styling of the overlapped item
                 overlappedItem.value = null
 
-                isItemMoving.value = false
+
 
             }
         }));
@@ -280,28 +282,31 @@ onMounted(() => {
 
 })
 
+const scrollYFn = () => {
 
-watch(() => mouse.elementX, () => {
-    //do nothing if no item is selected
-    if (!isItemMoving.value) return
-    //scroll X
-    if (mouse.elementX > (parseFloat(elWidth) - 50)) {
-        scrollX.value += 5
-    }
-    else if (mouse.elementX < 50) {
-        scrollX.value -= 5
-    }
-})
-//scroll Y
-watch(() => mouse.elementY, () => {
-    if (!isItemMoving.value) return
     if (mouse.elementY > (parseFloat(elHeight) - 50)) {
-        scrollY.value += 5
+        scrollY.value += 10
+
+        return 'plus'
     }
     else if (mouse.elementY < 50) {
-        scrollY.value -= 5
+        scrollY.value -= 10
+
+        return 'minus'
     }
-})
+}
+const scrollXFn = () => {
+
+    //scroll X
+    if (mouse.elementX > (parseFloat(elWidth) - 50)) {
+        scrollX.value += 10
+
+    }
+    else if (mouse.elementX < 50) {
+        scrollX.value -= 10
+    }
+}
+
 
 
 
@@ -537,7 +542,7 @@ const printPlan = () => {
 }
 
 .overlappedItem {
-    background: yellow;
+    border: 1px dashed gray;
     opacity: 0.8;
 }
 
@@ -562,19 +567,30 @@ const printPlan = () => {
 @media print {
 
     .action-btns,
-    .navbar {
+    .navbar,
+    .playground-wrapper>.v-card,
+    .v-list {
         display: none;
     }
 
+    .playground-wrapper {
+        padding: 0;
+        margin-left: 0;
+    }
 
     #print,
     #print * {
+
         padding: 0px;
         zoom: 70%;
         font-size: 1.5rem;
         overflow: visible;
+
     }
 
+    #print {
+        margin-top: -400px;
+    }
 
     .mdi-cursor-move {
         display: none;
