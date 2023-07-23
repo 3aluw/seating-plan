@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div class="flex justify-center mt-4" v-if="phoneBreakpoint">
       <v-chip prepend-icon="mdi-eye-outline" variant="outlined"> View mode
         <v-tooltip activator="parent" location="bottom">You can't use all features on a small screen</v-tooltip>
@@ -22,7 +21,8 @@ import { usePlanStore } from '~/store/planStore'
 const planStore = usePlanStore();
 
 watch(phoneBreakpoint, () => {
-  planStore.viewMode = phoneBreakpoint
+  planStore.viewMode = phoneBreakpoint.value
+
 })
 
 </script>

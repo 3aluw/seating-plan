@@ -13,11 +13,9 @@
             <ModifyPlan v-model="showModifyPlan" />
             <ChosePlan v-model="showChangePlan" />
             <!--playground toolbar-->
-
             <v-card color="grey-lighten-4" flat rounded="0">
-                <v-toolbar density="compact" color="blue-darken-1" class="max-[600px]:!hidden">
 
-
+                <v-toolbar density="compact" color="blue-darken-1">
                     <v-menu open-on-hover>
                         <template v-slot:activator="{ props }">
                             <v-btn dark v-bind="props" prepend-icon="mdi-eye-refresh-outline">
@@ -37,11 +35,10 @@
 
                     <v-menu open-on-hover>
                         <template v-slot:activator="{ props }">
-                            <v-btn dark v-bind="props" prepend-icon="mdi-cog">
+                            <v-btn dark v-bind="props" prepend-icon="mdi-cog" class="max-[600px]:!hidden">
                                 modify
                             </v-btn>
                         </template>
-
                         <v-list>
                             <v-list-item>
                                 <v-btn prepend-icon="mdi-file-edit-outline" color="blue-darken-4" variant="text"
@@ -59,17 +56,19 @@
                         </v-list>
                     </v-menu>
 
-
+                    <v-slider v-model="zoom" append-icon="mdi-magnify-plus-outline" prepend-icon="mdi-magnify-minus-outline"
+                        step="10" @click:append="zoom += 10" @click:prepend="zoom -= 10" class="min-[600px]:!hidden"
+                        hide-details></v-slider>
                     <v-spacer></v-spacer>
                     <v-toolbar-title>{{ planStore.plans[planStore.currentPlanIndex].planName }}</v-toolbar-title>
 
-                    <v-btn prepend-icon="mdi-download" @click="planStore.downloadPlan">
+                    <v-btn prepend-icon="mdi-download" @click="planStore.downloadPlan" class="max-[600px]:!hidden">
                         Download plan
                     </v-btn>
                 </v-toolbar>
             </v-card>
 
-            <div id="print" ref="playgroundRef" class="playground-cont outline shadow-lg mt-10 mb-5   ">
+            <div id="print" ref="playgroundRef" class="playground-cont outline shadow-lg mt-10 mb-5 ">
                 <div class="relative playground-item flex justify-center align-center" v-show="showPlayground"
                     v-for="(student, index) in    planStore.plans[planStore.currentPlanIndex].tableData" ref="studentRefs"
                     :style="draggables[index]?.style" :class="{
@@ -100,10 +99,10 @@ const planStore = usePlanStore();
 
 
 
-//chek if it is larger than md screen
-import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-const breakpoints = useBreakpoints(breakpointsTailwind)
-const largerThanSm = breakpoints.greater('sm')
+//generate the zoom value
+const zoom = ref(100)
+const usedZoom = computed(() => planStore.viewMode ? `${zoom.value}%` : '100%')
+const fontZoom = computed(() => planStore.viewMode ? `${100 + (100 - zoom.value)}%` : '100%')
 
 
 //styling
@@ -444,34 +443,6 @@ const swapStudents = (fromIndex, toIndex) => {
 
 
 const printPlan = () => {
-    /*   // Get HTML to print from element
-       const prtHtml = document.getElementById('print').innerHTML;
-   
-       // Get all stylesheets HTML
-       let stylesHtml = '';
-       for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
-           stylesHtml += node.outerHTML;
-       }
-   
-       // Open the print window
-       const WinPrint = window.open('', '', 'left=0,top=0,width=700,height=900,toolbar=0,scrollbars=0,status=0, ');
-   
-       WinPrint.document.write(`<!DOCTYPE html>
-   <html>
-     <head>
-       ${stylesHtml}
-     </head>
-     <body>
-       ${prtHtml}
-     </body>
-   </html>`);
-   
-   
-       WinPrint.document.close();
-       WinPrint.focus();
-       WinPrint.print();
-       setTimeout(() => { WinPrint.close(); console.log(5) }, 1000)
-       //WinPrint.close();*/
     window.print()
 }
 </script>
@@ -491,11 +462,13 @@ const printPlan = () => {
     position: relative;
     margin-inline: 1rem;
     min-height: 30rem;
-
     color: white;
     outline-width: 1.3rem;
     overflow: scroll;
+
 }
+
+
 
 .playground-wrapper {
     margin-inline: 2rem;
@@ -527,9 +500,12 @@ const printPlan = () => {
     border: v-bind('usedStyles.border');
     height: 50px;
     color: v-bind('usedStyles.color');
-
+    zoom: v-bind('usedZoom');
 }
 
+.playground-item>p {
+    zoom: v-bind(fontZoom);
+}
 
 .UShapeLeftRotatedItem {
     pointer-events: none;
@@ -598,5 +574,16 @@ const printPlan = () => {
         display: none;
     }
 
+
+}
+
+@media screen and (max-width: 640px) {
+    .mdi-cursor-move {
+        display: none !important;
+    }
+
+    .playground-wrapper {
+        margin-inline: 0;
+    }
 }
 </style>
