@@ -12,6 +12,7 @@
             <!--dialogs-->
             <ModifyPlan v-model="showModifyPlan" />
             <ChosePlan v-model="showChangePlan" />
+            <PrintDialog v-model="showPrintDialog" @printEmit="printPlan" class='printDialog' />
             <!--playground toolbar-->
             <v-card color="grey-lighten-4" flat rounded="0">
 
@@ -25,7 +26,8 @@
 
                         <v-list>
                             <v-list-item> <v-btn prepend-icon="mdi-printer" color="blue-darken-4" variant="text"
-                                    @click="printPlan" class="w-full !justify-between">Print</v-btn></v-list-item>
+                                    @click="showPrintDialog = true"
+                                    class="w-full !justify-between">Print</v-btn></v-list-item>
 
                             <v-list-item> <v-btn prepend-icon="mdi-theme-light-dark" color="blue-darken-4" variant="text"
                                     @click="Darkmode = !Darkmode">Dark/light mode</v-btn></v-list-item>
@@ -98,11 +100,23 @@ import { usePlanStore } from '~/store/planStore'
 const planStore = usePlanStore();
 
 
+//show components
+const showChangePlan = ref(false)
+const showModifyPlan = ref(false)
+const showPlayground = ref(false)
+const showPrintDialog = ref(false)
+//used refs
+const studentRefs = ref([])
+const draggables = ref([])
+const playgroundRef = ref(null)
+
 
 //generate the zoom value
 const zoom = ref(100)
 const usedZoom = computed(() => planStore.viewMode ? `${zoom.value}%` : '100%')
 const fontZoom = computed(() => planStore.viewMode ? `${100 + (100 - zoom.value)}%` : '100%')
+
+let usedprintZoom = ref('70%')
 
 
 //styling
@@ -136,15 +150,6 @@ const rotateItem = (index) => {
 }
 
 
-
-//show components
-const showChangePlan = ref(false)
-const showModifyPlan = ref(false)
-const showPlayground = ref(false)
-//used refs
-const studentRefs = ref([])
-const draggables = ref([])
-const playgroundRef = ref(null)
 
 
 
@@ -442,13 +447,15 @@ const swapStudents = (fromIndex, toIndex) => {
 }
 
 
-const printPlan = () => {
-    window.print()
+const printPlan = (zoom) => {
+    usedprintZoom.value = zoom
+    setTimeout(() => window.print(), 1000)
+
 }
 </script>
 
 <style>
-/*deleting a    weird teleport item */
+/*deleting a  weird teleport item */
 .navbar>div {
     display: none;
 }
@@ -465,6 +472,7 @@ const printPlan = () => {
     color: white;
     outline-width: 1.3rem;
     overflow: scroll;
+
 
 }
 
@@ -547,7 +555,9 @@ const printPlan = () => {
     .action-btns,
     .navbar,
     .playground-wrapper>.v-card,
-    .v-list {
+    .v-list,
+    .v-card,
+    .printDialog {
         display: none;
     }
 
@@ -558,9 +568,8 @@ const printPlan = () => {
 
     #print,
     #print * {
-
         padding: 0px;
-        zoom: 70%;
+        zoom: v-bind('usedprintZoom');
         font-size: 1.5rem;
         overflow: visible;
 
