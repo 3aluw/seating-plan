@@ -8,7 +8,6 @@
                     <div class="flex justify-center"> <v-btn variant="text" v-bind="props">upload a plan</v-btn>
                     </div>
                 </template>
-
                 <UploadPlan @closeDialog="UploadDialog = false" />
             </v-dialog>
 

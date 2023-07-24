@@ -3,7 +3,17 @@
 
         <nav class="navbar flex justify-around mt-12">
             <NuxtLink to="/"> <v-btn variant="plain">Home</v-btn></NuxtLink>
-            <v-btn variant="plain">upload a plan</v-btn>
+
+            <v-dialog v-model="UploadDialog" width="auto" theme="dark" min-width="400px">
+                <template v-slot:activator="{ props }">
+
+                    <v-btn variant="plain" v-bind="props">upload a plan</v-btn>
+
+                </template>
+
+                <UploadPlan @closeDialog="UploadDialog = false" />
+            </v-dialog>
+
             <v-btn variant="plain" @click="showChangePlan = true">Change plan</v-btn>
 
         </nav>
@@ -19,8 +29,8 @@
                 <v-toolbar density="compact" color="blue-darken-1">
                     <v-menu open-on-hover>
                         <template v-slot:activator="{ props }">
-                            <v-btn dark v-bind="props" prepend-icon="mdi-eye-refresh-outline">
-                                View
+                            <v-btn dark v-bind="props" prepend-icon="mdi-dots-horizontal">
+                                <p class="max-[500px]:!hidden">actions</p>
                             </v-btn>
                         </template>
 
@@ -29,8 +39,8 @@
                                     @click="showPrintDialog = true"
                                     class="w-full !justify-between">Print</v-btn></v-list-item>
 
-                            <v-list-item> <v-btn prepend-icon="mdi-theme-light-dark" color="blue-darken-4" variant="text"
-                                    @click="Darkmode = !Darkmode">Dark/light mode</v-btn></v-list-item>
+                            <v-list-item> <v-btn prepend-icon=" mdi-download " color="blue-darken-4" variant="text"
+                                    @click="planStore.downloadPlan"> Download plan </v-btn></v-list-item>
                         </v-list>
                     </v-menu>
 
@@ -63,14 +73,14 @@
                         hide-details></v-slider>
                     <v-spacer></v-spacer>
                     <v-toolbar-title>{{ planStore.plans[planStore.currentPlanIndex].planName }}</v-toolbar-title>
-
-                    <v-btn prepend-icon="mdi-download" @click="planStore.downloadPlan" class="max-[600px]:!hidden">
-                        Download plan
+                    <v-spacer></v-spacer>
+                    <v-btn prepend-icon="mdi-theme-light-dark" class="max-[600px]:!hidden" @click="Darkmode = !Darkmode">
+                        Dark/light mode
                     </v-btn>
                 </v-toolbar>
             </v-card>
 
-            <div id="print" ref="playgroundRef" class="playground-cont outline shadow-lg mt-10 mb-5 ">
+            <div id="print" ref="playgroundRef" class="playground-cont  shadow-lg mt-10 mb-5 ">
                 <div class="relative playground-item flex justify-center align-center" v-show="showPlayground"
                     v-for="(student, index) in    planStore.plans[planStore.currentPlanIndex].tableData" ref="studentRefs"
                     :style="draggables[index]?.style" :class="{
@@ -105,6 +115,8 @@ const showChangePlan = ref(false)
 const showModifyPlan = ref(false)
 const showPlayground = ref(false)
 const showPrintDialog = ref(false)
+const UploadDialog = ref(false)
+
 //used refs
 const studentRefs = ref([])
 const draggables = ref([])
@@ -460,6 +472,10 @@ const printPlan = (zoom) => {
     display: none;
 }
 
+.v-toolbar-title {
+    flex-grow: 2;
+}
+
 .v-list-item {
     padding-inline: 0 !important;
 }
@@ -470,10 +486,8 @@ const printPlan = (zoom) => {
     margin-inline: 1rem;
     min-height: 30rem;
     color: white;
-    outline-width: 1.3rem;
+
     overflow: scroll;
-
-
 }
 
 
@@ -549,6 +563,8 @@ const printPlan = (zoom) => {
     /* Color of the scrollbar thumb */
     border-radius: 5px;
 }
+
+
 
 @media print {
 
