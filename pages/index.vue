@@ -1,6 +1,6 @@
 <template>
     <div class="conatiner">
-        <nav class="flex justify-around">
+        <nav class="flex justify-around  max-[600px]:flex-col max-[600px]:items-center">
             <NuxtLink to="/playgroundOne"> <v-btn variant="text">playground</v-btn></NuxtLink>
 
             <v-dialog v-model="UploadDialog" width="auto" theme="dark" min-width="400px">
@@ -8,27 +8,26 @@
                     <div class="flex justify-center"> <v-btn variant="text" v-bind="props">upload a plan</v-btn>
                     </div>
                 </template>
-
                 <UploadPlan @closeDialog="UploadDialog = false" />
             </v-dialog>
 
-            <v-btn @click="dialog = true" variant="text">Create a new plan</v-btn>
+            <v-btn @click="dialog = true" variant="text" class="max-[600px]:!hidden">Create a new plan</v-btn>
 
         </nav>
 
-        <div class="main-content my-10 flex justify-between px-10 ">
-            <div class="fetures flex flex-col">
-                <p class="text-2xl px-10 py-5 my-5 ml-20 green-linear">BETTER RESULTS</p>
+        <div class="main-content my-10 flex justify-between px-10  gap-4">
+            <div class="fetures flex flex-col text-center ">
+                <p class="text-2xl px-10 py-5 my-5 ml-20 green-linear ">BETTER RESULTS</p>
 
                 <p class="text-2xl px-10 py-5 my-5 ml-10  yellow-linear">MORE FOCUS</p>
 
 
                 <p class="text-2xl px-10 py-5 my-5 red-linear">LESS DISTRACTION</p>
             </div>
-            <div class="traingles flex flex-col">
+            <div class="traingles flex flex-col justify-evenly max-[500px]:hidden">
                 <img class="p-5" src="/Polygon-1.svg">
-                <img class="p-5" src="Polygon-3.svg">
-                <img class="p-5" src="Polygon-2.svg">
+                <img class="p-5" src="/Polygon-3.svg">
+                <img class="p-5" src="/Polygon-2.svg">
             </div>
 
             <div class="flex justify-start flex-col main-text">
@@ -43,7 +42,8 @@
         <div class="text-center">
             <v-dialog v-model="dialog" width="auto" theme="dark">
                 <template v-slot:activator="{ props }">
-                    <div class="flex justify-center"> <button class="call-btn bt-shake" v-bind="props"> Create Your
+                    <div class="flex justify-center max-[600px]:!hidden"> <button class="call-btn bt-shake" v-bind="props">
+                            Create Your
                             plan</button>
                     </div>
                 </template>
@@ -157,7 +157,7 @@ watch(dialog, () => {
 }
 
 .fetures {
-    min-width: 40%;
+
     font-family: 'Inter';
     font-weight: 600;
 }
@@ -277,5 +277,25 @@ watch(dialog, () => {
 .v-card-text {
     background: #1B1C24;
     color: #A8A6A7;
+}
+
+@media screen and (max-width: 900px) {
+    .px-10 {
+        padding-right: 10px !important;
+        padding-left: 10px !important;
+    }
+
+    .ml-10 {
+        margin-left: 20px !important;
+    }
+
+    .text-5xl {
+        font-size: 2.5rem;
+        line-height: 1;
+    }
+
+    .main-text {
+        max-width: 50%
+    }
 }
 </style>

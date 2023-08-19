@@ -2,6 +2,8 @@ import { defineStore, acceptHMRUpdate } from "pinia";
 
 
 export const usePlanStore = defineStore("PlanStore", () => {
+const viewMode = ref(false)
+
 
 let plans = ref([
     {
@@ -186,7 +188,7 @@ const ValidateUplaod =(upObject)=>{
 
 
   return {
-    plans,currentPlanIndex,plansCreator,clonedTableData,undoChanges, sortItems,deletePlan, shufflePlan, downloadPlan, uploadPlan};
+    plans,currentPlanIndex,plansCreator,clonedTableData,undoChanges, sortItems,deletePlan, shufflePlan, downloadPlan, uploadPlan , viewMode};
 },
 /* Enable this to persist this store : more info : https://prazdevs.github.io/pinia-plugin-persistedstate/frameworks/nuxt-3.html
 {

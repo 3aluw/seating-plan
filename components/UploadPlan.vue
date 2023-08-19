@@ -34,6 +34,7 @@ const uploadFile = () => {
                     emit('closeDialog');
                     if (useRoute().fullPath !== "/playgroundOne") useRouter().push({ path: "/playgroundOne" })
                 }, 1500);
+                PlanStore.currentPlanIndex = PlanStore.plans.length - 1
 
             }
             else {

@@ -1,5 +1,5 @@
 <template >
-    <v-sheet width="1000" class="mx-auto mb-10">
+    <v-sheet width="1000" max-width="100%" class="mx-auto mb-10">
         <h1 class="text-center text-3xl my-2 mb-10 text-blue-300">Set up your table</h1>
         Here you can set up a able of your attendents, you can add a criteria that can help you to sort...(ie: a teacher can
         use marks as an additional criteria). <br>
