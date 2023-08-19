@@ -26,8 +26,8 @@
             </div>
             <div class="traingles flex flex-col justify-evenly max-[500px]:hidden">
                 <img class="p-5" src="/Polygon-1.svg">
-                <img class="p-5" src="Polygon-3.svg">
-                <img class="p-5" src="Polygon-2.svg">
+                <img class="p-5" src="/Polygon-3.svg">
+                <img class="p-5" src="/Polygon-2.svg">
             </div>
 
             <div class="flex justify-start flex-col main-text">

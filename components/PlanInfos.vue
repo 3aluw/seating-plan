@@ -18,7 +18,7 @@
                                 <div>
                                     <v-tooltip location="bottom">
                                         <template v-slot:activator="{ props }">
-                                            <img src="pairs.png" />
+                                            <img src="/pairs.png" />
                                         </template>
                                     </v-tooltip>
                                 </div>
@@ -35,7 +35,7 @@
                                 <div>
                                     <v-tooltip location="bottom">
                                         <template v-slot:activator="{ props }">
-                                            <img src="rows.png" />
+                                            <img src="/rows.png" />
                                         </template>
                                     </v-tooltip>
                                 </div>
@@ -48,7 +48,7 @@
                                 <div>
                                     <v-tooltip location="bottom">
                                         <template v-slot:activator="{ props }">
-                                            <img src="U-shape.png" />
+                                            <img src="/U-shape.png" />
                                         </template>
                                     </v-tooltip>
                                 </div>
