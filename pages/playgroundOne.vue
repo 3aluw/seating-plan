@@ -285,7 +285,7 @@ const generateDraggables = () => {
         }));
     }
 }
-//regenrate plan when the plan is changed
+//regenerate plan when the plan is changed
 watch(() => planStore.currentPlanIndex, () => { generateXObj(); generateDraggables() })
 
 onMounted(() => {

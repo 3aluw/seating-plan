@@ -1,5 +1,5 @@
 <template>
-    <v-sheet width="1000" class="mx-auto">
+    <v-sheet width="1000" max-width="100%" class="mx-auto">
         <h1 class="text-center text-3xl my-2 mb-10 text-blue-300">Fill plan infos</h1>
         <v-form @submit.prevent>
             <v-text-field v-model="planInfos.planName" :rules="nameRule" :counter="10" label="Plan name*"
