@@ -2,7 +2,7 @@
     <div class="conatiner">
         <nav class="navbar flex justify-around mt-12">
             <v-btn variant="plain">Home</v-btn>
-            <v-btn variant="plain" @click="showModifyPlan = true">Modify paln</v-btn>
+            <v-btn variant="plain" @click="showModifyPlan = true">Modify plan</v-btn>
             <ModifyPlan v-model="showModifyPlan" />
             <v-btn variant="plain" @click="showChangePlan = true">change plan</v-btn>
             <ChosePlan v-model="showChangePlan" />
@@ -189,34 +189,6 @@ const swapStudents = (fromIndex, toIndex) => {
 
 
 const printPlan = () => {
-    /*   // Get HTML to print from element
-       const prtHtml = document.getElementById('print').innerHTML;
-   
-       // Get all stylesheets HTML
-       let stylesHtml = '';
-       for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
-           stylesHtml += node.outerHTML;
-       }
-   
-       // Open the print window
-       const WinPrint = window.open('', '', 'left=0,top=0,width=700,height=900,toolbar=0,scrollbars=0,status=0, ');
-   
-       WinPrint.document.write(`<!DOCTYPE html>
-   <html>
-     <head>
-       ${stylesHtml}
-     </head>
-     <body>
-       ${prtHtml}
-     </body>
-   </html>`);
-   
-   
-       WinPrint.document.close();
-       WinPrint.focus();
-       WinPrint.print();
-       setTimeout(() => { WinPrint.close(); console.log(5) }, 1000)
-       //WinPrint.close();*/
     window.print()
 }
 </script>

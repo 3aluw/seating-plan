@@ -98,6 +98,7 @@ let plans = ref([
 
   //create a clone of the current table -will use it to undo changes-
 let currentPlanIndex = ref(0);
+
 const clonedTableData = ref(plans.value[currentPlanIndex.value].tableData.map(a => {return {...a}}))
 watch(currentPlanIndex,()=>{
 if(currentPlanIndex.value) clonedTableData.value = plans.value[currentPlanIndex.value].tableData.map(a => {return {...a}})
@@ -145,6 +146,8 @@ plans.value.push({
   tableData: tableData,
 
 })
+//switch to the new created plan
+currentPlanIndex.value = plans.value.length -1
 }
 const deletePlan= (index)=>{plans.value.splice(index, 1)}
 

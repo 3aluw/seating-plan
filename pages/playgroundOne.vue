@@ -108,7 +108,7 @@
 
 import { usePlanStore } from '~/store/planStore'
 const planStore = usePlanStore();
-
+console.log(planStore.plans[planStore.currentPlanIndex]);
 
 //show components
 const showChangePlan = ref(false)

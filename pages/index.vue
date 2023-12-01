@@ -70,8 +70,8 @@
                                 @click="step -= 1">BACK</v-btn>
                             <v-btn append-icon="$next" variant="outlined" color="white" v-if="step < 3" @click="step += 1"
                                 :disabled="disableNextButton">NEXT</v-btn>
-                            <v-btn append-icon="$next" variant="flat" color="green-darken-2" v-if="step == 3"
-                                @click="plansCreator">Finnish</v-btn>
+                            <NuxtLink to="/playgroundOne"> <v-btn append-icon="$next" variant="flat" color="green-darken-2"
+                                    v-if="step == 3" @click="plansCreator">Finnish</v-btn></NuxtLink>
 
                         </div>
 
