@@ -108,7 +108,7 @@
 
 import { usePlanStore } from '~/store/planStore'
 const planStore = usePlanStore();
-
+console.log(planStore.plans[planStore.currentPlanIndex]);
 
 //show components
 const showChangePlan = ref(false)
@@ -223,11 +223,11 @@ const generateDraggables = () => {
     for (let x in planStore.plans[planStore.currentPlanIndex].tableData) {
         draggables.value.push(useDraggable(studentRefs.value[x], {
             initialValue: defineLocation(x),
-
+            containerElement: playgroundRef,
             onStart(position) {
                 //fixes coordinates snap when start dragging
-                position.y += (playgroundRef.value.getBoundingClientRect().top - playgroundRef.value.scrollTop)
-                position.x += (playgroundRef.value.getBoundingClientRect().left - playgroundRef.value.scrollLeft);
+                //  position.y += (playgroundRef.value.getBoundingClientRect().top - playgroundRef.value.scrollTop)
+                // position.x += (playgroundRef.value.getBoundingClientRect().left - playgroundRef.value.scrollLeft);
                 movingItem.value = x
             },
             onMove(position) {
