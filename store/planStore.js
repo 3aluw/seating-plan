@@ -10,7 +10,8 @@ let plans = ref([
   "planName": "Demo",
   "description": "Try Me",
   "number": 5,
-  "seatType": "2",
+  "seatType": "1",
+  "numberOfRows": 3,
   "criteriaOneTitle": "Math marks",
   "tableData": [
       {
@@ -55,6 +56,7 @@ let plans = ref([
     "description": "sda",
     "number": 5,
     "seatType": "1",
+    "numberOfRows": 3,
     "criteriaOneTitle": "A criteria",
     "tableData": [
         {

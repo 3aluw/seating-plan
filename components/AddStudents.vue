@@ -1,36 +1,43 @@
-<template >
+<template>
     <v-sheet width="1000" max-width="100%" class="mx-auto mb-10">
-        <h1 class="text-center text-3xl my-2 mb-10 text-blue-300">Set up your table</h1>
-        Here you can set up a able of your attendents, you can add a criteria that can help you to sort...(ie: a teacher can
-        use marks as an additional criteria). <br>
-        click add data after you complete entering data in the text field
-        <v-table class="my-4">
-            <thead class="bg-gray-800">
-                <tr>
-                    <th class="text-left">Names</th>
-                    <th class="text-left"><v-text-field maxlength="10" :counter="10"
-                            placeholder="this will help you to sort. ie: marks" label="Add a criteria title ..."
-                            v-model="namesTable.criteriaOneTitle"></v-text-field></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="student in  namesTable.tableData" :key="student.name">
-                    <td>{{ student.name }}</td>
-                    <td>{{ student.fieldOne }}</td>
-                </tr>
-                <tr>
-                    <td>
-                        <v-textarea label="enter new students' list" v-model="newStudents" rows="2"
-                            :rules="namesRule"></v-textarea>
-                    </td>
-                    <td>
-                        <v-textarea label="enter new data's list" v-model="newMarks" rows="2"></v-textarea>
-                    </td>
-                </tr>
+        <h1 class="text-center text-3xl my-2 mb-10 text-blue-300">Set up your class</h1>
+        <div class="add-names-cont">
+            <h2 class="text-xl py-4">Add names</h2>
+            Here you can set up a able of your attendents, you can add a criteria that can help you to sort...(ie: a
+            teacher can
+            use marks as an additional criteria). <br>
+            click add data after you complete entering data in the text field
+            <v-table class="my-4">
+                <thead class="bg-gray-800">
+                    <tr>
+                        <th class="text-left">Names</th>
+                        <th class="text-left"><v-text-field maxlength="10" :counter="10"
+                                placeholder="this will help you to sort. ie: marks" label="Add a criteria title ..."
+                                v-model="namesTable.criteriaOneTitle"></v-text-field></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="student in namesTable.tableData" :key="student.name">
+                        <td>{{ student.name }}</td>
+                        <td>{{ student.fieldOne }}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <v-textarea label="enter new students' list" v-model="newStudents" rows="2"
+                                :rules="namesRule"></v-textarea>
+                        </td>
+                        <td>
+                            <v-textarea label="enter new data's list" v-model="newMarks" rows="2"></v-textarea>
+                        </td>
+                    </tr>
 
-            </tbody>
-
-        </v-table>
+                </tbody>
+            </v-table>
+        </div>
+        <div class="insert-rows-cont">
+            <h2 class="text-xl py-4">How many rows are there?</h2>
+            <v-slider v-model="namesTable.numberOfRows" :max="maxNumberOfRows" :min="1" :step="1" thumb-label></v-slider>
+        </div>
         <div class="flex justify-center ">
             <v-btn class="mx-4" @click="addNewData" variant="tonal" color="light-green-lighten-4"
                 :disabled="!newStudents">Add data</v-btn>
@@ -51,7 +58,9 @@ const namesTable = computed({
 }
 )
 
-
+const maxNumberOfRows = computed(() => {
+    return Math.min(Math.ceil(namesTable.value.tableData.length / 4), 4)
+})
 
 let newStudents = ref('');
 let newMarks = ref('')
@@ -70,7 +79,6 @@ const addNewData = () => {
         }
     })
     newStudents.value = newMarks.value = "";
-    console.log(namesTable.value.tableData)
 }
 
 const clearTable = () => {
