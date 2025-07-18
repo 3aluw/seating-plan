@@ -98,7 +98,7 @@
                         </v-tooltip></i>
                 </div>
             </div> -->
-            <div id="print" class="playground-cont grid gap-8 overflow-scroll shadow-lg mt-10 mb-5">
+            <div id="print" class="playground-cont grid gap-8 overflow-scroll shadow-lg mt-10 mb-5" ref="playgroundRef" >
                 <div class="columns grid" :class="columnClass"
                     v-for="(column, index) in planStore.plans[planStore.currentPlanIndex].planScheme">
 
@@ -117,6 +117,37 @@ const planStore = usePlanStore();
 
 const currentPlan = computed(() => planStore.plans[planStore.currentPlanIndex])
 const columnClass = computed(() => currentPlan.value.seatType === "pairs" ? "pairs-column" : "individual-column")
+//used refs
+const studentRefs = ref([])
+const draggables = ref([])
+const playgroundRef = ref(null)
+onMounted(async () => {
+  if (import.meta.client) {
+    const { Draggable } = await import('@shopify/draggable')
+    if (playgroundRef.value) {
+      const draggable = new Draggable(playgroundRef.value, {
+        draggable: '.student-box',
+
+      })
+      let targetElement = undefined;
+
+       draggable.on('drag:over', (event) => {
+        targetElement = event.over;
+      });
+       
+      draggable.on('drag:out', (event) => {
+        if (event.over === targetElement) {
+          targetElement = undefined;
+        }
+      });
+
+      draggable.on('drag:stop', (event) => {
+        const draggedElement = event.source;
+        console.log(draggedElement, targetElement)
+      })
+    }
+  }
+})
 //show components
 const showChangePlan = ref(false)
 const showModifyPlan = ref(false)
@@ -124,10 +155,7 @@ const showPlayground = ref(false)
 const showPrintDialog = ref(false)
 const UploadDialog = ref(false)
 
-//used refs
-const studentRefs = ref([])
-const draggables = ref([])
-const playgroundRef = ref(null)
+
 
 
 //generate the zoom value
@@ -528,7 +556,9 @@ const printPlan = (zoom) => {
 }
 
 .individual-column {
-    grid-template-columns: 1fr
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
 }
 
 .student-box {
