@@ -98,9 +98,10 @@
                         </v-tooltip></i>
                 </div>
             </div> -->
-            <div id="print" class="playground-cont grid gap-8 shadow-lg mt-10 mb-5">
-                <div class="columns grid" :class="columnClass" v-for="(column, index) in planStore.plans[planStore.currentPlanIndex].planScheme">
-                    
+            <div id="print" class="playground-cont grid gap-8 overflow-scroll shadow-lg mt-10 mb-5">
+                <div class="columns grid" :class="columnClass"
+                    v-for="(column, index) in planStore.plans[planStore.currentPlanIndex].planScheme">
+
                     <div class="student-box" v-for="student in column">{{ student.name }}</div>
                 </div>
             </div>
@@ -115,7 +116,7 @@ import { usePlanStore } from '~/store/planStore'
 const planStore = usePlanStore();
 
 const currentPlan = computed(() => planStore.plans[planStore.currentPlanIndex])
-const columnClass = computed(()=>currentPlan.value.seatType === "pairs" ? "pairs-column" : "individual-column")
+const columnClass = computed(() => currentPlan.value.seatType === "pairs" ? "pairs-column" : "individual-column")
 //show components
 const showChangePlan = ref(false)
 const showModifyPlan = ref(false)
@@ -497,33 +498,55 @@ const printPlan = (zoom) => {
 
 
 .playground-wrapper {
-    margin-inline: 2rem;
+    /*     margin-inline: 2rem;
     background: v-bind('usedStyles.bg');
     outline-color: v-bind('usedStyles.outlineColor');
     padding: 2rem;
-    background-repeat: repeat;
+    background-repeat: repeat; */
+}
+
+.vertical-view {
+    /* To apply column under the other in small devices */
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr))
 }
 
 .playground-cont {
-
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    position: relative;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    gap: 2rem;
+    overflow-x: auto;
     margin-inline: 1rem;
     min-height: 30rem;
-    overflow: scroll;
+    position: relative;
+
 }
-.pairs-column{
-grid-template-columns: 1fr 1fr;
-gap:0.5rem
-}  
-.individual-column{
-grid-template-columns: 1fr
+
+.pairs-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
 }
+
+.individual-column {
+    grid-template-columns: 1fr
+}
+
 .student-box {
     background-color: #ccc;
     padding: 20px;
     text-align: center;
     border-radius: 5px;
+    white-space: normal;
+    /* allow text to wrap */
+    word-wrap: break-word;
+    /* break long words if needed */
+    width: 100%;
+    /* take full width of the grid cell */
+    max-width: 10rem;
+    height: 5rem;
+    /* optional: control how wide each box can grow */
+    box-sizing: border-box;
+    text-overflow: ellipsis;
 }
 
 .moving-btn {
