@@ -12,7 +12,7 @@
                 <v-row>
                     <v-col cols="6">
 
-                        <v-checkbox v-model="planInfos.seatType" value="0" :rules="checkTypeRule">
+                        <v-checkbox v-model="planInfos.seatType" value="pairs" :rules="checkTypeRule">
                             <template v-slot:label>
                                 <div>
                                     <v-tooltip location="bottom">
@@ -25,7 +25,7 @@
                         </v-checkbox>
                     </v-col>
                     <v-col cols="6">
-                        <v-checkbox v-model="planInfos.seatType" value="1">
+                        <v-checkbox v-model="planInfos.seatType" value="rows">
                             <template v-slot:label>
                                 <div>
                                     <v-tooltip location="bottom">
