@@ -127,11 +127,11 @@ const plansCreator = () => {
     const { planName, description, seatType } = planInfos.value;
 
 
-    const { tableData, criteriaOneTitle,numberOfRows } = namesTable.value
+    const { tableData, criteriaOneTitle,numberOfRows } = namesTable.value;
+
     PlanStore.plansCreator(planName, description, seatType, criteriaOneTitle, tableData,numberOfRows)
-
-
 }
+
 
 
 

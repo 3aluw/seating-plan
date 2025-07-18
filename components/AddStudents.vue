@@ -34,7 +34,7 @@
                 </tbody>
             </v-table>
         </div>
-        <div class="insert-rows-cont">
+        <div class="insert-rows-cont" v-if="namesTable.tableData.length > 0">
             <h2 class="text-xl py-4">How many rows are there?</h2>
             <v-slider v-model="namesTable.numberOfRows" :max="maxNumberOfRows" :min="1" :step="1" thumb-label></v-slider>
         </div>
