@@ -156,8 +156,15 @@ export const usePlanStore = defineStore("PlanStore", () => {
 
         return planScheme;
     };
+//INTERNAL: adds ID to each student in the DataTable
+const addIdToStudents = (tableData) => {
+    return tableData.map((student, index) => {
+        return { ...student, id: index + 1 };
+    });
+}
 
     const plansCreator = (planName, description, seatType, criteriaOneTitle, tableData, numberOfRows) => {
+        tableData = addIdToStudents(tableData);
         const planScheme = generatePlanScheme(tableData, seatType, numberOfRows);
         plans.value.push({
             planName: planName,
@@ -170,6 +177,7 @@ export const usePlanStore = defineStore("PlanStore", () => {
         })
         //switch to the new created plan
         currentPlanIndex.value = plans.value.length - 1
+        console.log(plans.value[currentPlanIndex.value]);
     }
     const deletePlan = (index) => { plans.value.splice(index, 1) }
 
