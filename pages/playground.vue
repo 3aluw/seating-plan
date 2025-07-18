@@ -98,11 +98,13 @@
                         </v-tooltip></i>
                 </div>
             </div> -->
-            <div id="print" class="playground-cont grid gap-8 overflow-scroll shadow-lg mt-10 mb-5" ref="playgroundRef" >
+            <div id="print" class="playground-cont grid gap-8 overflow-scroll shadow-lg mt-10 mb-5" ref="playgroundRef">
                 <div class="columns grid" :class="columnClass"
                     v-for="(column, index) in planStore.plans[planStore.currentPlanIndex].planScheme">
 
-                    <div class="student-box" v-for="student in column" :key="student.id" :data-id="student.id">{{ student.name }}</div>
+                    <div class="student-box" v-for="student in column" :key="student.id" :data-id="student.id">{{
+                        student.name
+                        }} </div>
                 </div>
             </div>
         </div>
@@ -122,32 +124,45 @@ const studentRefs = ref([])
 const draggables = ref([])
 const playgroundRef = ref(null)
 onMounted(async () => {
-  if (import.meta.client) {
-    const { Draggable } = await import('@shopify/draggable')
-    if (playgroundRef.value) {
-      const draggable = new Draggable(playgroundRef.value, {
-        draggable: '.student-box',
+    if (import.meta.client) {
+        const { Draggable } = await import('@shopify/draggable')
+        if (playgroundRef.value) {
+            const draggable = new Draggable(playgroundRef.value, {
+                draggable: '.student-box',
 
-      })
-      let targetElement = undefined;
+            })
+            let targetElement = undefined;
 
-       draggable.on('drag:over', (event) => {
-        targetElement = event.over;
-      });
-       
-      draggable.on('drag:out', (event) => {
-        if (event.over === targetElement) {
-          targetElement = undefined;
+            draggable.on('drag:over', (event) => {
+                targetElement = event.over;
+            });
+
+            draggable.on('drag:out', (event) => {
+                if (event.over === targetElement) {
+                    targetElement = undefined;
+                }
+            });
+
+            draggable.on('drag:stop', (event) => {
+                const draggedElement = event.source;
+                if (targetElement) swapStudents(Number(draggedElement.dataset.id), Number(targetElement.dataset.id))
+            })
         }
-      });
-
-      draggable.on('drag:stop', (event) => {
-        const draggedElement = event.source;
-        console.log(draggedElement, targetElement)
-      })
     }
-  }
 })
+
+const swapStudents = (draggedElementId, targetElementId) => {
+    const planScheme = currentPlan.value.planScheme;
+    // Find the indices of the dragged and target elements
+    const draggedColumnIndex = planScheme.findIndex(array => array.some(student => student.id === draggedElementId))
+    const draggedStudentIndex = planScheme[draggedColumnIndex].findIndex((student) => student.id == draggedElementId)
+    const targetColumnIndex = planScheme.findIndex((array, index) => array.some(student => student.id === targetElementId))
+    const targetStudentIndex = planScheme[targetColumnIndex].findIndex((student) => student.id == targetElementId)
+    // Swap them directly
+    const temp = planScheme[draggedColumnIndex][draggedStudentIndex];
+    planScheme[draggedColumnIndex][draggedStudentIndex] = planScheme[targetColumnIndex][targetStudentIndex];
+    planScheme[targetColumnIndex][targetStudentIndex] = temp;
+}
 //show components
 const showChangePlan = ref(false)
 const showModifyPlan = ref(false)
