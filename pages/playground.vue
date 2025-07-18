@@ -1,7 +1,7 @@
 <template>
     <div class="conatiner">
 
- <!--        <nav class="navbar flex justify-around mt-12">
+        <!--        <nav class="navbar flex justify-around mt-12">
             <NuxtLink to="/"> <v-btn variant="plain">Home</v-btn></NuxtLink>
 
             <v-dialog v-model="UploadDialog" width="auto" theme="dark" min-width="400px">
@@ -11,20 +11,20 @@
 
                 </template>
 
-                <UploadPlan @closeDialog="UploadDialog = false" />
-            </v-dialog>
+<UploadPlan @closeDialog="UploadDialog = false" />
+</v-dialog>
 
-            <v-btn variant="plain" @click="showChangePlan = true">Change plan</v-btn>
+<v-btn variant="plain" @click="showChangePlan = true">Change plan</v-btn>
 
-        </nav> -->
+</nav> -->
 
         <div class="playground-wrapper">
             <!--dialogs-->
-<!--             <ModifyPlan v-model="showModifyPlan" />
+            <!--             <ModifyPlan v-model="showModifyPlan" />
             <ChosePlan v-model="showChangePlan" />
             <PrintDialog v-model="showPrintDialog" @printEmit="printPlan" class='printDialog' /> -->
             <!--playground toolbar-->
- <!--            <v-card color="grey-lighten-4" flat rounded="0">
+            <!--            <v-card color="grey-lighten-4" flat rounded="0">
 
                 <v-toolbar density="compact" color="blue-darken-1">
                     <v-menu open-on-hover>
@@ -80,9 +80,10 @@
                 </v-toolbar>
             </v-card> -->
 
-            <div id="print" ref="playgroundRef" class="playground-cont  shadow-lg mt-10 mb-5 ">
+            <!-- OLD PLAYGROUND -->
+            <!-- <div id="print" ref="playgroundRef" class="playground-cont  shadow-lg mt-10 mb-5 ">
                 <div class="relative playground-item flex justify-center align-center" v-show="showPlayground"
-                    v-for="(student, index) in    planStore.plans[planStore.currentPlanIndex].tableData" ref="studentRefs"
+                    v-for="(student, index) in planStore.plans[planStore.currentPlanIndex].tableData" ref="studentRefs"
                     :style="draggables[index]?.style" :class="{
                         'overlappedItem': index === overlappedItem,
                     }">
@@ -96,6 +97,12 @@
                         aria-hidden="true"> <v-tooltip activator="parent" location="bottom">{{ student.fieldOne }}
                         </v-tooltip></i>
                 </div>
+            </div> -->
+            <div id="print" class="playground-cont grid gap-8 shadow-lg mt-10 mb-5">
+                <div class="columns grid" :class="columnClass" v-for="(column, index) in planStore.plans[planStore.currentPlanIndex].planScheme">
+                    
+                    <div class="student-box" v-for="student in column">{{ student.name }}</div>
+                </div>
             </div>
         </div>
 
@@ -106,8 +113,9 @@
 
 import { usePlanStore } from '~/store/planStore'
 const planStore = usePlanStore();
-console.log(planStore.plans[planStore.currentPlanIndex]);
+
 const currentPlan = computed(() => planStore.plans[planStore.currentPlanIndex])
+const columnClass = computed(()=>currentPlan.value.seatType === "pairs" ? "pairs-column" : "individual-column")
 //show components
 const showChangePlan = ref(false)
 const showModifyPlan = ref(false)
@@ -177,15 +185,15 @@ const baseLineStartIndex = computed(() => rightLineStartIndex.value - studentsNu
 
 //Rows and pairs logic
 const placesPerRow = computed(() => {
-    const {numberOfRows, seatType} = currentPlan.value
+    const { numberOfRows, seatType } = currentPlan.value
     const numberOfStudents = currentPlan.value.tableData.length
     const placesPerRow = Math.ceil(numberOfStudents / numberOfRows)
-   return seatType == 0 && placesPerRow%2 ? placesPerRow + 1 : placesPerRow
+    return seatType == 0 && placesPerRow % 2 ? placesPerRow + 1 : placesPerRow
 })
-const fillBlanks = ()=>{
+const fillBlanks = () => {
     const numberOfStudents = currentPlan.value.tableData.length
-     const {numberOfRows, seatType} = currentPlan.value
-const reminderOfStudents = numberOfStudents%numberOfRows;
+    const { numberOfRows, seatType } = currentPlan.value
+    const reminderOfStudents = numberOfStudents % numberOfRows;
 }
 /* //generate items locations on the X-axis
 const XObj = ref([0])
@@ -488,23 +496,34 @@ const printPlan = (zoom) => {
 }
 
 
-.playground-cont {
-    position: relative;
-    margin-inline: 1rem;
-    min-height: 30rem;
-    color: white;
-
-    overflow: scroll;
-}
-
-
-
 .playground-wrapper {
     margin-inline: 2rem;
     background: v-bind('usedStyles.bg');
     outline-color: v-bind('usedStyles.outlineColor');
     padding: 2rem;
     background-repeat: repeat;
+}
+
+.playground-cont {
+
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    position: relative;
+    margin-inline: 1rem;
+    min-height: 30rem;
+    overflow: scroll;
+}
+.pairs-column{
+grid-template-columns: 1fr 1fr;
+gap:0.5rem
+}  
+.individual-column{
+grid-template-columns: 1fr
+}
+.student-box {
+    background-color: #ccc;
+    padding: 20px;
+    text-align: center;
+    border-radius: 5px;
 }
 
 .moving-btn {
