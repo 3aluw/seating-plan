@@ -135,10 +135,10 @@ export const usePlanStore = defineStore("PlanStore", () => {
     //INTERNAL : adds blank students to the planScheme to ensure rows has equal number of students
     const addBlankStudents = (seatType, planScheme) => {
         const isPairType = seatType === "pairs";
-        const blankStudent = () => ({ name: "", fieldOne: "" });
+        const blankStudent = () => ({ name: "", fieldOne: "", id: (planScheme.reduce((acc, row) => acc + row.length, 0) + 1) });
 
         const firstRow = planScheme[0];
-        console.log(firstRow)
+        
         // Make first row even if seatType is 'pairs' and it's odd
         if (isPairType && firstRow.length % 2 !== 0) {
             firstRow.push(blankStudent());

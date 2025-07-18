@@ -102,7 +102,7 @@
                 <div class="columns grid" :class="columnClass"
                     v-for="(column, index) in planStore.plans[planStore.currentPlanIndex].planScheme">
 
-                    <div class="student-box" v-for="student in column">{{ student.name }}</div>
+                    <div class="student-box" v-for="student in column" :key="student.id" :data-id="student.id">{{ student.name }}</div>
                 </div>
             </div>
         </div>
