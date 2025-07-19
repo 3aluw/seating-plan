@@ -99,7 +99,7 @@
                 </div>
             </div> -->
             <div id="print" class="playground-cont grid gap-8 overflow-scroll shadow-lg mt-10 mb-5" ref="playgroundRef">
-                <div class="columns grid" :class="columnClass"
+                <div class="grid" :class="columnClass"
                     v-for="(column, index) in planStore.plans[planStore.currentPlanIndex].planScheme">
 
                     <div class="student-box" v-for="student in column" :key="student.id" :data-id="student.id">{{
@@ -577,7 +577,8 @@ const printPlan = (zoom) => {
 }
 
 .student-box {
-    background-color: #ccc;
+    background-color: #2C3E50;
+    color: #ECF0F1;
     padding: 20px;
     text-align: center;
     border-radius: 5px;
@@ -593,7 +594,12 @@ const printPlan = (zoom) => {
     box-sizing: border-box;
     text-overflow: ellipsis;
 }
+.draggable--over{
+    border: 1px dashed white;
+    background: #c0c5cb;
+  
 
+}
 .moving-btn {
     position: absolute;
     left: 0;
