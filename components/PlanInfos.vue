@@ -5,7 +5,7 @@
             <v-text-field v-model="planInfos.planName" :rules="nameRule" :counter="10" label="Plan name*"
                 maxlength="10"></v-text-field>
             <v-text-field v-model="planInfos.description" label="Description (optional)"></v-text-field>
-
+         
 
             chose a sitting plan model :
             <v-container fluid class="types-cont">
@@ -19,7 +19,7 @@
                                         <template v-slot:activator="{ props }">
                                             <img class="border" src="/pairs.png" />
                                         </template>
-                                    </v-tooltip> 
+                                    </v-tooltip>
                                 </div>
                             </template>
                         </v-checkbox>
@@ -58,8 +58,6 @@
 </template>
 
 <script setup>
-import { usePlanStore } from '@/store/planStore'
-const planStore = usePlanStore()
 
 
 // emit and update planInfos
@@ -105,8 +103,6 @@ const nameRule = [
 
 </script>
 <style scoped>
-
-
 .v-selection-control {
     flex-direction: column;
 }
