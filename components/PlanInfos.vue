@@ -1,6 +1,6 @@
 <template>
     <v-sheet width="1000" max-width="100%" class="mx-auto">
-        <h1 class="text-center text-3xl my-2 mb-10 text-blue-300">Fill plan info</h1>
+        <h1 class="text-center text-3xl my-2 mb-10 font-bold">Fill plan info</h1>
         <v-form @submit.prevent>
             <v-text-field v-model="planInfos.planName" :rules="nameRule" :counter="10" label="Plan name*"
                 maxlength="10"></v-text-field>
@@ -17,9 +17,9 @@
                                 <div>
                                     <v-tooltip location="bottom">
                                         <template v-slot:activator="{ props }">
-                                            <img src="/pairs.png" />
+                                            <img class="border" src="/pairs.png" />
                                         </template>
-                                    </v-tooltip>
+                                    </v-tooltip> 
                                 </div>
                             </template>
                         </v-checkbox>
@@ -30,7 +30,7 @@
                                 <div>
                                     <v-tooltip location="bottom">
                                         <template v-slot:activator="{ props }">
-                                            <img src="/rows.png" />
+                                            <img class="border" src="/rows.png" />
                                         </template>
                                     </v-tooltip>
                                 </div>
@@ -38,7 +38,7 @@
                         </v-checkbox>
                     </v-col>
                     <!--          <v-col>
-                        <v-checkbox v-model="planInfos.seatType" value="2">
+                        <v-checkbox v-model="planInfos.seatType" value="u-shape">
                             <template v-slot:label>
                                 <div>
                                     <v-tooltip location="bottom">
@@ -105,9 +105,7 @@ const nameRule = [
 
 </script>
 <style scoped>
-.v-form {
-    background: #1B1C24;
-}
+
 
 .v-selection-control {
     flex-direction: column;

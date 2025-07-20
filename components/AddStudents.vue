@@ -1,33 +1,34 @@
 <template>
     <v-sheet width="1000" max-width="100%" class="mx-auto mb-10">
-        <h1 class="text-center text-3xl my-2 mb-10 text-blue-300">Set up your class</h1>
+        <h1 class="text-center text-3xl my-2 mb-10 font-bold">Set up your class</h1>
         <div class="add-names-cont">
             <h2 class="text-xl py-4">Add names</h2>
-            Here you can set up a able of your attendents, you can add a criteria that can help you to sort...(ie: a
+            Here you can set up a able of your attendants, enter each name in new line; click add data after you complete.
+            <br> you can add a criteria that can help you to sort...(ie: a
             teacher can
-            use marks as an additional criteria). <br>
-            click add data after you complete entering data in the text field
+            use marks as an additional criteria).
+           
             <v-table class="my-4">
-                <thead class="bg-gray-800">
-                    <tr>
-                        <th class="text-left">Names</th>
-                        <th class="text-left"><v-text-field maxlength="10" :counter="10"
-                                placeholder="this will help you to sort. ie: marks" label="Add a criteria title ..."
-                                v-model="namesTable.criteriaOneTitle"></v-text-field></th>
+                <thead>
+                    <tr class="bg-blue-200 text-black">
+                        <th class="text-left text-black">Names</th>
+                        <th class="text-left text-black"><v-text-field  hide-details maxlength="10" :counter="10" variant="filled"
+                                placeholder="this will help you to sort. ie: marks" label="Add a criteria title (optional)"
+                                v-model="namesTable.criteriaOneTitle" ></v-text-field></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="student in namesTable.tableData" :key="student.name">
-                        <td>{{ student.name }}</td>
+                        <td >{{ student.name }}</td>
                         <td>{{ student.fieldOne }}</td>
                     </tr>
                     <tr>
                         <td>
-                            <v-textarea label="enter new students' list" v-model="newStudents" rows="2"
+                            <v-textarea label="enter new students' names" v-model="newStudents" rows="2"
                                 :rules="namesRule"></v-textarea>
                         </td>
                         <td>
-                            <v-textarea label="enter new data's list" v-model="newMarks" rows="2"></v-textarea>
+                            <v-textarea label="enter new values's list" v-model="newMarks" rows="2"></v-textarea>
                         </td>
                     </tr>
 

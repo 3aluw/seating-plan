@@ -40,7 +40,7 @@
         </div>
 
         <div class="text-center">
-            <v-dialog v-model="dialog" width="auto" theme="dark">
+            <v-dialog v-model="dialog" width="auto" scrim="#396638">
                 <template v-slot:activator="{ props }">
                     <div class="flex justify-center max-[600px]:!hidden"> <button class="call-btn bt-shake" v-bind="props">
                             Create Your
@@ -66,9 +66,9 @@
 
                         <!--Form navigation buttons-->
                         <div class="flex justify-center gap-4">
-                            <v-btn prepend-icon="mdi:mdi-arrow-left" variant="outlined" color="white" :disabled="step == 1"
+                            <v-btn prepend-icon="mdi:mdi-arrow-left" variant="outlined" color="black" :disabled="step == 1"
                                 @click="step -= 1">BACK</v-btn>
-                            <v-btn append-icon="$next" variant="outlined" color="white" v-if="step < 3" @click="step += 1"
+                            <v-btn append-icon="$next" variant="outlined" color="black" v-if="step < 3" @click="step += 1"
                                 :disabled="disableNextButton">NEXT</v-btn>
                             <NuxtLink to="/playground"> <v-btn append-icon="$next" variant="flat" color="green-darken-2"
                                     v-if="step == 3" @click="plansCreator">Finnish</v-btn></NuxtLink>
@@ -88,7 +88,7 @@ import { usePlanStore } from '~/store/planStore'
 const PlanStore = usePlanStore();
 
 
-//Emited Data from child components :
+//Emitted Data from child components :
 //(PlanInfos comp)
 let planInfos = ref({
     planName: "",
@@ -236,49 +236,7 @@ watch(dialog, () => {
     }
 }
 
-/* an other animation
-@keyframes wobble {
-    0% {
-        transform: none;
-        transform-origin: center;
-    }
 
-    15% {
-        transform: translate3d(0, -25%, 0) rotate3d(0, 0, 1, -5deg);
-        transform-origin: center;
-    }
-
-    30% {
-        transform: translate3d(0, 20%, 0) rotate3d(0, 0, 1, 3deg);
-        transform-origin: center;
-    }
-
-    45% {
-        transform: translate3d(0, -15%, 0) rotate3d(0, 0, 1, -3deg);
-        transform-origin: center;
-    }
-
-    60% {
-        transform: translate3d(0, 10%, 0) rotate3d(0, 0, 1, 2deg);
-        transform-origin: center;
-    }
-
-    75% {
-        transform: translate3d(0, -5%, 0) rotate3d(0, 0, 1, -1deg);
-        transform-origin: center;
-    }
-
-    100% {
-        transform: none;
-        transform-origin: center;
-    }
-}*/
-
-/*Form */
-.v-card-text {
-    background: #1B1C24;
-    color: #A8A6A7;
-}
 
 @media screen and (max-width: 900px) {
     .px-10 {
