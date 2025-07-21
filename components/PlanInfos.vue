@@ -14,10 +14,10 @@
 
                         <v-checkbox v-model="planInfos.seatType" value="pairs" :rules="checkTypeRule">
                             <template v-slot:label>
-                                <div>
+                                <div  class="border-2">
                                     <v-tooltip location="bottom">
                                         <template v-slot:activator="{ props }">
-                                            <img class="border" src="/pairs.png" />
+                                            <img src="/pairs.png" />
                                         </template>
                                     </v-tooltip>
                                 </div>
@@ -27,10 +27,10 @@
                     <v-col cols="6">
                         <v-checkbox v-model="planInfos.seatType" value="rows">
                             <template v-slot:label>
-                                <div>
+                                <div class="border-2">
                                     <v-tooltip location="bottom">
                                         <template v-slot:activator="{ props }">
-                                            <img class="border" src="/rows.png" />
+                                            <img  src="/rows.png" />
                                         </template>
                                     </v-tooltip>
                                 </div>
@@ -77,7 +77,7 @@ const planInfos = computed({
 
 
 /*form rules */
-const reqiuiredRule = [
+const requiredRule = [
     value => {
         if (value) return true
 

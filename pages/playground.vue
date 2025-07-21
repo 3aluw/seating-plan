@@ -598,7 +598,9 @@ const printPlan = (zoom) => {
     border: 1px dashed white;
     background: #c0c5cb;
   
-
+}
+.draggable--is-dragging{
+    
 }
 .moving-btn {
     position: absolute;

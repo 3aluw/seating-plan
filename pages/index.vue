@@ -40,7 +40,7 @@
         </div>
 
         <div class="text-center">
-            <v-dialog v-model="dialog" width="auto" scrim="#396638">
+            <v-dialog v-model="dialog" @afterLeave="clearPlanInfo" width="auto" scrim="#396638">
                 <template v-slot:activator="{ props }">
                     <div class="flex justify-center max-[600px]:!hidden"> <button class="call-btn bt-shake" v-bind="props">
                             Create Your
@@ -106,10 +106,10 @@ let namesTable = ref({
 
 //form steps
 let step = ref(1)
-//Enable NEXT button
+//disable NEXT button
 const disableNextButton = computed(() => {
     if (step.value === 1 && isFormComplete(planInfos.value)) { return false }
-    else if (step.value === 2 && namesTable.value.tableData.length > 4) { return false }
+    else if (step.value === 2 && namesTable.value.tableData.length > 9) { return false }
     return true
 }
 )
@@ -139,15 +139,12 @@ const plansCreator = () => {
 let dialog = ref(false);
 let UploadDialog = ref(false);
 //delete entered data after closing the dialog
-watch(dialog, () => {
-    if (dialog.value === false) {
+const clearPlanInfo =  () => {
         Object.keys(planInfos.value).forEach(key => planInfos.value[key] = "");
         namesTable.value.criteriaOneTitle = ""
         namesTable.value.tableData = [];
         step.value = 1
-    }
-
-})
+}
 </script>
 <style scoped>
 .conatiner {
