@@ -4,13 +4,14 @@
         <div class="add-names-cont">
             <div class="">
                 <div class="flex align-center gap-4">add a sorting criteria : <v-switch class="inline-grid"
-                        v-model="isSortingCriteriaAllowed" @update:modelValue="updateCriteriaData" hide-details></v-switch>
+                        v-model="isSortingCriteriaAllowed" @update:modelValue="updateCriteriaData"
+                        hide-details></v-switch>
                 </div>
                 <v-text-field v-if="isSortingCriteriaAllowed" hide-details maxlength="10" :counter="10" variant="filled"
                     placeholder="this will help you to sort. ie: marks" label="Add a criteria title (optional)"
                     v-model="namesTable.criteriaOneTitle"></v-text-field>
             </div>
-            <h2 class="text-xl py-4">Add names </h2>
+            <h2 class="text-xl py-4">Add names</h2>
             Here you can set up a able of your attendants, enter each name in new line; click add data after you
             complete.
             <br> you can add a criteria that can help you to sort...(ie: a
@@ -21,13 +22,16 @@
                 <thead>
                     <tr class="bg-blue-200 text-black">
                         <th class="text-left text-black ">Names</th>
-                        <th class="text-left text-black" v-if="isSortingCriteriaAllowed">{{ namesTable.criteriaOneTitle ?? 'Criteria' }}</th>
+                        <th class="text-left text-black" v-if="isSortingCriteriaAllowed">{{ namesTable.criteriaOneTitle
+                            ?? 'Criteria' }}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="student in namesTable.tableData" :key="student.name">
-                        <td>{{ student.name }}</td>
-                        <td v-if="isSortingCriteriaAllowed">{{ student.fieldOne }}</td>
+                    <tr v-for="(student, index) in namesTable.tableData">
+                        <td><v-text-field @update:focused="deleteEmptyStudent(student.name, index)" hide-details
+                                class="px-0" v-model="student.name" variant="plain"></v-text-field></td>
+                        <td v-if="isSortingCriteriaAllowed"><v-text-field hide-details class="px-0"
+                                v-model="student.fieldOne" variant="plain"></v-text-field></td>
                     </tr>
                     <tr>
                         <td class="px-0">
@@ -35,22 +39,22 @@
                                 :rules="namesRule"></v-textarea>
                         </td>
                         <td class="px-0">
-                            <v-textarea v-if="isSortingCriteriaAllowed" label="enter new values's list" v-model="newMarks" rows="2"></v-textarea>
+                            <v-textarea v-if="isSortingCriteriaAllowed" label="enter new values's list"
+                                v-model="newMarks" rows="2"></v-textarea>
                         </td>
                     </tr>
-
                 </tbody>
             </v-table>
+        </div>
+
+        <div class="flex justify-center ">
+            <v-btn class="mx-4" @click="addNewData" color="teal-lighten-2" :disabled="!newStudents">Add data</v-btn>
+            <v-btn class="mx-4" @click="clearTable" color="red-lighten-2">clear</v-btn>
         </div>
         <div class="insert-rows-cont" v-if="namesTable.tableData.length > 0">
             <h2 class="text-xl py-4">How many rows are there?</h2>
             <v-slider v-model="namesTable.numberOfRows" :max="maxNumberOfRows" :min="1" :step="1"
                 thumb-label></v-slider>
-        </div>
-        <div class="flex justify-center ">
-            <v-btn class="mx-4" @click="addNewData" color="light-green-lighten-4"
-                :disabled="!newStudents">Add data</v-btn>
-            <v-btn class="mx-4" @click="clearTable" color="red-lighten-4">clear</v-btn>
         </div>
     </v-sheet>
 </template>
@@ -69,17 +73,20 @@ const namesTable = computed({
 
 const isSortingCriteriaAllowed = ref(false);
 const maxNumberOfRows = computed(() => {
-    return Math.min(Math.ceil(namesTable.value.tableData.length / 4), 4)
+    return Math.min(Math.ceil(namesTable.value.tableData.length / 6), 6)
 })
 
 let newStudents = ref('');
 let newMarks = ref('')
 
+const deleteEmptyStudent = (studentName, index) => {
+    if (studentName.length !== 0) return
+    namesTable.value.tableData.splice(index, 1)
+}
 
 const addNewData = () => {
     const newStudentsArray = newStudents.value.split('\n')
     const newMarksArray = newMarks.value.split('\n')
-
     newStudentsArray.forEach((el, i) => {
         if (el) {
             namesTable.value.tableData.push({
@@ -120,7 +127,7 @@ const fieldOneTitleRule = [
 const namesRule = [
     value => {
         if (value && value?.match(/\n\n/)) return "you can't have empty row(s)"
-        else if (value && value.match(/\n/g)?.length < 4 && namesTable.value.tableData?.length < 4) { return "you need to enter atleast 5 names" }
+        else if (value && (value.match(/\n/g)?.length + namesTable.value.tableData?.length) < 9) { return "To proceed, you need at least 10 names" }
         return true
     },
 ]
