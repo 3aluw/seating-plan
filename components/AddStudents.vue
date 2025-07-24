@@ -119,7 +119,7 @@ const addNewData = () => {
         if (el) {
             namesTable.value.tableData.push({
                 name: el,
-                fieldOne: Number(criteriaArray[i]) || 0,
+                fieldOne: isSortingCriteriaAllowed.value ? (Number(criteriaArray[i]) || 0) : undefined,
             })
         }
     })
@@ -132,10 +132,14 @@ const clearTable = () => {
 
 const updateCriteriaData = () => {
     if (!isSortingCriteriaAllowed.value) {
-        namesTable.value.criteriaOneTitle = "";
-        namesTable.value.tableData.forEach(student => student.fieldOne = "")
+        namesTable.value.criteriaOneTitle = undefined;
+       // namesTable.value.tableData.forEach(student => student.fieldOne = undefined)
     }
-    console.log(namesTable.value.tableData);
+    else {
+        namesTable.value.criteriaOneTitle = '';
+       // namesTable.value.tableData.forEach(student => student.fieldOne = 0)
+    }
+   
 }
 
 

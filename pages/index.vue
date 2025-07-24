@@ -1,6 +1,6 @@
 <template>
     <div class="conatiner">
- <!--        <nav class="flex justify-around  max-[600px]:flex-col max-[600px]:items-center">
+        <!--        <nav class="flex justify-around  max-[600px]:flex-col max-[600px]:items-center">
             <NuxtLink to="/playgroundOne"> <v-btn variant="text">playground</v-btn></NuxtLink>
 
             <v-dialog v-model="UploadDialog" width="auto" theme="dark" min-width="400px">
@@ -8,12 +8,12 @@
                     <div class="flex justify-center"> <v-btn variant="text" v-bind="props">upload a plan</v-btn>
                     </div>
                 </template>
-                <UploadPlan @closeDialog="UploadDialog = false" />
-            </v-dialog>
+<UploadPlan @closeDialog="UploadDialog = false" />
+</v-dialog>
 
-            <v-btn @click="dialog = true" variant="text" class="max-[600px]:!hidden">Create a new plan</v-btn>
+<v-btn @click="dialog = true" variant="text" class="max-[600px]:!hidden">Create a new plan</v-btn>
 
-        </nav> -->
+</nav> -->
 
         <div class="main-content my-10 flex justify-between px-10  gap-4">
             <div class="fetures flex flex-col text-center ">
@@ -31,9 +31,11 @@
             </div>
 
             <div class="flex justify-start flex-col main-text">
-                <p class="text-5xl pt-5">A <span class="text-purple-600">GOOD </span> seating plan is a part of your game
+                <p class="text-5xl pt-5">A <span class="text-purple-600">GOOD </span> seating plan is a part of your
+                    game
                 </p>
-                <p class="pt-3"> A well-organized seating plan can help promote engagement and interaction among students
+                <p class="pt-3"> A well-organized seating plan can help promote engagement and interaction among
+                    students
                 </p>
             </div>
 
@@ -42,7 +44,8 @@
         <div class="text-center">
             <v-dialog v-model="dialog" @afterLeave="clearPlanInfo" width="auto" scrim="#396638">
                 <template v-slot:activator="{ props }">
-                    <div class="flex justify-center max-[600px]:!hidden"> <button class="call-btn bt-shake" v-bind="props">
+                    <div class="flex justify-center max-[600px]:!hidden"> <button class="call-btn bt-shake"
+                            v-bind="props">
                             Create Your
                             plan</button>
                     </div>
@@ -66,10 +69,10 @@
 
                         <!--Form navigation buttons-->
                         <div class="flex justify-center gap-4">
-                            <v-btn prepend-icon="mdi:mdi-arrow-left" variant="outlined" color="black" :disabled="step == 1"
-                                @click="step -= 1">BACK</v-btn>
-                            <v-btn append-icon="$next" variant="outlined" color="black" v-if="step < 3" @click="step += 1"
-                                :disabled="disableNextButton">NEXT</v-btn>
+                            <v-btn prepend-icon="mdi:mdi-arrow-left" variant="outlined" color="black"
+                                :disabled="step == 1" @click="step -= 1">BACK</v-btn>
+                            <v-btn append-icon="$next" variant="outlined" color="black" v-if="step < 3"
+                                @click="step += 1" :disabled="disableNextButton">NEXT</v-btn>
                             <NuxtLink to="/playground"> <v-btn append-icon="$next" variant="flat" color="green-darken-2"
                                     v-if="step == 3" @click="plansCreator">Finnish</v-btn></NuxtLink>
 
@@ -110,11 +113,12 @@ let step = ref(1)
 const disableNextButton = computed(() => {
     if (step.value === 1 && isPlanFormComplete(planInfos.value)) { return false }
     else if (step.value === 2 && namesTable.value.tableData.length > 9) { return false }
+    console.log(namesTable.value);
     return true
 }
 )
 const isPlanFormComplete = (obj) => {
-    return Object.keys(obj).filter((key)=> key!== "description").every(key => obj[key].length > 0)
+    return Object.keys(obj).filter((key) => key !== "description").every(key => obj[key].length > 0)
 }
 //listen to modify emits from the confirmPlan component 
 const changeStep = (toStep) => {
@@ -125,11 +129,8 @@ const changeStep = (toStep) => {
 const plansCreator = () => {
     if (!namesTable.value.criteriaOneTitle) namesTable.value.criteriaOneTitle = "A criteria"
     const { planName, description, seatType } = planInfos.value;
-
-
-    const { tableData, criteriaOneTitle,numberOfRows } = namesTable.value;
-
-    PlanStore.plansCreator(planName, description, seatType, criteriaOneTitle, tableData,numberOfRows)
+    const { tableData, criteriaOneTitle, numberOfRows } = namesTable.value;
+    PlanStore.plansCreator(planName, description, seatType, criteriaOneTitle, tableData, numberOfRows)
 }
 
 
@@ -139,11 +140,11 @@ const plansCreator = () => {
 let dialog = ref(false);
 let UploadDialog = ref(false);
 //delete entered data after closing the dialog
-const clearPlanInfo =  () => {
-        Object.keys(planInfos.value).forEach(key => planInfos.value[key] = "");
-        namesTable.value.criteriaOneTitle = ""
-        namesTable.value.tableData = [];
-        step.value = 1
+const clearPlanInfo = () => {
+    Object.keys(planInfos.value).forEach(key => planInfos.value[key] = "");
+    namesTable.value.criteriaOneTitle = ""
+    namesTable.value.tableData = [];
+    step.value = 1
 }
 </script>
 <style scoped>
