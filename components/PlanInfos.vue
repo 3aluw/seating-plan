@@ -5,7 +5,6 @@
             <v-text-field v-model="planInfos.planName" :rules="nameRule" :counter="10" label="Plan name*"
                 maxlength="10"></v-text-field>
             <v-text-field v-model="planInfos.description" label="Description (optional)"></v-text-field>
-         
 
             chose a sitting plan model :
             <v-container fluid class="types-cont">
@@ -14,7 +13,7 @@
 
                         <v-checkbox v-model="planInfos.seatType" value="pairs" :rules="checkTypeRule">
                             <template v-slot:label>
-                                <div  class="border-2">
+                                <div class="border-2">
                                     <v-tooltip location="bottom">
                                         <template v-slot:activator="{ props }">
                                             <img src="/pairs.png" />
@@ -30,14 +29,14 @@
                                 <div class="border-2">
                                     <v-tooltip location="bottom">
                                         <template v-slot:activator="{ props }">
-                                            <img  src="/rows.png" />
+                                            <img src="/rows.png" />
                                         </template>
                                     </v-tooltip>
                                 </div>
                             </template>
                         </v-checkbox>
                     </v-col>
-                    <!--          <v-col>
+                    <!-- <v-col>
                         <v-checkbox v-model="planInfos.seatType" value="u-shape">
                             <template v-slot:label>
                                 <div>
@@ -90,14 +89,9 @@ const checkTypeRule = [
 ]
 const nameRule = [
     value => {
-        if (value) return true
-
-        return 'Name is requred.'
-    },
-    value => {
-        if (value?.length <= 10) return true
-
-        return 'Name must be less than 10 characters.'
+        if (!value) return 'Name is required.'
+        if (value?.length > 15) return "name should be shorter"
+        return true
     },
 ]
 

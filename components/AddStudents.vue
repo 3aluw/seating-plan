@@ -22,7 +22,7 @@
                 <thead>
                     <tr class="bg-blue-200 text-black">
                         <th class="text-left text-black ">Names</th>
-                        <th class="text-left text-black" v-if="isSortingCriteriaAllowed">{{ namesTable.criteriaOneTitle
+                        <th class="text-left text-black w-1/2" v-if="isSortingCriteriaAllowed">{{ namesTable.criteriaOneTitle
                             ?? 'Criteria' }}</th>
                     </tr>
                 </thead>
@@ -30,7 +30,7 @@
                     <tr v-for="(student, index) in namesTable.tableData">
                         <td><v-text-field @update:focused="deleteEmptyStudent(student.name, index)" hide-details
                                 class="px-0" v-model="student.name" variant="plain"></v-text-field></td>
-                        <td v-if="isSortingCriteriaAllowed"><v-text-field hide-details class="px-0"
+                        <td class="w-1/2" v-if="isSortingCriteriaAllowed"><v-text-field hide-details class="px-0"
                                 v-model="student.fieldOne" variant="plain"></v-text-field></td>
                     </tr>
                     <tr>
@@ -38,8 +38,8 @@
                             <v-textarea class="h-full" label="Enter each name on a new line" v-model="newStudents"
                                 rows="2" auto-grow :rules="namesRule"></v-textarea>
                         </td>
-                        <td class="px-0 w-1/2">
-                            <v-textarea class="h-full" :rules="criteriaRules" v-if="isSortingCriteriaAllowed"
+                        <td class="px-0 w-1/2" v-if="isSortingCriteriaAllowed">
+                            <v-textarea class="h-full" :rules="criteriaRules"
                                 label="enter new values's list" auto-grow v-model="newMarks" rows="2"></v-textarea>
                         </td>
                     </tr>
@@ -53,8 +53,8 @@
             <v-btn class="mx-4" @click="clearTable" color="red-lighten-2">clear</v-btn>
         </div>
         <div class="insert-rows-cont" v-if="namesTable.tableData.length > 0">
-            <h2 class="text-xl py-4">How many rows are there?</h2>
-            <v-slider v-model="namesTable.numberOfRows" :max="maxNumberOfRows" :min="1" :step="1"
+            <h2 class="text-xl py-4 ">How many rows are there?</h2>
+            <v-slider  v-model="namesTable.numberOfRows" :max="maxNumberOfRows" :min="1" :step="1"
                 thumb-label></v-slider>
         </div>
     </v-sheet>

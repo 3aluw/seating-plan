@@ -108,13 +108,13 @@ let namesTable = ref({
 let step = ref(1)
 //disable NEXT button
 const disableNextButton = computed(() => {
-    if (step.value === 1 && isFormComplete(planInfos.value)) { return false }
+    if (step.value === 1 && isPlanFormComplete(planInfos.value)) { return false }
     else if (step.value === 2 && namesTable.value.tableData.length > 9) { return false }
     return true
 }
 )
-const isFormComplete = (obj) => {
-    return Object.keys(obj).every(key => obj[key].length > 0)
+const isPlanFormComplete = (obj) => {
+    return Object.keys(obj).filter((key)=> key!== "description").every(key => obj[key].length > 0)
 }
 //listen to modify emits from the confirmPlan component 
 const changeStep = (toStep) => {
