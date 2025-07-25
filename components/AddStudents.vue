@@ -1,6 +1,6 @@
 <template>
     <v-sheet width="1000" max-width="100%" class="mx-auto mb-10">
-        <h1 class="text-center text-3xl my-2 mb-10 font-bold">Set up your class</h1>
+        <h1 class="text-center text-3xl my-2 mb-10 font-bold uppercase">Set up your class</h1>
         <div class="add-names-cont">
             <div class="">
                 <div class="flex align-center gap-4">add a sorting criteria : <v-switch class="inline-grid"
@@ -28,7 +28,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="(student, index) in namesTable.tableData">
-                        <td><v-text-field @update:focused="deleteEmptyStudent(student.name, index)" hide-details
+                        <td><v-text-field maxlength="30" @update:focused="deleteEmptyStudent(student.name, index)" hide-details
                                 class="px-0" v-model="student.name" variant="plain"></v-text-field></td>
                         <td class="w-1/2" v-if="isSortingCriteriaAllowed"><v-text-field hide-details class="px-0"
                                 v-model="student.fieldOne" variant="plain"></v-text-field></td>
@@ -167,7 +167,7 @@ const namesRule = [
 const criteriaRules = [
     value => {
         if (value && /\n\s*\n/.test('\n' + value)) return "Empty rows will be converted to 0"
-        else if (value && (value.match(/^\s*\S.*$/gm)?.some((criteriaValue) => !Number(criteriaValue)))) { return "Non-numeric values will be converted to 0" }
+        else if (value && (value.match(/^\s*\S.*$/gm)?.some((criteriaValue) =>  isNaN(Number(criteriaValue))))) { return "Non-numeric values will be converted to 0" }
         return true
     },
 ]
