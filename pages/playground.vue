@@ -98,14 +98,18 @@
                         </v-tooltip></i>
                 </div>
             </div> -->
-            <div id="print" class="playground-cont grid gap-8 overflow-scroll shadow-lg mt-10 mb-5" ref="playgroundRef">
+            <div id="print" class="playground-cont relative grid gap-8 overflow-scroll shadow-lg mt-10 mb-5 px-4 py-20"
+                ref="playgroundRef">
+                <div class="front absolute">Front</div>
                 <div class="grid" :class="columnClass"
                     v-for="(column, index) in planStore.plans[planStore.currentPlanIndex].planScheme">
 
-                    <div class="student-box" v-for="student in column" :key="student.id" :data-id="student.id">{{
-                        student.name
+                    <div class="student-box font-bold cursor-move" v-for="student in column" :key="student.id"
+                        :data-id="student.id">{{
+                            student.name
                         }} </div>
                 </div>
+                <div class="back absolute">Back</div>
             </div>
         </div>
 
@@ -557,51 +561,74 @@ const printPlan = (zoom) => {
     grid-auto-flow: column;
     grid-auto-columns: max-content;
     gap: 2rem;
-    overflow-x: auto;
+    overflow: scroll;
     margin-inline: 1rem;
-    min-height: 30rem;
+    min-height: 20rem;
     position: relative;
+    background: #EAF2F8;
 
 }
 
 .pairs-column {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
+    gap: 0.7rem;
 }
 
 .individual-column {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 0.5rem;
+    gap: 0.7rem;
 }
 
 .student-box {
-    background-color: #2C3E50;
-    color: #ECF0F1;
+    background-color: #2980B9;
+    color: #F7F9F9;
     padding: 20px;
     text-align: center;
-    border-radius: 5px;
+    border-radius: 1px;
     white-space: normal;
     /* allow text to wrap */
     word-wrap: break-word;
     /* break long words if needed */
     width: 100%;
-    /* take full width of the grid cell */
-    max-width: 10rem;
+    width: 10rem;
     height: 5rem;
     /* optional: control how wide each box can grow */
     box-sizing: border-box;
     text-overflow: ellipsis;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
-.draggable--over{
+
+.draggable--over {
     border: 1px dashed white;
-    background: #c0c5cb;
-  
+    background: #bfd9ea;
+    color: black;
 }
-.draggable--is-dragging{
-    
+
+.draggable-mirror {
+    opacity: 0.5;
+    color: black;
 }
+
+.front,
+.back {
+    font-size: 2rem;
+    border: 1px dashed black;
+    font-weight: 500;
+    padding-inline: 1rem;
+    padding-block: 0.2rem;
+    color: black;
+    left: 50%;
+}
+.front{
+    border-top: none ;
+}
+.back {
+    bottom: 0;
+    border-bottom: none;
+}
+
 .moving-btn {
     position: absolute;
     left: 0;
