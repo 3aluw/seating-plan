@@ -143,10 +143,6 @@ const updateCriteriaData = () => {
 }
 
 
-
-
-
-
 /*From rules */
 const criteriaTitleRule = [
     value => {
