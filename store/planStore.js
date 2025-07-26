@@ -155,7 +155,7 @@ export const usePlanStore = defineStore("PlanStore", () => {
 
         return planScheme;
     };
-    //INTERNAL: adds ID to each student in the DataTable
+    // adds ID to each student in the DataTable
     const addIdToStudents = (tableData) => {
         return tableData.map((student, index) => {
             return { ...student, id: index + 1 };
@@ -256,7 +256,7 @@ export const usePlanStore = defineStore("PlanStore", () => {
 
 
     return {
-        plans, currentPlanIndex, plansCreator, clonedTableData, undoChanges, sortItems, deletePlan, shufflePlan, downloadPlan, uploadPlan, viewMode
+        plans, currentPlanIndex, plansCreator,generatePlanScheme,addIdToStudents, clonedTableData, undoChanges, sortItems, deletePlan, shufflePlan, downloadPlan, uploadPlan, viewMode
     };
 },
     /* Enable this to persist this store : more info : https://prazdevs.github.io/pinia-plugin-persistedstate/frameworks/nuxt-3.html

@@ -21,7 +21,7 @@
             <data-table v-model="clonedPlan.tableData" :criteria-title="fieldOneTitle"></data-table>
             <div class="action-btns flex justify-around my-4">
                 <v-btn color="blue-darken-2" variant="tonal" @click="showModifyPlan = false">Undo changes</v-btn>
-                <v-btn color="blue-darken-2" variant="tonal" @click="comparePlans">apply</v-btn>
+                <v-btn color="blue-darken-2" variant="tonal" @click="applyChanges">apply</v-btn>
             </div>
         </v-sheet>
     </v-dialog>
@@ -56,11 +56,12 @@ const showModifyPlan = computed({
 })
 
 const applyChanges = () => {
+    manageModifications()
     planStore.plans[planStore.currentPlanIndex] = clonedPlan.value
     showModifyPlan.value = false
 }
-
-const comparePlans = () => {
+// a function to manage modifications on the cloned plan tableData and planScheme
+const manageModifications = () => {
     //count new students (the new ones are without an id)
     const newStudents = clonedPlan.value.tableData.filter((student) => !student.id)
     //count deleted student
@@ -68,7 +69,7 @@ const comparePlans = () => {
     //count empty places (deleted + blank object)
     const emptyPlaces = [...currentPlan.planScheme.flat().filter((student) => student.name.trim() === ''), ...deletedStudents.value]
 
-    //if new students < empty places : places them
+    //if new students < empty places : places them in empty places
     if (newStudents.length <= emptyPlaces.length) {
         //place new students in empty places
         newStudents.forEach((student, index) => {
@@ -76,9 +77,12 @@ const comparePlans = () => {
             replaceInPlanScheme(student.id!, student.name, student.fieldOne)
         })
 
-    } else {
-           // if new students > empty places : re generate a new sitting scheme
-        alert("There are not enough empty places for the new students. Please remove some students or add more empty places.")
+    } else if(newStudents.length > emptyPlaces.length) {
+           // if new students > empty places : delete the current plan and re-generate a new sitting scheme/plan
+           const newTableData = planStore.addIdToStudents(clonedPlan.value.tableData)
+           const newPlanScheme = planStore.generatePlanScheme(clonedPlan.value.tableData, clonedPlan.value.seatType, clonedPlan.value.numberOfRows)
+           clonedPlan.value.tableData = newTableData
+           clonedPlan.value.planScheme = newPlanScheme
     }
 
     //if deletedStudents is too big : re generate a new sitting scheme
