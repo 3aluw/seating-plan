@@ -113,7 +113,6 @@ let step = ref(1)
 const disableNextButton = computed(() => {
     if (step.value === 1 && isPlanFormComplete(planInfos.value)) { return false }
     else if (step.value === 2 && namesTable.value.tableData.length > 9) { return false }
-    console.log(namesTable.value);
     return true
 }
 )
