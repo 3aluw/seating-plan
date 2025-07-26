@@ -66,26 +66,35 @@ const manageModifications = () => {
     const newStudents = clonedPlan.value.tableData.filter((student) => !student.id)
     //count deleted student
     const deletedStudents = useArrayDifference(currentPlan.tableData, clonedPlan.value.tableData, (value, othVal) => value.id === othVal.id)
+    //make deleted students similar to blank object name:''
+    deletedStudents.value.forEach((student) => {
+        const studentToDelete = clonedPlan.value.planScheme.flat().find((s) => s.id === student.id)
+        if (studentToDelete) {
+            studentToDelete.name = ''
+            studentToDelete.fieldOne = clonedPlan.value.criteriaOneTitle ? 0 : undefined
+        }
+    })
     //count empty places (deleted + blank object)
-    const emptyPlaces = [...currentPlan.planScheme.flat().filter((student) => student.name.trim() === ''), ...deletedStudents.value]
-
+    const emptyPlaces = clonedPlan.value.planScheme.flat().filter((student) => student.name.trim() === '')
     //if new students < empty places : places them in empty places
     if (newStudents.length <= emptyPlaces.length) {
         //place new students in empty places
         newStudents.forEach((student, index) => {
-            student.id =  emptyPlaces[index].id,
+            student.id = emptyPlaces[index].id,
             replaceInPlanScheme(student.id!, student.name, student.fieldOne)
         })
+        //since new empty places number is larger, we need to check if the number of empty places is still acceptable,
+        //  if not, we regenerate the plan scheme
+        const endingEmptyPlaces = emptyPlaces.length - newStudents.length
+        const maxEmptyPlaces = clonedPlan.value.seatType === 'pairs' ? clonedPlan.value.numberOfRows * 2 : clonedPlan.value.numberOfRows
+        checkEmptyPlaces(endingEmptyPlaces, maxEmptyPlaces)
 
-    } else if(newStudents.length > emptyPlaces.length) {
-           // if new students > empty places : delete the current plan and re-generate a new sitting scheme/plan
-           const newTableData = planStore.addIdToStudents(clonedPlan.value.tableData)
-           const newPlanScheme = planStore.generatePlanScheme(clonedPlan.value.tableData, clonedPlan.value.seatType, clonedPlan.value.numberOfRows)
-           clonedPlan.value.tableData = newTableData
-           clonedPlan.value.planScheme = newPlanScheme
+    }
+    else if (newStudents.length > emptyPlaces.length) {
+        // if new students > empty places : re-generate a new sitting scheme/
+        regeneratePlanScheme()
     }
 
-    //if deletedStudents is too big : re generate a new sitting scheme
 }
 
 const replaceInPlanScheme = (id: number, name: string, fieldOne: number | undefined) => {
@@ -95,6 +104,19 @@ const replaceInPlanScheme = (id: number, name: string, fieldOne: number | undefi
         oldStudent.name = name;
         oldStudent.fieldOne = fieldOne
     }
+}
+
+const checkEmptyPlaces = (emptyPlaces: number, maxEmptyPlaces: number) => {
+    if (emptyPlaces >= maxEmptyPlaces) {
+        regeneratePlanScheme()
+    }
+}
+
+const regeneratePlanScheme = () => {
+    const newTableData = planStore.addIdToStudents(clonedPlan.value.tableData)
+    clonedPlan.value.tableData = newTableData
+    const newPlanScheme = planStore.generatePlanScheme(clonedPlan.value.tableData, clonedPlan.value.seatType, clonedPlan.value.numberOfRows)
+    clonedPlan.value.planScheme = newPlanScheme
 }
 </script>
 <style>
