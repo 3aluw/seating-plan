@@ -19,7 +19,7 @@
 </nav> -->
 
         <div class="playground-wrapper ">
- 
+
             <!--dialogs-->
             <ModifyPlan v-model="showModifyPlan" v-if="showModifyPlan" />
             <ChosePlan v-model="showChangePlan" />
@@ -103,8 +103,8 @@
 
 import { usePlanStore } from '~/store/planStore'
 const planStore = usePlanStore();
-
 const currentPlan = computed(() => planStore.plans[planStore.currentPlanIndex])
+
 const columnClass = computed(() => currentPlan.value.seatType === "pairs" ? "pairs-column" : "individual-column")
 //used refs
 const studentRefs = ref([])

@@ -2,7 +2,7 @@ import { defineStore, acceptHMRUpdate } from "pinia";
 import { useCloned } from '@vueuse/core'
 
 export const usePlanStore = defineStore("PlanStore", () => {
-    
+
     const viewMode = ref(false)
 
 
@@ -181,7 +181,7 @@ export const usePlanStore = defineStore("PlanStore", () => {
     const deletePlan = (index) => { plans.value.splice(index, 1) }
 
     const shufflePlan = () => {
-        const { tableData, seatType,numberOfRows} = plans.value[currentPlanIndex.value]
+        const { tableData, seatType, numberOfRows } = plans.value[currentPlanIndex.value]
         // clone the tableData then shuffle the clone then create new planScheme
         let deck = useCloned(tableData).cloned.value;
         for (var i = deck.length - 1; i > 0; i--) {
@@ -191,20 +191,20 @@ export const usePlanStore = defineStore("PlanStore", () => {
             deck[i] = cardToSwap
             deck[swapIndex] = currentCard
         }
-        plans.value[currentPlanIndex.value].planScheme = generatePlanScheme(deck, seatType,numberOfRows);
+        plans.value[currentPlanIndex.value].planScheme = generatePlanScheme(deck, seatType, numberOfRows);
     }
-    /* to delete after checking reactivity 
-        const clonedTableData = ref(plans.value[currentPlanIndex.value].tableData.map(a => { return { ...a } }))
-        watch(currentPlanIndex, () => {
-            if (currentPlanIndex.value) clonedTableData.value = plans.value[currentPlanIndex.value].tableData.map(a => { return { ...a } })
-        }) */
-    const clonedTableData = computed(() =>
-        plans.value[currentPlanIndex.value].tableData.map(a => ({ ...a }))
-    );
+
+    let clonedPlan = ref()
+
+    watch(currentPlanIndex, (newIndex) => { 
+        const { cloned } = useCloned(plans.value[newIndex])
+        clonedPlan.value = cloned.value
+    }, { immediate: true })
+    
     //state functions
     const undoChanges = () => {
-        plans.value[currentPlanIndex.value].tableData = clonedTableData.value.map(a => { return { ...a } })
-
+        plans.value[currentPlanIndex.value] = useCloned(clonedPlan.value).cloned.value;
+ 
     }
 
     const sortItems = (sortType) => {
@@ -260,7 +260,7 @@ export const usePlanStore = defineStore("PlanStore", () => {
 
 
     return {
-        plans, currentPlanIndex, plansCreator,generatePlanScheme,addIdToStudents, clonedTableData, undoChanges, sortItems, deletePlan, shufflePlan, downloadPlan, uploadPlan, viewMode
+        plans, currentPlanIndex, plansCreator, generatePlanScheme, addIdToStudents, undoChanges, sortItems, deletePlan, shufflePlan, downloadPlan, uploadPlan, viewMode
     };
 },
     /* Enable this to persist this store : more info : https://prazdevs.github.io/pinia-plugin-persistedstate/frameworks/nuxt-3.html
