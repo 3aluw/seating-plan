@@ -136,9 +136,8 @@ export const usePlanStore = defineStore("PlanStore", () => {
     const addBlankStudents = (seatType, planScheme) => {
         const isPairType = seatType === "pairs";
         const blankStudent = () => ({ name: "", fieldOne: "", id: (planScheme.reduce((acc, row) => acc + row.length, 0) + 1) });
-
         const firstRow = planScheme[0];
-        
+
         // Make first row even if seatType is 'pairs' and it's odd
         if (isPairType && firstRow.length % 2 !== 0) {
             firstRow.push(blankStudent());
@@ -156,12 +155,12 @@ export const usePlanStore = defineStore("PlanStore", () => {
 
         return planScheme;
     };
-//INTERNAL: adds ID to each student in the DataTable
-const addIdToStudents = (tableData) => {
-    return tableData.map((student, index) => {
-        return { ...student, id: index + 1 };
-    });
-}
+    //INTERNAL: adds ID to each student in the DataTable
+    const addIdToStudents = (tableData) => {
+        return tableData.map((student, index) => {
+            return { ...student, id: index + 1 };
+        });
+    }
 
     const plansCreator = (planName, description, seatType, criteriaOneTitle, tableData, numberOfRows) => {
         tableData = addIdToStudents(tableData);
@@ -173,11 +172,10 @@ const addIdToStudents = (tableData) => {
             criteriaOneTitle: criteriaOneTitle,
             tableData: tableData,
             numberOfRows: numberOfRows,
-            planScheme: planScheme, 
+            planScheme: planScheme,
         })
         //switch to the new created plan
         currentPlanIndex.value = plans.value.length - 1
-        console.log(plans.value[currentPlanIndex.value]);
     }
     const deletePlan = (index) => { plans.value.splice(index, 1) }
 
@@ -191,11 +189,14 @@ const addIdToStudents = (tableData) => {
             deck[swapIndex] = currentCard
         }
     }
-    const clonedTableData = ref(plans.value[currentPlanIndex.value].tableData.map(a => { return { ...a } }))
-    watch(currentPlanIndex, () => {
-        if (currentPlanIndex.value) clonedTableData.value = plans.value[currentPlanIndex.value].tableData.map(a => { return { ...a } })
-    })
-
+    /* to delete after checking reactivity 
+        const clonedTableData = ref(plans.value[currentPlanIndex.value].tableData.map(a => { return { ...a } }))
+        watch(currentPlanIndex, () => {
+            if (currentPlanIndex.value) clonedTableData.value = plans.value[currentPlanIndex.value].tableData.map(a => { return { ...a } })
+        }) */
+    const clonedTableData = computed(() =>
+        plans.value[currentPlanIndex.value].tableData.map(a => ({ ...a }))
+    );
     //state functions
     const undoChanges = () => {
         plans.value[currentPlanIndex.value].tableData = clonedTableData.value.map(a => { return { ...a } })

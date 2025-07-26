@@ -18,87 +18,70 @@
 
 </nav> -->
 
-        <div class="playground-wrapper">
+        <div class="playground-wrapper ">
+ 
             <!--dialogs-->
-            <!--             <ModifyPlan v-model="showModifyPlan" />
+            <ModifyPlan v-model="showModifyPlan" v-if="showModifyPlan" />
             <ChosePlan v-model="showChangePlan" />
-            <PrintDialog v-model="showPrintDialog" @printEmit="printPlan" class='printDialog' /> -->
+            <PrintDialog v-model="showPrintDialog" @printEmit="printPlan" class='printDialog' />
             <!--playground toolbar-->
-            <!--            <v-card color="grey-lighten-4" flat rounded="0">
 
-                <v-toolbar density="compact" color="blue-darken-1">
-                    <v-menu open-on-hover>
-                        <template v-slot:activator="{ props }">
-                            <v-btn dark v-bind="props" prepend-icon="mdi-dots-horizontal">
-                                <p class="max-[500px]:!hidden">actions</p>
-                            </v-btn>
-                        </template>
+            <v-toolbar class="m-4 mt-8" density="compact" color="blue-darken-1">
+                <!-- actions menu -->
+                <v-menu open-on-hover>
+                    <template v-slot:activator="{ props }">
+                        <v-btn dark v-bind="props" prepend-icon="mdi-dots-horizontal">
+                            <p class="max-[500px]:!hidden">actions</p>
+                        </v-btn>
+                    </template>
 
-                        <v-list>
-                            <v-list-item> <v-btn prepend-icon="mdi-printer" color="blue-darken-4" variant="text"
-                                    @click="showPrintDialog = true"
-                                    class="w-full !justify-between">Print</v-btn></v-list-item>
+                    <v-list>
+                        <v-list-item> <v-btn prepend-icon="mdi-printer" color="blue-darken-4" variant="text"
+                                @click="showPrintDialog = true"
+                                class="w-full !justify-between">Print</v-btn></v-list-item>
 
-                            <v-list-item> <v-btn prepend-icon=" mdi-download " color="blue-darken-4" variant="text"
-                                    @click="planStore.downloadPlan"> Download plan </v-btn></v-list-item>
-                        </v-list>
-                    </v-menu>
+                        <v-list-item> <v-btn prepend-icon=" mdi-download " color="blue-darken-4" variant="text"
+                                @click="planStore.downloadPlan"> Download plan </v-btn></v-list-item>
+                    </v-list>
+                </v-menu>
 
+                <!-- modify menu -->
+                <v-menu open-on-hover>
+                    <template v-slot:activator="{ props }">
+                        <v-btn dark v-bind="props" prepend-icon="mdi-cog" class="max-[600px]:!hidden">
+                            modify
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item>
+                            <v-btn prepend-icon="mdi-file-edit-outline" color="blue-darken-4" variant="text"
+                                class="w-full !justify-between" @click="showModifyPlan = true">modify plan</v-btn>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-btn prepend-icon="mdi-autorenew" color="blue-darken-4" variant="text"
+                                class="w-full !justify-between" @click="planStore.shufflePlan">randomize</v-btn>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-btn prepend-icon="mdi-undo" color="blue-darken-4" variant="text"
+                                @click="planStore.undoChanges">Undo changes</v-btn>
+                        </v-list-item>
 
-                    <v-menu open-on-hover>
-                        <template v-slot:activator="{ props }">
-                            <v-btn dark v-bind="props" prepend-icon="mdi-cog" class="max-[600px]:!hidden">
-                                modify
-                            </v-btn>
-                        </template>
-                        <v-list>
-                            <v-list-item>
-                                <v-btn prepend-icon="mdi-file-edit-outline" color="blue-darken-4" variant="text"
-                                    class="w-full !justify-between" @click="showModifyPlan = true">modify plan</v-btn>
-                            </v-list-item>
-                            <v-list-item>
-                                <v-btn prepend-icon="mdi-autorenew" color="blue-darken-4" variant="text"
-                                    class="w-full !justify-between" @click="planStore.shufflePlan">randomize</v-btn>
-                            </v-list-item>
-                            <v-list-item>
-                                <v-btn prepend-icon="mdi-undo" color="blue-darken-4" variant="text"
-                                    @click="planStore.undoChanges">Undo changes</v-btn>
-                            </v-list-item>
+                    </v-list>
+                </v-menu>
 
-                        </v-list>
-                    </v-menu>
-
-                    <v-slider v-model="zoom" append-icon="mdi-magnify-plus-outline" prepend-icon="mdi-magnify-minus-outline"
-                        step="10" @click:append="zoom += 10" @click:prepend="zoom -= 10" class="min-[600px]:!hidden"
-                        hide-details></v-slider>
-                    <v-spacer></v-spacer>
-                    <v-toolbar-title>{{ planStore.plans[planStore.currentPlanIndex].planName }}</v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-btn prepend-icon="mdi-theme-light-dark" class="max-[600px]:!hidden" @click="Darkmode = !Darkmode">
-                        Dark/light mode
-                    </v-btn>
-                </v-toolbar>
-            </v-card> -->
-
-            <!-- OLD PLAYGROUND -->
-            <!-- <div id="print" ref="playgroundRef" class="playground-cont  shadow-lg mt-10 mb-5 ">
-                <div class="relative playground-item flex justify-center align-center" v-show="showPlayground"
-                    v-for="(student, index) in planStore.plans[planStore.currentPlanIndex].tableData" ref="studentRefs"
-                    :style="draggables[index]?.style" :class="{
-                        'overlappedItem': index === overlappedItem,
-                    }">
-                    <p class="text-center">{{ student?.name }} </p>
+                <v-slider v-model="zoom" append-icon="mdi-magnify-plus-outline" prepend-icon="mdi-magnify-minus-outline"
+                    step="10" @click:append="zoom += 10" @click:prepend="zoom -= 10" class="max-[600px]:!hidden"
+                    hide-details></v-slider>
+                <v-spacer></v-spacer>
+                <v-toolbar-title>{{ planStore.plans[planStore.currentPlanIndex].planName }}</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-btn prepend-icon="mdi-theme-light-dark" class="max-[600px]:!hidden" @click="Darkmode = !Darkmode">
+                    Dark/light mode
+                </v-btn>
+            </v-toolbar>
 
 
-                    <i class="top-0 moving-btn mdi-cursor-move mdi v-icon notranslate v-theme--light v-icon--size-default"
-                        aria-hidden="true"></i>
-                    <i v-if="student.fieldOne"
-                        class="bottom-0 right-0 info-icon mdi-information-outline fa-1x mdi notranslate v-theme--light v-icon--size-default"
-                        aria-hidden="true"> <v-tooltip activator="parent" location="bottom">{{ student.fieldOne }}
-                        </v-tooltip></i>
-                </div>
-            </div> -->
-            <div id="print" class="playground-cont relative grid gap-8 overflow-scroll shadow-lg mt-10 mb-5 px-4 py-20"
+            <div id="print" class="playground-cont relative grid gap-8 overflow-scroll shadow-lg mb-5 px-4 py-20"
                 ref="playgroundRef">
                 <div class="front absolute">Front</div>
                 <div class="grid" :class="columnClass"
@@ -621,9 +604,11 @@ const printPlan = (zoom) => {
     color: black;
     left: 50%;
 }
-.front{
-    border-top: none ;
+
+.front {
+    border-top: none;
 }
+
 .back {
     bottom: 0;
     border-bottom: none;
