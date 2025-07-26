@@ -1,7 +1,8 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
-
+import { useCloned } from '@vueuse/core'
 
 export const usePlanStore = defineStore("PlanStore", () => {
+    
     const viewMode = ref(false)
 
 
@@ -180,7 +181,9 @@ export const usePlanStore = defineStore("PlanStore", () => {
     const deletePlan = (index) => { plans.value.splice(index, 1) }
 
     const shufflePlan = () => {
-        let deck = plans.value[currentPlanIndex.value].tableData;
+        const { tableData, seatType,numberOfRows} = plans.value[currentPlanIndex.value]
+        // clone the tableData then shuffle the clone then create new planScheme
+        let deck = useCloned(tableData).cloned.value;
         for (var i = deck.length - 1; i > 0; i--) {
             const swapIndex = Math.floor(Math.random() * (i + 1))
             const currentCard = deck[i]
@@ -188,6 +191,7 @@ export const usePlanStore = defineStore("PlanStore", () => {
             deck[i] = cardToSwap
             deck[swapIndex] = currentCard
         }
+        plans.value[currentPlanIndex.value].planScheme = generatePlanScheme(deck, seatType,numberOfRows);
     }
     /* to delete after checking reactivity 
         const clonedTableData = ref(plans.value[currentPlanIndex.value].tableData.map(a => { return { ...a } }))
