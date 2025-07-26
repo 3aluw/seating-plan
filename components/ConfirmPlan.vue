@@ -1,15 +1,18 @@
 <template>
     <v-sheet width="1000" max-width="100%" class="mx-auto">
-        <h1 class="text-center text-3xl my-2 mb-10 text-blue-300">Check infos</h1>
-        <v-list lines="one" theme="dark">
+        <h1 class="text-center text-3xl my-2 my-10 font-bold uppercase">Check your plan</h1>
+        <h2 class="text-2xl font-bold pt-4 pb-2">Plan info:</h2>
+        <v-list lines="one" >
             <v-list-item title="plan name" :subtitle="planInfos.planName"></v-list-item>
             <v-list-item title="Description" :subtitle="planInfos.description"></v-list-item>
-            <v-list-item title="plan Type" :subtitle="seatTypes[planInfos.seatType]"></v-list-item>
+            <v-list-item title="plan Type" :subtitle="planInfos.seatType"></v-list-item>
             <v-list-item title="Number of attendants" :subtitle="namesTable.tableData.length"></v-list-item>
         </v-list>
         <div class="flex justify-center ">
-            <v-btn class="mb-5" variant="outlined" color="orange-lighten-3" @click="changeStep(1)">Modify</v-btn>
+            <v-btn class="mb-5" variant="outlined" color="orange-darken-3" @click="changeStep(1)">Modify</v-btn>
         </div>
+        <v-divider :thickness="3"   class="border-opacity-75 my-4"></v-divider>
+        <h2 class="text-2xl font-bold pt-4 pb-2 ">Your table:</h2>
         <v-table>
             <thead>
                 <tr>
@@ -24,8 +27,8 @@
                 </tr>
             </tbody>
         </v-table>
-        <div class="flex justify-center">
-            <v-btn class="mb-5" variant="outlined" color="orange-lighten-3" @click="changeStep(2)">Modify</v-btn>
+        <div class="flex justify-center mb-8">
+            <v-btn variant="outlined" color="orange-darken-3" @click="changeStep(2)">Modify</v-btn>
         </div>
     </v-sheet>
 </template>
@@ -36,8 +39,6 @@ const emit = defineEmits(["changeStep"])
 const changeStep = (step) => {
     emit("changeStep", step)
 }
-
-const seatTypes = ["Pairs", "U-shape", "Rows"]
 </script>
 <style scoped>
 .v-list-item {

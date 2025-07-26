@@ -6,10 +6,15 @@
       </v-chip>
     </div>
     <NuxtPage />
+      <div class="alert-cont" v-if="alertStore.alert">
+        <v-alert max-width="30rem" :title="alertStore.alert.text" :type="alertStore.alert.type" />
+      </div>
   </div>
 </template>
 <script setup>
 import { useBreakpoints } from '@vueuse/core'
+import { useAlertStore } from '~/store/alertStore';
+const alertStore = useAlertStore()
 const breakpoints = useBreakpoints({
 
   tablet: 640,
@@ -31,6 +36,12 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+.alert-cont {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 5000;
 }
 
 @media screen and (max-width: 900px) {

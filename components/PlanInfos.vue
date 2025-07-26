@@ -1,21 +1,19 @@
 <template>
     <v-sheet width="1000" max-width="100%" class="mx-auto">
-        <h1 class="text-center text-3xl my-2 mb-10 text-blue-300">Fill plan infos</h1>
+        <h1 class="text-center text-3xl my-2 mb-10 font-bold uppercase">Fill plan info</h1>
         <v-form @submit.prevent>
             <v-text-field v-model="planInfos.planName" :rules="nameRule" :counter="10" label="Plan name*"
                 maxlength="10"></v-text-field>
             <v-text-field v-model="planInfos.description" label="Description (optional)"></v-text-field>
 
-
             chose a sitting plan model :
-
             <v-container fluid class="types-cont">
                 <v-row>
-                    <v-col cols="4">
+                    <v-col cols="6">
 
-                        <v-checkbox v-model="planInfos.seatType" value="0" :rules="checkTypeRule">
+                        <v-checkbox v-model="planInfos.seatType" value="pairs" :rules="checkTypeRule">
                             <template v-slot:label>
-                                <div>
+                                <div class="border-2">
                                     <v-tooltip location="bottom">
                                         <template v-slot:activator="{ props }">
                                             <img src="/pairs.png" />
@@ -25,14 +23,10 @@
                             </template>
                         </v-checkbox>
                     </v-col>
-
-
-
-
-                    <v-col>
-                        <v-checkbox v-model="planInfos.seatType" value="1">
+                    <v-col cols="6">
+                        <v-checkbox v-model="planInfos.seatType" value="rows">
                             <template v-slot:label>
-                                <div>
+                                <div class="border-2">
                                     <v-tooltip location="bottom">
                                         <template v-slot:activator="{ props }">
                                             <img src="/rows.png" />
@@ -42,8 +36,8 @@
                             </template>
                         </v-checkbox>
                     </v-col>
-                    <v-col>
-                        <v-checkbox v-model="planInfos.seatType" value="2">
+                    <!-- <v-col>
+                        <v-checkbox v-model="planInfos.seatType" value="u-shape">
                             <template v-slot:label>
                                 <div>
                                     <v-tooltip location="bottom">
@@ -53,7 +47,7 @@
                                     </v-tooltip>
                                 </div>
                             </template>
-                        </v-checkbox> </v-col>
+                        </v-checkbox> </v-col> -->
                 </v-row>
             </v-container>
 
@@ -63,8 +57,6 @@
 </template>
 
 <script setup>
-import { usePlanStore } from '@/store/planStore'
-const planStore = usePlanStore()
 
 
 // emit and update planInfos
@@ -84,7 +76,7 @@ const planInfos = computed({
 
 
 /*form rules */
-const reqiuiredRule = [
+const requiredRule = [
     value => {
         if (value) return true
 
@@ -97,23 +89,14 @@ const checkTypeRule = [
 ]
 const nameRule = [
     value => {
-        if (value) return true
-
-        return 'Name is requred.'
-    },
-    value => {
-        if (value?.length <= 10) return true
-
-        return 'Name must be less than 10 characters.'
+        if (!value) return 'Name is required.'
+        if (value?.length > 15) return "name should be shorter"
+        return true
     },
 ]
 
 </script>
 <style scoped>
-.v-form {
-    background: #1B1C24;
-}
-
 .v-selection-control {
     flex-direction: column;
 }

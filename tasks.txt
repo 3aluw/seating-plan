@@ -1,0 +1,2 @@
+1-Add .vertical-view option on small screens the class will be applied to playground-cont. it will allow to show column under the other 
+2- Rename fieldOne to CriteriaValue
