@@ -102,7 +102,7 @@ export const usePlanStore = defineStore("PlanStore", () => {
 
     //create a clone of the current table -will use it to undo changes-
     let currentPlanIndex = ref(0);
-
+   
     const generatePlanScheme = (tableData, seatType, numberOfRows) => {
         const currentPlan = plans.value[currentPlanIndex.value];
         if (currentPlan.tableData.length === currentPlan.numberOfRows) return
@@ -175,8 +175,9 @@ export const usePlanStore = defineStore("PlanStore", () => {
             numberOfRows: numberOfRows,
             planScheme: planScheme,
         })
-        //switch to the new created plan
+        //switch to the new created plan & update the cloned plan
         currentPlanIndex.value = plans.value.length - 1
+        updateClonedPlan();
     }
     const deletePlan = (index) => { plans.value.splice(index, 1) }
 
@@ -193,18 +194,19 @@ export const usePlanStore = defineStore("PlanStore", () => {
         }
         plans.value[currentPlanIndex.value].planScheme = generatePlanScheme(deck, seatType, numberOfRows);
     }
-
+    // copy of the plan -used to undo changes-
     let clonedPlan = ref()
 
-    watch(currentPlanIndex, (newIndex) => { 
-        const { cloned } = useCloned(plans.value[newIndex])
+    const updateClonedPlan = () => {
+        const { cloned } = useCloned(plans.value[currentPlanIndex.value])
         clonedPlan.value = cloned.value
-    }, { immediate: true })
-    
+    }
+
+
     //state functions
     const undoChanges = () => {
         plans.value[currentPlanIndex.value] = useCloned(clonedPlan.value).cloned.value;
- 
+
     }
 
     const sortItems = (sortType) => {
