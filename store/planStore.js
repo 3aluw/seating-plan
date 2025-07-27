@@ -257,23 +257,30 @@ export const usePlanStore = defineStore("PlanStore", () => {
         const checkEmptyNames = allowEmptyNames || student.name.trim() !== ""
         return student.hasOwnProperty("name") && student.hasOwnProperty("id") && checkEmptyNames
     }
+    //check name, seatType and numberOfRows validity
    const checkPropertiesValidity = (upObject) => {
         const checkNameLength =  upObject.planName.length > 0 && upObject.planName.length < 10;
         const checkSeatType = seatTypes.includes(upObject.seatType);
         const checkNumberOfRows = upObject.numberOfRows > 0 && upObject.numberOfRows <= 6;
         return checkNameLength && checkSeatType && checkNumberOfRows;
     }
+    //check if the planScheme is in sync with the tableData
+    const checkTableSchemeSync = (planScheme,tableData) => {
+        planScheme = planScheme.flat();
+        return tableData.every(student => planScheme.some(schemeStudent => schemeStudent.id === student.id)) 
+    }
     const ValidateUpload = (upObject) => {
         const checkKeys = Object.keys(plans.value[0]).every(k => upObject.hasOwnProperty(k))
         const checkProperties = checkPropertiesValidity(upObject);
         const checkTableDataLength = upObject.tableData.length > 10
         const checkTableDataStudents = upObject.tableData.every(student => checkStudentValidity(student,false)) //
-        const checkPlanSchemeLength = upObject.planScheme.length === upObject.numberOfRows //
+        const checkPlanSchemeLength = upObject.planScheme.length === upObject.numberOfRows 
         const checkPlanSchemeStudents = upObject.planScheme.flat().every(student => checkStudentValidity(student,true))
-        return checkKeys && checkProperties && checkTableDataLength && checkTableDataStudents && checkPlanSchemeLength && checkPlanSchemeStudents;
+        const checkPlanSchemeSync = checkTableSchemeSync(upObject.planScheme, upObject.tableData)
+        return checkKeys && checkProperties && checkTableDataLength && checkTableDataStudents && checkPlanSchemeLength && checkPlanSchemeStudents && checkPlanSchemeSync;
     }
     
-
+    
     return {
         plans, currentPlanIndex, plansCreator, generatePlanScheme, addIdToStudents, undoChanges, sortItems, deletePlan, shufflePlan, downloadPlan, uploadPlan, ValidateUpload, viewMode
     };
