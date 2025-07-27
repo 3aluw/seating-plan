@@ -70,7 +70,7 @@
                 </v-menu>
 
                 <v-slider v-model="zoom" append-icon="mdi-magnify-plus-outline" prepend-icon="mdi-magnify-minus-outline"
-                    step="10" @click:append="zoom += 10" @click:prepend="zoom -= 10" class="max-[600px]:!hidden"
+                    step="10" @click:append="zoom += 10" @click:prepend="zoom -= 10" 
                     hide-details></v-slider>
                 <v-spacer></v-spacer>
                 <v-toolbar-title>{{ planStore.plans[planStore.currentPlanIndex].planName }}</v-toolbar-title>
@@ -81,13 +81,13 @@
             </v-toolbar>
 
 
-            <div id="print" class="playground-cont relative grid gap-8 overflow-scroll shadow-lg mb-5 px-4 py-20"
-                ref="playgroundRef">
+            <div id="print" :style="zoomStyleObject" class="playground-cont relative grid gap-8 overflow-scroll shadow-lg mb-5 px-4 py-20"
+                ref="playgroundRef" >
                 <div class="front absolute">Front</div>
-                <div class="grid" :class="columnClass"
+                <div class="grid " :class="columnClass" 
                     v-for="(column, index) in planStore.plans[planStore.currentPlanIndex].planScheme">
 
-                    <div class="student-box font-bold cursor-move" v-for="student in column" :key="student.id"
+                    <div class="student-box font-bold cursor-move"  v-for="student in column" :key="student.id"
                         :data-id="student.id">{{
                             student.name
                         }} </div>
@@ -161,8 +161,13 @@ const UploadDialog = ref(false)
 
 //generate the zoom value
 const zoom = ref(100)
-const usedZoom = computed(() => planStore.viewMode ? `${zoom.value}%` : '100%')
-const fontZoom = computed(() => planStore.viewMode ? `${100 + (100 - zoom.value)}%` : '100%')
+const zoomStyleObject = computed(() => {
+    return {
+        zoom: `${zoom.value}%`,
+    }
+})
+/* const usedZoom = computed(() => planStore.viewMode ? `${zoom.value}%` : '100%')
+const fontZoom = computed(() => planStore.viewMode ? `${100 + (100 - zoom.value)}%` : '100%') */
 
 let usedprintZoom = ref('70%')
 

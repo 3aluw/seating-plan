@@ -32,9 +32,9 @@
             </tbody>
         </v-table>
 
-
         <div class="flex justify-center ">
             <v-btn class="mx-4" @click="addNewData" color="teal-lighten-2" :disabled="!allowAddNewData">Add data</v-btn>
+        
             <!--    <v-btn class="mx-4" @click="clearTable" color="red-lighten-2">clear</v-btn> -->
         </div>
     </div>
@@ -67,8 +67,8 @@ const allowAddNewData = computed(() => {
     let namesArray = newNames.value.match(/^\s*\S.*$/gm) || []
     let criteriaArray = newCriteriaValues.value.match(/^\s*\S.*$/gm) || []
     const isListLongEnough = tableData.value.length + namesArray.length >= 10
-    const isNotEmpty = namesArray.length > 0 && (isSortingCriteriaAllowed.value || criteriaArray.length > 0);
-    const isCriteriaValid = isSortingCriteriaAllowed.value ? true : namesArray.length - criteriaArray.length < 3 ? true : false;
+    const isNotEmpty = namesArray.length > 0 && (!isSortingCriteriaAllowed.value || criteriaArray.length > 0);
+    const isCriteriaValid = !isSortingCriteriaAllowed.value ? true : namesArray.length - criteriaArray.length < 3 ? true : false;
     return isListLongEnough && isCriteriaValid && isNotEmpty
 })
 
