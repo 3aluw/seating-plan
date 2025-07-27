@@ -9,6 +9,10 @@
                 <p>change you seating type:</p>
                 <v-select class="p-4" v-model="clonedPlan.seatType" :items="seaTypes"
                     item-title="name" label="Select" variant="outlined" single-line></v-select>
+            
+            <p class="text-xl py-4 ">How many rows are there?</p>
+            <v-slider  v-model="clonedPlan.numberOfRows" :max="maxNumberOfRows" :min="1" :step="1"
+                thumb-label></v-slider>
 
             </v-form>
 
@@ -38,6 +42,9 @@ const fieldOneTitle = clonedPlan.value.criteriaOneTitle
 
 
 const seaTypes = ["pairs", "rows"]
+const maxNumberOfRows = computed(() => {
+    return Math.min(Math.ceil(clonedPlan.value.tableData.length / 6), 6)
+})
 
 
 
@@ -56,9 +63,12 @@ const showModifyPlan = computed({
 })
 
 const applyChanges = () => {
+    //manage modifications on the cloned plan tableData and planScheme
     manageModifications()
-    //if the seatType has changed, we need to regenerate the plan scheme
-    if(currentPlan.seatType !== clonedPlan.value.seatType) regeneratePlanScheme()
+    //if the seatType or number of rows has changed, we need to regenerate the plan scheme
+    const isSeatTypeChanged = currentPlan.seatType !== clonedPlan.value.seatType
+    const IsNumberOfRowsChanged = currentPlan.numberOfRows !== clonedPlan.value.numberOfRows
+    if(isSeatTypeChanged || IsNumberOfRowsChanged) regeneratePlanScheme()
     planStore.plans[planStore.currentPlanIndex] = clonedPlan.value
     showModifyPlan.value = false
 }
