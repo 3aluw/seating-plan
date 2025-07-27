@@ -4,8 +4,8 @@ import { useCloned } from '@vueuse/core'
 export const usePlanStore = defineStore("PlanStore", () => {
 
     const viewMode = ref(false)
-
-
+    const seatTypes = ["pairs", "rows"]
+    
     let plans = ref([
         {
             "planName": "Demo",
@@ -102,7 +102,7 @@ export const usePlanStore = defineStore("PlanStore", () => {
 
     //create a clone of the current table -will use it to undo changes-
     let currentPlanIndex = ref(0);
-   
+
     const generatePlanScheme = (tableData, seatType, numberOfRows) => {
         const currentPlan = plans.value[currentPlanIndex.value];
         if (currentPlan.tableData.length === currentPlan.numberOfRows) return
@@ -231,8 +231,6 @@ export const usePlanStore = defineStore("PlanStore", () => {
         });
     }
 
-
-
     const downloadPlan = () => {
         const filename = `${plans.value[currentPlanIndex.value].planName}.json`
         const data = plans.value[currentPlanIndex.value]
@@ -247,22 +245,37 @@ export const usePlanStore = defineStore("PlanStore", () => {
 
     const uploadPlan = (upObject) => {
 
-        if (ValidateUplaod(upObject)) {
+        if (ValidateUpload(upObject)) {
             plans.value.push(upObject);
             currentPlanIndex.value = plans.value.length - 1;
             return true
         }
         return false
+    }  
+      const checkStudentValidity = (student, allowEmptyNames) => {
+        //empty names are allowed in planScheme and not in tableData
+        const checkEmptyNames = allowEmptyNames || student.name.trim() !== ""
+        return student.hasOwnProperty("name") && student.hasOwnProperty("id") && checkEmptyNames
     }
-    const ValidateUplaod = (upObject) => {
-        return Object.keys(plans.value[0]).length === Object.keys(upObject).length
-            && Object.keys(plans.value[0]).every(k => upObject.hasOwnProperty(k)) && upObject.tableData.length > 6
-
+   const checkPropertiesValidity = (upObject) => {
+        const checkNameLength =  upObject.planName.length > 0 && upObject.planName.length < 10;
+        const checkSeatType = seatTypes.includes(upObject.seatType);
+        const checkNumberOfRows = upObject.numberOfRows > 0 && upObject.numberOfRows <= 6;
+        return checkNameLength && checkSeatType && checkNumberOfRows;
     }
-
+    const ValidateUpload = (upObject) => {
+        const checkKeys = Object.keys(plans.value[0]).every(k => upObject.hasOwnProperty(k))
+        const checkProperties = checkPropertiesValidity(upObject);
+        const checkTableDataLength = upObject.tableData.length > 10
+        const checkTableDataStudents = upObject.tableData.every(student => checkStudentValidity(student,false)) //
+        const checkPlanSchemeLength = upObject.planScheme.length === upObject.numberOfRows //
+        const checkPlanSchemeStudents = upObject.planScheme.flat().every(student => checkStudentValidity(student,true))
+        return checkKeys && checkProperties && checkTableDataLength && checkTableDataStudents && checkPlanSchemeLength && checkPlanSchemeStudents;
+    }
+    
 
     return {
-        plans, currentPlanIndex, plansCreator, generatePlanScheme, addIdToStudents, undoChanges, sortItems, deletePlan, shufflePlan, downloadPlan, uploadPlan, viewMode
+        plans, currentPlanIndex, plansCreator, generatePlanScheme, addIdToStudents, undoChanges, sortItems, deletePlan, shufflePlan, downloadPlan, uploadPlan, ValidateUpload, viewMode
     };
 },
     /* Enable this to persist this store : more info : https://prazdevs.github.io/pinia-plugin-persistedstate/frameworks/nuxt-3.html
