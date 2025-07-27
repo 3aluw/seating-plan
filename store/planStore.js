@@ -2,10 +2,10 @@ import { defineStore, acceptHMRUpdate } from "pinia";
 import { useCloned } from '@vueuse/core'
 
 export const usePlanStore = defineStore("PlanStore", () => {
-    
+
     const viewMode = ref(false)
-
-
+    const seatTypes = ["pairs", "rows"]
+    
     let plans = ref([
         {
             "planName": "Demo",
@@ -175,13 +175,14 @@ export const usePlanStore = defineStore("PlanStore", () => {
             numberOfRows: numberOfRows,
             planScheme: planScheme,
         })
-        //switch to the new created plan
+        //switch to the new created plan & update the cloned plan
         currentPlanIndex.value = plans.value.length - 1
+        updateClonedPlan();
     }
     const deletePlan = (index) => { plans.value.splice(index, 1) }
 
     const shufflePlan = () => {
-        const { tableData, seatType,numberOfRows} = plans.value[currentPlanIndex.value]
+        const { tableData, seatType, numberOfRows } = plans.value[currentPlanIndex.value]
         // clone the tableData then shuffle the clone then create new planScheme
         let deck = useCloned(tableData).cloned.value;
         for (var i = deck.length - 1; i > 0; i--) {
@@ -191,19 +192,20 @@ export const usePlanStore = defineStore("PlanStore", () => {
             deck[i] = cardToSwap
             deck[swapIndex] = currentCard
         }
-        plans.value[currentPlanIndex.value].planScheme = generatePlanScheme(deck, seatType,numberOfRows);
+        plans.value[currentPlanIndex.value].planScheme = generatePlanScheme(deck, seatType, numberOfRows);
     }
-    /* to delete after checking reactivity 
-        const clonedTableData = ref(plans.value[currentPlanIndex.value].tableData.map(a => { return { ...a } }))
-        watch(currentPlanIndex, () => {
-            if (currentPlanIndex.value) clonedTableData.value = plans.value[currentPlanIndex.value].tableData.map(a => { return { ...a } })
-        }) */
-    const clonedTableData = computed(() =>
-        plans.value[currentPlanIndex.value].tableData.map(a => ({ ...a }))
-    );
+    // copy of the plan -used to undo changes-
+    let clonedPlan = ref()
+
+    const updateClonedPlan = () => {
+        const { cloned } = useCloned(plans.value[currentPlanIndex.value])
+        clonedPlan.value = cloned.value
+    }
+
+
     //state functions
     const undoChanges = () => {
-        plans.value[currentPlanIndex.value].tableData = clonedTableData.value.map(a => { return { ...a } })
+        plans.value[currentPlanIndex.value] = useCloned(clonedPlan.value).cloned.value;
 
     }
 
@@ -229,8 +231,6 @@ export const usePlanStore = defineStore("PlanStore", () => {
         });
     }
 
-
-
     const downloadPlan = () => {
         const filename = `${plans.value[currentPlanIndex.value].planName}.json`
         const data = plans.value[currentPlanIndex.value]
@@ -245,22 +245,44 @@ export const usePlanStore = defineStore("PlanStore", () => {
 
     const uploadPlan = (upObject) => {
 
-        if (ValidateUplaod(upObject)) {
+        if (ValidateUpload(upObject)) {
             plans.value.push(upObject);
             currentPlanIndex.value = plans.value.length - 1;
             return true
         }
         return false
+    }  
+      const checkStudentValidity = (student, allowEmptyNames) => {
+        //empty names are allowed in planScheme and not in tableData
+        const checkEmptyNames = allowEmptyNames || student.name.trim() !== ""
+        return student.hasOwnProperty("name") && student.hasOwnProperty("id") && checkEmptyNames
     }
-    const ValidateUplaod = (upObject) => {
-        return Object.keys(plans.value[0]).length === Object.keys(upObject).length
-            && Object.keys(plans.value[0]).every(k => upObject.hasOwnProperty(k)) && upObject.tableData.length > 6
-
+    //check name, seatType and numberOfRows validity
+   const checkPropertiesValidity = (upObject) => {
+        const checkNameLength =  upObject.planName.length > 0 && upObject.planName.length < 10;
+        const checkSeatType = seatTypes.includes(upObject.seatType);
+        const checkNumberOfRows = upObject.numberOfRows > 0 && upObject.numberOfRows <= 6;
+        return checkNameLength && checkSeatType && checkNumberOfRows;
     }
-
-
+    //check if the planScheme is in sync with the tableData
+    const checkTableSchemeSync = (planScheme,tableData) => {
+        planScheme = planScheme.flat();
+        return tableData.every(student => planScheme.some(schemeStudent => schemeStudent.id === student.id)) 
+    }
+    const ValidateUpload = (upObject) => {
+        const checkKeys = Object.keys(plans.value[0]).every(k => upObject.hasOwnProperty(k))
+        const checkProperties = checkPropertiesValidity(upObject);
+        const checkTableDataLength = upObject.tableData.length > 10
+        const checkTableDataStudents = upObject.tableData.every(student => checkStudentValidity(student,false)) //
+        const checkPlanSchemeLength = upObject.planScheme.length === upObject.numberOfRows 
+        const checkPlanSchemeStudents = upObject.planScheme.flat().every(student => checkStudentValidity(student,true))
+        const checkPlanSchemeSync = checkTableSchemeSync(upObject.planScheme, upObject.tableData)
+        return checkKeys && checkProperties && checkTableDataLength && checkTableDataStudents && checkPlanSchemeLength && checkPlanSchemeStudents && checkPlanSchemeSync;
+    }
+    
+    
     return {
-        plans, currentPlanIndex, plansCreator,generatePlanScheme,addIdToStudents, clonedTableData, undoChanges, sortItems, deletePlan, shufflePlan, downloadPlan, uploadPlan, viewMode
+        plans, currentPlanIndex, plansCreator, generatePlanScheme, addIdToStudents, undoChanges, sortItems, deletePlan, shufflePlan, downloadPlan, uploadPlan, ValidateUpload, viewMode
     };
 },
     /* Enable this to persist this store : more info : https://prazdevs.github.io/pinia-plugin-persistedstate/frameworks/nuxt-3.html
