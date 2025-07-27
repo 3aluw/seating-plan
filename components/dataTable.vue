@@ -108,6 +108,10 @@ const addNewData = () => {
 }
 
 const deleteStudent = ( index: number) => {
+    if (tableData.value.length <= 10) {
+        alertStore.createAlert("warning", "You need to have at least 10 names in the table")
+        return
+    }
     tableData.value.splice(index, 1)
 }
 //form rules
