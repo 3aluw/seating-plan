@@ -23,22 +23,20 @@
             <!--dialogs-->
             <ModifyPlan v-model="showModifyPlan" v-if="showModifyPlan" />
             <ChosePlan v-model="showChangePlan" />
-            <PrintDialog v-model="showPrintDialog" @printEmit="printPlan" class='printDialog' />
             <!--playground toolbar-->
 
             <v-toolbar class="m-4 mt-8" density="compact" color="blue-darken-1">
                 <!-- actions menu -->
                 <v-menu open-on-hover>
                     <template v-slot:activator="{ props }">
-                        <v-btn dark v-bind="props" prepend-icon="mdi-dots-horizontal">
-                            <p class="max-[500px]:!hidden">actions</p>
+                        <v-btn class="print:!hidden" dark v-bind="props" prepend-icon="mdi-dots-horizontal">
+                            <p class="max-[500px]:!hidden ">actions</p>
                         </v-btn>
                     </template>
 
                     <v-list>
                         <v-list-item> <v-btn prepend-icon="mdi-printer" color="blue-darken-4" variant="text"
-                                @click="showPrintDialog = true"
-                                class="w-full !justify-between">Print</v-btn></v-list-item>
+                                @click="printPlan" class="w-full !justify-between">Print</v-btn></v-list-item>
 
                         <v-list-item> <v-btn prepend-icon=" mdi-download " color="blue-darken-4" variant="text"
                                 @click="planStore.downloadPlan"> Download plan </v-btn></v-list-item>
@@ -47,8 +45,8 @@
 
                 <!-- modify menu -->
                 <v-menu open-on-hover>
-                    <template v-slot:activator="{ props }">
-                        <v-btn dark v-bind="props" prepend-icon="mdi-cog" class="max-[600px]:!hidden">
+                    <template class="print:hidden" v-slot:activator="{ props }">
+                        <v-btn dark v-bind="props" prepend-icon="mdi-cog" class="max-[600px]:!hidden print:!hidden">
                             modify
                         </v-btn>
                     </template>
@@ -69,25 +67,27 @@
                     </v-list>
                 </v-menu>
 
-                <v-slider v-model="zoom" append-icon="mdi-magnify-plus-outline" prepend-icon="mdi-magnify-minus-outline"
-                    step="10" @click:append="zoom += 10" @click:prepend="zoom -= 10" 
-                    hide-details></v-slider>
+                <v-slider class="print:!hidden" v-model="zoom" append-icon="mdi-magnify-plus-outline"
+                    prepend-icon="mdi-magnify-minus-outline" step="10" @click:append="zoom += 10"
+                    @click:prepend="zoom -= 10" hide-details></v-slider>
                 <v-spacer></v-spacer>
                 <v-toolbar-title>{{ planStore.plans[planStore.currentPlanIndex].planName }}</v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-btn prepend-icon="mdi-theme-light-dark" class="max-[600px]:!hidden" @click="Darkmode = !Darkmode">
+                <v-btn prepend-icon="mdi-theme-light-dark" class="max-[600px]:!hidden print:!hidden"
+                    @click="Darkmode = !Darkmode">
                     Dark/light mode
                 </v-btn>
             </v-toolbar>
 
 
-            <div id="print" :style="zoomStyleObject" class="playground-cont relative grid gap-8 overflow-scroll shadow-lg mb-5 px-4 py-20"
-                ref="playgroundRef" >
+            <div id="print" :style="zoomStyleObject"
+                class="playground-cont relative grid gap-8 overflow-scroll shadow-lg mb-5 px-4 py-20"
+                ref="playgroundRef">
                 <div class="front absolute">Front</div>
-                <div class="grid " :class="columnClass" 
+                <div class="grid " :class="columnClass"
                     v-for="(column, index) in planStore.plans[planStore.currentPlanIndex].planScheme">
 
-                    <div class="student-box font-bold cursor-move"  v-for="student in column" :key="student.id"
+                    <div class="student-box font-bold cursor-move" v-for="student in column" :key="student.id"
                         :data-id="student.id">{{
                             student.name
                         }} </div>
@@ -153,7 +153,6 @@ const swapStudents = (draggedElementId, targetElementId) => {
 const showChangePlan = ref(false)
 const showModifyPlan = ref(false)
 const showPlayground = ref(false)
-const showPrintDialog = ref(false)
 const UploadDialog = ref(false)
 
 
@@ -169,7 +168,6 @@ const zoomStyleObject = computed(() => {
 /* const usedZoom = computed(() => planStore.viewMode ? `${zoom.value}%` : '100%')
 const fontZoom = computed(() => planStore.viewMode ? `${100 + (100 - zoom.value)}%` : '100%') */
 
-let usedprintZoom = ref('70%')
 
 
 //styling
@@ -510,7 +508,6 @@ const swapStudents = (fromIndex, toIndex) => {
  */
 
 const printPlan = (zoom) => {
-    usedprintZoom.value = zoom
     setTimeout(() => window.print(), 1000)
 
 }
@@ -695,22 +692,18 @@ const printPlan = (zoom) => {
         display: none;
     }
 
-    .playground-wrapper {
-        padding: 0;
-        margin-left: 0;
-    }
 
     #print,
     #print * {
-        padding: 0px;
-        zoom: v-bind('usedprintZoom');
-        font-size: 1.5rem;
-        overflow: visible;
 
+        overflow: visible;
     }
 
-    #print {
-        margin-top: -400px;
+    .student-box {
+        font-weight: bold;
+        font-size: 1.2rem;
+        width: 12rem;
+        height: 6rem;
     }
 
     .mdi-cursor-move {
