@@ -5,7 +5,7 @@ export const usePlanStore = defineStore("PlanStore", () => {
 
     const viewMode = ref(false)
     const seatTypes = ["pairs", "rows"]
-    
+
     let plans = ref([
         {
             "planName": "Demo",
@@ -230,6 +230,66 @@ export const usePlanStore = defineStore("PlanStore", () => {
             return 0;
         });
     }
+    const fairDistribute = () => {
+        const { planScheme, numberOfRows, seatType } = plans.value[currentPlanIndex.value]
+        // Clone and slightly shuffle to introduce randomness
+        const flatPlanScheme = planScheme.flat()
+        //add median score to blank student object to put the in middle when sorting
+        const realStudentsSorted = flatPlanScheme.filter(student => student.name.trim() !== '').sort((a, b) => b.fieldOne - a.fieldOne)
+        const mid = Math.floor(realStudentsSorted.length / 2)
+        const medianScore = flatPlanScheme.length % 2 === 0 ? (realStudentsSorted[mid - 1].fieldOne + realStudentsSorted[mid].fieldOne) / 2 : realStudentsSorted[mid].fieldOne;
+        flatPlanScheme.forEach(student => {
+            if (student.fieldOne === undefined) student.fieldOne = medianScore
+        })
+
+        // Sort tableData by fieldOne descending 
+        flatPlanScheme.sort((a, b) => b.fieldOne - a.fieldOne);
+        // set fieldOne to undefined for blank objects 
+        flatPlanScheme.forEach((student) => {
+            if (!student.name) student.fieldOne = undefined; // Remove 
+        })
+        // Create empty newPlanScheme
+        const newPlanScheme = Array.from({ length: numberOfRows }, () => []);
+
+        let round = 0;
+
+        while (flatPlanScheme.length > 0) {
+            const direction = round % 2 === 0 ? 1 : -1;
+
+            if (seatType === "rows") {
+                const slice = flatPlanScheme.splice(0, numberOfRows);
+
+                for (let i = 0; i < slice.length; i++) {
+                    const teamIndex = direction === 1 ? i : numberOfRows - 1 - i;
+                    newPlanScheme[teamIndex].push(slice[i]);
+                }
+
+            } else if (seatType === "pairs") {
+                const bestGroup = flatPlanScheme.splice(0, Math.min(numberOfRows, flatPlanScheme.length));
+                const worstGroup = flatPlanScheme.splice(-bestGroup.length);
+
+                // Shuffle the worst group for random pairing
+                for (let i = worstGroup.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [worstGroup[i], worstGroup[j]] = [worstGroup[j], worstGroup[i]];
+                }
+
+                for (let i = 0; i < bestGroup.length; i++) {
+                    const teamIndex = direction === 1 ? i : numberOfRows - 1 - i;
+
+                    // Add pair: best + worst
+                    newPlanScheme[teamIndex].push(bestGroup[i]);
+                    if (worstGroup[i]) {
+                        newPlanScheme[teamIndex].push(worstGroup[i]);
+                    }
+                }
+            }
+
+            round++;
+        }
+
+        plans.value[currentPlanIndex.value].planScheme = newPlanScheme;
+    }
 
     const downloadPlan = () => {
         const filename = `${plans.value[currentPlanIndex.value].planName}.json`
@@ -251,38 +311,38 @@ export const usePlanStore = defineStore("PlanStore", () => {
             return true
         }
         return false
-    }  
-      const checkStudentValidity = (student, allowEmptyNames) => {
+    }
+    const checkStudentValidity = (student, allowEmptyNames) => {
         //empty names are allowed in planScheme and not in tableData
         const checkEmptyNames = allowEmptyNames || student.name.trim() !== ""
         return student.hasOwnProperty("name") && student.hasOwnProperty("id") && checkEmptyNames
     }
     //check name, seatType and numberOfRows validity
-   const checkPropertiesValidity = (upObject) => {
-        const checkNameLength =  upObject.planName.length > 0 && upObject.planName.length < 10;
+    const checkPropertiesValidity = (upObject) => {
+        const checkNameLength = upObject.planName.length > 0 && upObject.planName.length < 10;
         const checkSeatType = seatTypes.includes(upObject.seatType);
         const checkNumberOfRows = upObject.numberOfRows > 0 && upObject.numberOfRows <= 6;
         return checkNameLength && checkSeatType && checkNumberOfRows;
     }
     //check if the planScheme is in sync with the tableData
-    const checkTableSchemeSync = (planScheme,tableData) => {
+    const checkTableSchemeSync = (planScheme, tableData) => {
         planScheme = planScheme.flat();
-        return tableData.every(student => planScheme.some(schemeStudent => schemeStudent.id === student.id)) 
+        return tableData.every(student => planScheme.some(schemeStudent => schemeStudent.id === student.id))
     }
     const ValidateUpload = (upObject) => {
         const checkKeys = Object.keys(plans.value[0]).every(k => upObject.hasOwnProperty(k))
         const checkProperties = checkPropertiesValidity(upObject);
         const checkTableDataLength = upObject.tableData.length > 10
-        const checkTableDataStudents = upObject.tableData.every(student => checkStudentValidity(student,false)) //
-        const checkPlanSchemeLength = upObject.planScheme.length === upObject.numberOfRows 
-        const checkPlanSchemeStudents = upObject.planScheme.flat().every(student => checkStudentValidity(student,true))
+        const checkTableDataStudents = upObject.tableData.every(student => checkStudentValidity(student, false)) //
+        const checkPlanSchemeLength = upObject.planScheme.length === upObject.numberOfRows
+        const checkPlanSchemeStudents = upObject.planScheme.flat().every(student => checkStudentValidity(student, true))
         const checkPlanSchemeSync = checkTableSchemeSync(upObject.planScheme, upObject.tableData)
         return checkKeys && checkProperties && checkTableDataLength && checkTableDataStudents && checkPlanSchemeLength && checkPlanSchemeStudents && checkPlanSchemeSync;
     }
-    
-    
+
+
     return {
-        plans, currentPlanIndex, plansCreator, generatePlanScheme, addIdToStudents, undoChanges, sortItems, deletePlan, shufflePlan, downloadPlan, uploadPlan, ValidateUpload, viewMode
+        plans, currentPlanIndex, plansCreator, generatePlanScheme, addIdToStudents, undoChanges, sortItems, fairDistribute, deletePlan, shufflePlan, downloadPlan, uploadPlan, ValidateUpload, viewMode
     };
 },
     /* Enable this to persist this store : more info : https://prazdevs.github.io/pinia-plugin-persistedstate/frameworks/nuxt-3.html

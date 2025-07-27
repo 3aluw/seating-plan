@@ -1,5 +1,5 @@
 <template>
-    <div class="conatiner">
+    <div class="container" :class="{'dark-container' : darkMode}">
 
         <!--        <nav class="navbar flex justify-around mt-12">
             <NuxtLink to="/"> <v-btn variant="plain">Home</v-btn></NuxtLink>
@@ -18,8 +18,7 @@
 
 </nav> -->
 
-        <div class="playground-wrapper" :class="{'dark-playground-wrapper' : darkMode}">
-            {{ playgroundModeStyle }}
+        <div class="playground-wrapper" >
             <!--dialogs-->
             <ModifyPlan v-model="showModifyPlan" v-if="showModifyPlan" />
             <ChosePlan v-model="showChangePlan" />
@@ -58,6 +57,10 @@
                         <v-list-item>
                             <v-btn prepend-icon="mdi-autorenew" color="blue-darken-4" variant="text"
                                 class="w-full !justify-between" @click="planStore.shufflePlan">randomize</v-btn>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-btn prepend-icon="mdi-auto-fix" color="blue-darken-4" variant="text"
+                                class="w-full !justify-between" @click="planStore.fairDistribute">smart plan</v-btn>
                         </v-list-item>
                         <v-list-item>
                             <v-btn prepend-icon="mdi-undo" color="blue-darken-4" variant="text"
@@ -518,7 +521,7 @@ const printPlan = (zoom) => {
     padding: 2rem;
     background-repeat: repeat; */
 }
-.dark-playground-wrapper{
+.dark-container{
     background: #121212;
 }
 .vertical-view {
