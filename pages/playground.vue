@@ -18,14 +18,14 @@
 
 </nav> -->
 
-        <div class="playground-wrapper ">
-
+        <div class="playground-wrapper" :class="{'dark-playground-wrapper' : darkMode}">
+            {{ playgroundModeStyle }}
             <!--dialogs-->
             <ModifyPlan v-model="showModifyPlan" v-if="showModifyPlan" />
             <ChosePlan v-model="showChangePlan" />
             <!--playground toolbar-->
 
-            <v-toolbar class="m-4 mt-8" density="compact" color="blue-darken-1">
+            <v-toolbar  density="compact"  :color="!darkMode ? 'blue-darken-1' : 'blue-darken-4 '">
                 <!-- actions menu -->
                 <v-menu open-on-hover>
                     <template v-slot:activator="{ props }">
@@ -74,20 +74,19 @@
                 <v-toolbar-title>{{ planStore.plans[planStore.currentPlanIndex].planName }}</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn prepend-icon="mdi-theme-light-dark" class="max-[600px]:!hidden print:!hidden"
-                    @click="Darkmode = !Darkmode">
+                    @click="darkMode = !darkMode">
                     Dark/light mode
                 </v-btn>
             </v-toolbar>
 
-
-            <div id="print" :style="zoomStyleObject"
+            <div id="print" :style="zoomStyleObject"  :class="{'dark-playground-cont' : darkMode}"
                 class="playground-cont relative grid gap-8 overflow-scroll shadow-lg mb-5 px-4 py-20"
                 ref="playgroundRef">
                 <div class="front absolute">Front</div>
                 <div class="grid " :class="columnClass"
                     v-for="(column, index) in planStore.plans[planStore.currentPlanIndex].planScheme">
 
-                    <div class="student-box font-bold cursor-move" v-for="student in column" :key="student.id"
+                    <div :class="{'dark-student-box' : darkMode}" class="student-box font-bold cursor-move" v-for="student in column" :key="student.id"
                         :data-id="student.id">{{
                             student.name
                         }} </div>
@@ -171,24 +170,8 @@ const fontZoom = computed(() => planStore.viewMode ? `${100 + (100 - zoom.value)
 
 
 //styling
-const Darkmode = ref(false)
-const playgroundMode = ref([
-    {
-        bg: "url('/naturalblack.png')",
-        border: "white solid 1px",
-        outlineColor: "rgb(16 21 27)",
-        color: "#e5e7eb"
-    },
-    {
-        bg: "url('/dot-grid.png')",
-        border: "black solid 1px",
-        outlineColor: "white",
-        color: "black"
-    },
-])
-const usedStyles = computed(() => {
-    return Darkmode.value === false ? playgroundMode.value[1] : playgroundMode.value[0]
-})
+const darkMode = ref(false)
+
 const itemWidth = ref(150)
 const itemHeight = ref(50)
 const singleMargin = ref(20)
@@ -535,7 +518,9 @@ const printPlan = (zoom) => {
     padding: 2rem;
     background-repeat: repeat; */
 }
-
+.dark-playground-wrapper{
+    background: #121212;
+}
 .vertical-view {
     /* To apply column under the other in small devices */
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr))
@@ -546,11 +531,15 @@ const printPlan = (zoom) => {
     grid-auto-columns: max-content;
     gap: 2rem;
     overflow: scroll;
-    margin-inline: 1rem;
     min-height: 20rem;
     position: relative;
     background: #EAF2F8;
 
+}
+
+.dark-playground-cont {
+    background: #1C1C1C;
+    color: white;
 }
 
 .pairs-column {
@@ -584,6 +573,11 @@ const printPlan = (zoom) => {
     box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
 
+.dark-student-box{
+    background-color: #1565C0;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(156, 156, 156, 0.23) 0px 6px 6px;
+}
+
 .draggable--over {
     border: 1px dashed white;
     background: #bfd9ea;
@@ -598,11 +592,11 @@ const printPlan = (zoom) => {
 .front,
 .back {
     font-size: 2rem;
-    border: 1px dashed black;
+    border: 1px dashed;
     font-weight: 500;
     padding-inline: 1rem;
     padding-block: 0.2rem;
-    color: black;
+    color: inherit;
     left: 50%;
 }
 
@@ -630,19 +624,6 @@ const printPlan = (zoom) => {
     pointer-events: auto;
 }
 
-.playground-item {
-    pointer-events: none;
-    position: absolute;
-    width: 150px;
-    border: v-bind('usedStyles.border');
-    height: 50px;
-    color: v-bind('usedStyles.color');
-    zoom: v-bind('usedZoom');
-}
-
-.playground-item>p {
-    zoom: v-bind(fontZoom);
-}
 
 .UShapeLeftRotatedItem {
     pointer-events: none;
