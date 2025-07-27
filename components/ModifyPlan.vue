@@ -3,11 +3,11 @@
         <v-sheet width="1000" class="mx-auto p-4">
             <v-form @submit.prevent class="bg-white">
                 <p class="bg-white my-6 text-2xl">Change plan infos:</p>
-                <v-text-field v-model="currentPlan.planName" :counter="10" label="Plan name*"
+                <v-text-field v-model="clonedPlan.planName" :counter="10" label="Plan name*"
                     maxlength="10"></v-text-field>
-                <v-text-field v-model="currentPlan.description" label="Description (optional)"></v-text-field>
+                <v-text-field v-model="clonedPlan.description" label="Description (optional)"></v-text-field>
                 <p>change you seating type:</p>
-                <v-select class="p-4" v-model="planStore.plans[planStore.currentPlanIndex].seatType" :items="seaTypes"
+                <v-select class="p-4" v-model="clonedPlan.seatType" :items="seaTypes"
                     item-title="name" label="Select" variant="outlined" single-line></v-select>
 
             </v-form>
@@ -57,6 +57,8 @@ const showModifyPlan = computed({
 
 const applyChanges = () => {
     manageModifications()
+    //if the seatType has changed, we need to regenerate the plan scheme
+    if(currentPlan.seatType !== clonedPlan.value.seatType) regeneratePlanScheme()
     planStore.plans[planStore.currentPlanIndex] = clonedPlan.value
     showModifyPlan.value = false
 }
@@ -66,6 +68,7 @@ const manageModifications = () => {
     const newStudents = clonedPlan.value.tableData.filter((student) => !student.id)
     //count deleted student
     const deletedStudents = useArrayDifference(currentPlan.tableData, clonedPlan.value.tableData, (value, othVal) => value.id === othVal.id)
+    if( newStudents.length === 0 && deletedStudents.value.length === 0)  return; // no changes to tableData
     //make deleted students similar to blank object name:''
     deletedStudents.value.forEach((student) => {
         const studentToDelete = clonedPlan.value.planScheme.flat().find((s) => s.id === student.id)
