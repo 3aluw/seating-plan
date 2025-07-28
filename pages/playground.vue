@@ -4,7 +4,7 @@
         <nav class="navbar flex justify-around py-8">
             <NuxtLink to="/"> <v-btn variant="plain">Home</v-btn></NuxtLink>
 
-            <v-dialog v-model="UploadDialog" width="auto" theme="dark" min-width="400px">
+            <v-dialog v-model="UploadDialog" width="auto" min-width="400px">
                 <template v-slot:activator="{ props }">
 
                     <v-btn variant="plain" v-bind="props">upload a plan</v-btn>
@@ -82,7 +82,8 @@
                     prepend-icon="mdi-magnify-minus-outline" step="10" @click:append="zoom += 10"
                     @click:prepend="zoom -= 10" hide-details></v-slider>
                 <v-spacer></v-spacer>
-                <v-toolbar-title>{{ planStore.plans[planStore.currentPlanIndex].planName }}</v-toolbar-title>
+                <v-toolbar-title class="text-center !font-bold">{{ planStore.plans[planStore.currentPlanIndex].planName
+                    }}</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn prepend-icon="mdi-theme-light-dark" class="max-[600px]:!hidden print:!hidden"
                     @click="darkMode = !darkMode">
@@ -229,6 +230,7 @@ const printPlan = (zoom) => {
 
 .dark-playground-container {
     background: #121212;
+    color: white;
 }
 
 .vertical-view {
@@ -249,6 +251,10 @@ const printPlan = (zoom) => {
 
 .dark-playground-cont {
     background: #1C1C1C;
+    color: white;
+}
+
+.dark-playground-container>.navbar {
     color: white;
 }
 
