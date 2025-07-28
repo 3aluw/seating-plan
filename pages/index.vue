@@ -100,7 +100,7 @@ let planInfos = ref({
 })
 // AddStudents comp
 let namesTable = ref({
-    criteriaOneTitle: "score",
+    criteriaOneTitle: undefined,
     tableData: [],
     numberOfRows: 2,
 })
