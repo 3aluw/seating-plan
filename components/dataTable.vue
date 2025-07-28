@@ -12,12 +12,16 @@
             <tbody>
                 <tr v-for="(student, index) in tableData">
 
-                    <td class="flex gap-4"><v-btn @click="deleteStudent(index)" icon="mdi:mdi-delete-outline" color="red" variant="text">
-                            
-                        </v-btn><v-text-field maxlength="30" @update:focused="student.name.trim() === '' ? deleteStudent(index): undefined"
-                            hide-details class="px-0" v-model="student.name" variant="plain"></v-text-field></td>
-                    <td class="w-1/2" v-if="isSortingCriteriaAllowed"><v-text-field hide-details class="px-0"
-                            v-model="student.fieldOne" variant="plain"></v-text-field></td>
+                    <td class="flex gap-4"><v-btn @click="deleteStudent(index)" icon="mdi:mdi-delete-outline"
+                            color="red" variant="text">
+
+                        </v-btn><v-text-field maxlength="30"
+                            @update:focused="student.name.trim() === '' ? deleteStudent(index) : undefined" hide-details
+                            class="px-0" v-model="student.name" variant="plain"></v-text-field></td>
+                    <td class="w-1/2" v-if="isSortingCriteriaAllowed"><v-text-field hide-details type="number"
+                            class="px-0" v-model="student.fieldOne" variant="plain"
+                            @update:focused="validateFieldOneValue(index)"></v-text-field>
+                    </td>
                 </tr>
                 <tr>
                     <td class="px-0">
@@ -34,14 +38,14 @@
 
         <div class="flex justify-center ">
             <v-btn class="mx-4" @click="addNewData" color="teal-lighten-2" :disabled="!allowAddNewData">Add data</v-btn>
-        
+
             <!--    <v-btn class="mx-4" @click="clearTable" color="red-lighten-2">clear</v-btn> -->
         </div>
     </div>
 </template>
 <script setup lang="ts">
 import { useAlertStore } from '~/store/alertStore';
-import type { IStudent} from "~/data/types.ts"
+import type { IStudent } from "~/data/types.ts"
 const alertStore = useAlertStore()
 
 const props = defineProps({
@@ -107,13 +111,19 @@ const addNewData = () => {
     newNames.value = newCriteriaValues.value = "";
 }
 
-const deleteStudent = ( index: number) => {
+const deleteStudent = (index: number) => {
     if (tableData.value.length <= 10) {
         alertStore.createAlert("warning", "You need to have at least 10 names in the table")
         return
     }
     tableData.value.splice(index, 1)
 }
+//it is used to transform empty values to 0  
+const validateFieldOneValue = (index: number) =>{
+    let value = tableData.value[index].fieldOne
+    tableData.value[index].fieldOne = Number(value) || 0; // Convert to number or default to 0
+
+} 
 //form rules
 const namesRule = [
     (value: string) => {
