@@ -39,7 +39,7 @@
         <div class="flex justify-center ">
             <v-btn class="mx-4" @click="addNewData" color="teal-lighten-2" :disabled="!allowAddNewData">Add data</v-btn>
 
-            <!--    <v-btn class="mx-4" @click="clearTable" color="red-lighten-2">clear</v-btn> -->
+             <v-btn class="mx-4" v-if="props.isInitialTable" @click="clearTable" color="red-lighten-2">clear</v-btn> 
         </div>
     </div>
 </template>
@@ -50,7 +50,8 @@ const alertStore = useAlertStore()
 
 const props = defineProps({
     modelValue: Array<IStudent>,
-    criteriaTitle: String || undefined
+    criteriaTitle: String || undefined,
+    isInitialTable : Boolean
 })
 const isSortingCriteriaAllowed = computed(() => props.criteriaTitle === undefined ? false : true)
 const emit = defineEmits(['update:modelValue'])
@@ -118,6 +119,10 @@ const deleteStudent = (index: number) => {
     }
     tableData.value.splice(index, 1)
 }
+const clearTable = () => {
+    tableData.value = []
+}
+
 //it is used to transform empty values to 0  
 const validateFieldOneValue = (index: number) =>{
     let value = tableData.value[index].fieldOne
