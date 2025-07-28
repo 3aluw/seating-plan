@@ -400,15 +400,7 @@ export const usePlanStore = defineStore("PlanStore", () => {
             numberOfRows: numberOfRows,
             planScheme: planScheme,
         })
-        console.log({
-            planName: planName,
-            description: description,
-            seatType: seatType,
-            criteriaOneTitle: criteriaOneTitle,
-            tableData: tableData,
-            numberOfRows: numberOfRows,
-            planScheme: planScheme,
-        });
+
         //switch to the new created plan & update the cloned plan
         currentPlanIndex.value = plans.value.length - 1
         updateClonedPlan();
@@ -530,6 +522,7 @@ export const usePlanStore = defineStore("PlanStore", () => {
         if (ValidateUpload(upObject)) {
             plans.value.push(upObject);
             currentPlanIndex.value = plans.value.length - 1;
+            updateClonedPlan();
             return true
         }
         return false
@@ -564,7 +557,7 @@ export const usePlanStore = defineStore("PlanStore", () => {
 
 
     return {
-        plans, currentPlanIndex, plansCreator, generatePlanScheme, addIdToStudents, undoChanges, sortItems, fairDistribute, deletePlan, shufflePlan, downloadPlan, uploadPlan, ValidateUpload, viewMode
+        plans, currentPlanIndex, plansCreator, generatePlanScheme, addIdToStudents, undoChanges, updateClonedPlan, sortItems, fairDistribute, deletePlan, shufflePlan, downloadPlan, uploadPlan, ValidateUpload, viewMode
     };
 },
     /* Enable this to persist this store : more info : https://prazdevs.github.io/pinia-plugin-persistedstate/frameworks/nuxt-3.html

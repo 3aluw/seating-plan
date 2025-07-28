@@ -40,6 +40,7 @@ const showChangePlan = computed({
 // change the current plan & closes the dialog
 const changePlanIndex = (index) => {
     planStore.currentPlanIndex = index;
+     planStore.updateClonedPlan();
     showChangePlan.value = false;
 }
 </script>
