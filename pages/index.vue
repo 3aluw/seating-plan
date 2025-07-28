@@ -1,19 +1,19 @@
 <template>
     <div class="conatiner">
-        <!--        <nav class="flex justify-around  max-[600px]:flex-col max-[600px]:items-center">
-            <NuxtLink to="/playgroundOne"> <v-btn variant="text">playground</v-btn></NuxtLink>
+        <nav class="flex justify-around  max-[600px]:flex-col max-[600px]:items-center">
+            <NuxtLink to="/playground"> <v-btn variant="text">playground</v-btn></NuxtLink>
 
-            <v-dialog v-model="UploadDialog" width="auto" theme="dark" min-width="400px">
+            <v-dialog v-model="UploadDialog" width="auto" min-width="400px" scrim="#396638">
                 <template v-slot:activator="{ props }">
                     <div class="flex justify-center"> <v-btn variant="text" v-bind="props">upload a plan</v-btn>
                     </div>
                 </template>
-<UploadPlan @closeDialog="UploadDialog = false" />
-</v-dialog>
+                <UploadPlan @closeDialog="UploadDialog = false" />
+            </v-dialog>
 
-<v-btn @click="dialog = true" variant="text" class="max-[600px]:!hidden">Create a new plan</v-btn>
+            <v-btn @click="dialog = true" variant="text" class="max-[600px]:!hidden">Create a new plan</v-btn>
 
-</nav> -->
+        </nav>
 
         <div class="main-content my-10 flex justify-between px-10  gap-4">
             <div class="fetures flex flex-col text-center ">

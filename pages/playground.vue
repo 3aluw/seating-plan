@@ -1,7 +1,7 @@
 <template>
-    <div class="container" :class="{'dark-container' : darkMode}">
+    <div class="playground-container" :class="{ 'dark-playground-container': darkMode }">
 
-        <!--        <nav class="navbar flex justify-around mt-12">
+        <nav class="navbar flex justify-around py-8">
             <NuxtLink to="/"> <v-btn variant="plain">Home</v-btn></NuxtLink>
 
             <v-dialog v-model="UploadDialog" width="auto" theme="dark" min-width="400px">
@@ -11,20 +11,20 @@
 
                 </template>
 
-<UploadPlan @closeDialog="UploadDialog = false" />
-</v-dialog>
+                <UploadPlan @closeDialog="UploadDialog = false" />
+            </v-dialog>
 
-<v-btn variant="plain" @click="showChangePlan = true">Change plan</v-btn>
+            <v-btn variant="plain" @click="showChangePlan = true">Change plan</v-btn>
 
-</nav> -->
+        </nav>
 
-        <div class="playground-wrapper" >
+        <div class="playground-wrapper">
             <!--dialogs-->
             <ModifyPlan v-model="showModifyPlan" v-if="showModifyPlan" />
             <ChosePlan v-model="showChangePlan" />
             <!--playground toolbar-->
 
-            <v-toolbar  density="compact"  :color="!darkMode ? 'blue-darken-1' : 'blue-darken-4 '">
+            <v-toolbar density="compact" :color="!darkMode ? 'blue-darken-1' : 'blue-darken-4 '">
                 <!-- actions menu -->
                 <v-menu open-on-hover>
                     <template v-slot:activator="{ props }">
@@ -90,15 +90,15 @@
                 </v-btn>
             </v-toolbar>
 
-            <div id="print" :style="zoomStyleObject"  :class="{'dark-playground-cont' : darkMode}"
+            <div id="print" :style="zoomStyleObject" :class="{ 'dark-playground-cont': darkMode }"
                 class="playground-cont relative grid gap-8 overflow-scroll shadow-lg mb-5 px-4 py-20"
                 ref="playgroundRef">
                 <div class="front absolute">Front</div>
                 <div class="grid " :class="columnClass"
                     v-for="(column, index) in planStore.plans[planStore.currentPlanIndex].planScheme">
 
-                    <div :class="{'dark-student-box' : darkMode}" class="student-box font-bold cursor-move" v-for="student in column" :key="student.id"
-                        :data-id="student.id">{{
+                    <div :class="{ 'dark-student-box': darkMode }" class="student-box font-bold cursor-move"
+                        v-for="student in column" :key="student.id" :data-id="student.id">{{
                             student.name
                         }} </div>
                 </div>
@@ -226,9 +226,11 @@ const printPlan = (zoom) => {
     padding: 2rem;
     background-repeat: repeat; */
 }
-.dark-container{
+
+.dark-playground-container {
     background: #121212;
 }
+
 .vertical-view {
     /* To apply column under the other in small devices */
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr))
@@ -281,7 +283,7 @@ const printPlan = (zoom) => {
     box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
 
-.dark-student-box{
+.dark-student-box {
     background-color: #1565C0;
     box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(156, 156, 156, 0.23) 0px 6px 6px;
 }
@@ -316,6 +318,7 @@ const printPlan = (zoom) => {
     bottom: 0;
     border-bottom: none;
 }
+
 .playground-cont::-webkit-scrollbar {
     width: 8px;
     height: 8px;
