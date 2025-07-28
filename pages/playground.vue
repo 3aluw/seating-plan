@@ -63,6 +63,14 @@
                                 class="w-full !justify-between" @click="planStore.fairDistribute">smart plan</v-btn>
                         </v-list-item>
                         <v-list-item>
+                            <v-btn prepend-icon="mdi-sort-numeric-ascending" color="blue-darken-4" variant="text"
+                                class="w-full !justify-between" @click="planStore.sortItems('asc')">sort(asc)</v-btn>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-btn prepend-icon="mdi-sort-numeric-descending" color="blue-darken-4" variant="text"
+                                class="w-full !justify-between" @click="planStore.sortItems('desc')">sort(desc)</v-btn>
+                        </v-list-item>
+                        <v-list-item>
                             <v-btn prepend-icon="mdi-undo" color="blue-darken-4" variant="text"
                                 @click="planStore.undoChanges">Undo changes</v-btn>
                         </v-list-item>
