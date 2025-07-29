@@ -11,7 +11,7 @@
                 <UploadPlan @closeDialog="UploadDialog = false" />
             </v-dialog>
 
-            <v-btn @click="dialog = true" variant="text" class="max-[600px]:!hidden">Create a new plan</v-btn>
+            <v-btn @click="dialog = true" variant="text" >Create a new plan</v-btn>
 
         </nav>
 
@@ -44,7 +44,7 @@
         <div class="text-center">
             <v-dialog v-model="dialog" @afterLeave="clearPlanInfo" width="auto" scrim="#396638">
                 <template v-slot:activator="{ props }">
-                    <div class="flex justify-center max-[600px]:!hidden"> <button class="call-btn bt-shake"
+                    <div class="flex justify-center"> <button class="call-btn bt-shake"
                             v-bind="props">
                             Create Your
                             plan</button>
