@@ -1,2 +1,3 @@
 1-Add .vertical-view option on small screens the class will be applied to playground-cont. it will allow to show column under the other 
-2- Rename fieldOne to CriteriaValue
+2- Rename fieldOne to criteriaValue
+3- reactivate viewMode to prevent user from some feature on small screens (creating a plan, editing the plan...) 

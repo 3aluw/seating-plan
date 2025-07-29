@@ -18,11 +18,7 @@
 
 
             <p class="bg-white my-6 text-2xl">Modify the table :</p>
-            <div class=" flex justify-around mb-6">
-                <v-btn variant="outlined" @click="planStore.sortItems('asc')" title="ascending sort">sort (asc)</v-btn>
-                <v-btn variant="outlined" @click="planStore.sortItems('dec')" title="descending sort">sort (des)</v-btn>
-            </div>
-            <data-table v-model="clonedPlan.tableData" :criteria-title="fieldOneTitle"></data-table>
+            <data-table v-model="clonedPlan.tableData" :criteria-title="fieldOneTitle" :is-initial-table="false"></data-table>
             <div class="action-btns flex justify-around my-4">
                 <v-btn color="blue-darken-2" variant="tonal" @click="showModifyPlan = false">Undo changes</v-btn>
                 <v-btn color="blue-darken-2" variant="tonal" @click="applyChanges">apply</v-btn>

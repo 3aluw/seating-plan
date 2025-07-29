@@ -5,99 +5,324 @@ export const usePlanStore = defineStore("PlanStore", () => {
 
     const viewMode = ref(false)
     const seatTypes = ["pairs", "rows"]
-    
+
     let plans = ref([
         {
             "planName": "Demo",
-            "description": "Try Me",
+            "description": "A plan that you can test",
             "seatType": "pairs",
-            "numberOfRows": 3,
-            "criteriaOneTitle": "Math marks",
+            "criteriaOneTitle": "score",
             "tableData": [
                 {
-                    "name": "one",
-                    "fieldOne": ""
+                    "name": "Ava Sterling",
+                    "fieldOne": 18,
+                    "id": 1
                 },
                 {
-                    "name": "one",
-                    "fieldOne": ""
+                    "name": "Nolan Reid",
+                    "fieldOne": 9.5,
+                    "id": 2
                 },
                 {
-                    "name": "two ", "fieldOne": ""
+                    "name": "Elira Moss",
+                    "fieldOne": 19.5,
+                    "id": 3
                 },
                 {
-                    "name": "three", "fieldOne": ""
+                    "name": "Kieran Vale",
+                    "fieldOne": 18.5,
+                    "id": 4
                 },
                 {
-                    "name": "four", "fieldOne": ""
+                    "name": "Sienna Cross",
+                    "fieldOne": 19,
+                    "id": 5
                 },
                 {
-                    "name": "five", "fieldOne": ""
+                    "name": "Maddox Ray",
+                    "fieldOne": 10,
+                    "id": 6
                 },
                 {
-                    "name": "one",
-                    "fieldOne": ""
+                    "name": "Talia Quinn",
+                    "fieldOne": 12.5,
+                    "id": 7
                 },
                 {
-                    "name": "two ", "fieldOne": ""
+                    "name": "Orion Blake",
+                    "fieldOne": 16,
+                    "id": 8
                 },
                 {
-                    "name": "three", "fieldOne": ""
+                    "name": "Freya Monroe",
+                    "fieldOne": 17,
+                    "id": 9
                 },
                 {
-                    "name": "four", "fieldOne": ""
+                    "name": "Jasper Lane",
+                    "fieldOne": 10.5,
+                    "id": 10
                 },
                 {
-                    "name": "five", "fieldOne": ""
+                    "name": "Nyla Voss",
+                    "fieldOne": 13,
+                    "id": 11
                 },
+                {
+                    "name": "Ronan Hale",
+                    "fieldOne": 7.25,
+                    "id": 12
+                },
+                {
+                    "name": "Zaria Wynn",
+                    "fieldOne": 11.25,
+                    "id": 13
+                },
+                {
+                    "name": "Ezra Knox",
+                    "fieldOne": 14,
+                    "id": 14
+                },
+                {
+                    "name": "Isla Maren",
+                    "fieldOne": 6.75,
+                    "id": 15
+                },
+                {
+                    "name": "Theo Wells",
+                    "fieldOne": 14.5,
+                    "id": 16
+                },
+                {
+                    "name": "Liora Skye",
+                    "fieldOne": 16.5,
+                    "id": 17
+                },
+                {
+                    "name": "Silas Drex",
+                    "fieldOne": 18.5,
+                    "id": 18
+                },
+                {
+                    "name": "Amaya Drew",
+                    "fieldOne": 18.5,
+                    "id": 19
+                },
+                {
+                    "name": "Cassian Blue",
+                    "fieldOne": 17.5,
+                    "id": 20
+                },
+                {
+                    "name": "Elodie Hart",
+                    "fieldOne": 19,
+                    "id": 21
+                },
+                {
+                    "name": "Kairo Finch",
+                    "fieldOne": 13.5,
+                    "id": 22
+                },
+                {
+                    "name": "Noa Briar",
+                    "fieldOne": 7.75,
+                    "id": 23
+                },
+                {
+                    "name": "Phoenix Jude",
+                    "fieldOne": 19,
+                    "id": 24
+                },
+                {
+                    "name": "Mira Lune",
+                    "fieldOne": 7,
+                    "id": 25
+                },
+                {
+                    "name": "Declan Frost",
+                    "fieldOne": 9.5,
+                    "id": 26
+                },
+                {
+                    "name": "Lyra West",
+                    "fieldOne": 17,
+                    "id": 27
+                },
+                {
+                    "name": "Jace Rowan",
+                    "fieldOne": 15.5,
+                    "id": 28
+                }
             ],
-            planScheme: []
-
-        }, {
-            "planName": "sad",
-            "description": "sda",
-            "seatType": 1,
-            "numberOfRows": 3,
-            "criteriaOneTitle": "A criteria",
-            "tableData": [
-                {
-                    "name": "one",
-                    "fieldOne": ""
-                },
-                {
-                    "name": "two ", "fieldOne": ""
-                },
-                {
-                    "name": "two ", "fieldOne": ""
-                },
-                {
-                    "name": "three", "fieldOne": ""
-                },
-                {
-                    "name": "four", "fieldOne": ""
-                },
-                {
-                    "name": "five", "fieldOne": ""
-                },
-                {
-                    "name": "one",
-                    "fieldOne": ""
-                },
-                {
-                    "name": "two ", "fieldOne": ""
-                },
-                {
-                    "name": "three", "fieldOne": ""
-                },
-                {
-                    "name": "four", "fieldOne": ""
-                },
-                {
-                    "name": "five", "fieldOne": ""
-                },
-            ],
-            planScheme: []
-        },], { deep: true })
+            "numberOfRows": 4,
+            "planScheme": [
+                [
+                    {
+                        "name": "Ava Sterling",
+                        "fieldOne": 18,
+                        "id": 1
+                    },
+                    {
+                        "name": "Nolan Reid",
+                        "fieldOne": 9.5,
+                        "id": 2
+                    },
+                    {
+                        "name": "Elira Moss",
+                        "fieldOne": 19.5,
+                        "id": 3
+                    },
+                    {
+                        "name": "Kieran Vale",
+                        "fieldOne": 18.5,
+                        "id": 4
+                    },
+                    {
+                        "name": "Sienna Cross",
+                        "fieldOne": 19,
+                        "id": 5
+                    },
+                    {
+                        "name": "Maddox Ray",
+                        "fieldOne": 10,
+                        "id": 6
+                    },
+                    {
+                        "name": "Talia Quinn",
+                        "fieldOne": 12.5,
+                        "id": 7
+                    },
+                    {
+                        "name": "",
+                        "id": 29
+                    }
+                ],
+                [
+                    {
+                        "name": "Orion Blake",
+                        "fieldOne": 16,
+                        "id": 8
+                    },
+                    {
+                        "name": "Freya Monroe",
+                        "fieldOne": 17,
+                        "id": 9
+                    },
+                    {
+                        "name": "Jasper Lane",
+                        "fieldOne": 10.5,
+                        "id": 10
+                    },
+                    {
+                        "name": "Nyla Voss",
+                        "fieldOne": 13,
+                        "id": 11
+                    },
+                    {
+                        "name": "Ronan Hale",
+                        "fieldOne": 7.25,
+                        "id": 12
+                    },
+                    {
+                        "name": "Zaria Wynn",
+                        "fieldOne": 11.25,
+                        "id": 13
+                    },
+                    {
+                        "name": "Ezra Knox",
+                        "fieldOne": 14,
+                        "id": 14
+                    },
+                    {
+                        "name": "",
+                        "id": 30
+                    }
+                ],
+                [
+                    {
+                        "name": "Isla Maren",
+                        "fieldOne": 6.75,
+                        "id": 15
+                    },
+                    {
+                        "name": "Theo Wells",
+                        "fieldOne": 14.5,
+                        "id": 16
+                    },
+                    {
+                        "name": "Liora Skye",
+                        "fieldOne": 16.5,
+                        "id": 17
+                    },
+                    {
+                        "name": "Silas Drex",
+                        "fieldOne": 18.5,
+                        "id": 18
+                    },
+                    {
+                        "name": "Amaya Drew",
+                        "fieldOne": 18.5,
+                        "id": 19
+                    },
+                    {
+                        "name": "Cassian Blue",
+                        "fieldOne": 17.5,
+                        "id": 20
+                    },
+                    {
+                        "name": "Elodie Hart",
+                        "fieldOne": 19,
+                        "id": 21
+                    },
+                    {
+                        "name": "",
+                        "id": 31
+                    }
+                ],
+                [
+                    {
+                        "name": "Kairo Finch",
+                        "fieldOne": 13.5,
+                        "id": 22
+                    },
+                    {
+                        "name": "Noa Briar",
+                        "fieldOne": 7.75,
+                        "id": 23
+                    },
+                    {
+                        "name": "Phoenix Jude",
+                        "fieldOne": 19,
+                        "id": 24
+                    },
+                    {
+                        "name": "Mira Lune",
+                        "fieldOne": 7,
+                        "id": 25
+                    },
+                    {
+                        "name": "Declan Frost",
+                        "fieldOne": 9.5,
+                        "id": 26
+                    },
+                    {
+                        "name": "Lyra West",
+                        "fieldOne": 17,
+                        "id": 27
+                    },
+                    {
+                        "name": "Jace Rowan",
+                        "fieldOne": 15.5,
+                        "id": 28
+                    },
+                    {
+                        "name": "",
+                        "id": 32
+                    }
+                ]
+            ]
+        }
+    ], { deep: true })
 
 
     //create a clone of the current table -will use it to undo changes-
@@ -175,6 +400,7 @@ export const usePlanStore = defineStore("PlanStore", () => {
             numberOfRows: numberOfRows,
             planScheme: planScheme,
         })
+
         //switch to the new created plan & update the cloned plan
         currentPlanIndex.value = plans.value.length - 1
         updateClonedPlan();
@@ -210,25 +436,74 @@ export const usePlanStore = defineStore("PlanStore", () => {
     }
 
     const sortItems = (sortType) => {
-        let tableData = plans.value[currentPlanIndex.value].tableData;
+        let tableData = plans.value[currentPlanIndex.value].planScheme.flat();
         const asc = sortType === "asc";
+        if (asc) {
+            tableData.sort((a, b) => b.fieldOne - a.fieldOne);
+        } else {
+            tableData.sort((a, b) => a.fieldOne - b.fieldOne);
+        }
+        plans.value[currentPlanIndex.value].planScheme = generatePlanScheme(tableData, plans.value[currentPlanIndex.value].seatType, plans.value[currentPlanIndex.value].numberOfRows);
+    }
+    const fairDistribute = () => {
+        const { planScheme, numberOfRows, seatType } = plans.value[currentPlanIndex.value]
+        // Clone and slightly shuffle to introduce randomness
+        const flatPlanScheme = planScheme.flat()
+        //add median score to blank student object to put the in middle when sorting
+        const realStudentsSorted = flatPlanScheme.filter(student => student.name.trim() !== '').sort((a, b) => b.fieldOne - a.fieldOne)
+        const mid = Math.floor(realStudentsSorted.length / 2)
+        const medianScore = flatPlanScheme.length % 2 === 0 ? (realStudentsSorted[mid - 1].fieldOne + realStudentsSorted[mid].fieldOne) / 2 : realStudentsSorted[mid].fieldOne;
+        flatPlanScheme.forEach(student => {
+            if (student.fieldOne === undefined) student.fieldOne = medianScore
+        })
 
-        tableData.sort(function (a, b) {
-            //check if it is a number
-            const isNumeric = (n) => {
-                return !isNaN(parseFloat(n)) && isFinite(n);
+        // Sort tableData by fieldOne descending 
+        flatPlanScheme.sort((a, b) => b.fieldOne - a.fieldOne);
+        // set fieldOne to undefined for blank objects 
+        flatPlanScheme.forEach((student) => {
+            if (!student.name) student.fieldOne = undefined; // Remove 
+        })
+        // Create empty newPlanScheme
+        const newPlanScheme = Array.from({ length: numberOfRows }, () => []);
+
+        let round = 0;
+
+        while (flatPlanScheme.length > 0) {
+            const direction = round % 2 === 0 ? 1 : -1;
+
+            if (seatType === "rows") {
+                const slice = flatPlanScheme.splice(0, numberOfRows);
+
+                for (let i = 0; i < slice.length; i++) {
+                    const teamIndex = direction === 1 ? i : numberOfRows - 1 - i;
+                    newPlanScheme[teamIndex].push(slice[i]);
+                }
+
+            } else if (seatType === "pairs") {
+                const bestGroup = flatPlanScheme.splice(0, Math.min(numberOfRows, flatPlanScheme.length));
+                const worstGroup = flatPlanScheme.splice(-bestGroup.length);
+
+                // Shuffle the worst group for random pairing
+                for (let i = worstGroup.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [worstGroup[i], worstGroup[j]] = [worstGroup[j], worstGroup[i]];
+                }
+
+                for (let i = 0; i < bestGroup.length; i++) {
+                    const teamIndex = direction === 1 ? i : numberOfRows - 1 - i;
+
+                    // Add pair: best + worst
+                    newPlanScheme[teamIndex].push(bestGroup[i]);
+                    if (worstGroup[i]) {
+                        newPlanScheme[teamIndex].push(worstGroup[i]);
+                    }
+                }
             }
-            const itemA = isNumeric(a.fieldOne) ? Number(a.fieldOne) : a.fieldOne
-            const itemB = isNumeric(b.fieldOne) ? Number(b.fieldOne) : b.fieldOne
-            if (itemA < itemB) {
-                return asc ? -1 : 1;
-            }
-            else if (itemA > itemB) {
-                return asc ? 1 : -1;
-            }
-            // items must be equal
-            return 0;
-        });
+
+            round++;
+        }
+
+        plans.value[currentPlanIndex.value].planScheme = newPlanScheme;
     }
 
     const downloadPlan = () => {
@@ -244,45 +519,45 @@ export const usePlanStore = defineStore("PlanStore", () => {
     }
 
     const uploadPlan = (upObject) => {
-
         if (ValidateUpload(upObject)) {
             plans.value.push(upObject);
             currentPlanIndex.value = plans.value.length - 1;
+            updateClonedPlan();
             return true
         }
         return false
-    }  
-      const checkStudentValidity = (student, allowEmptyNames) => {
+    }
+    const checkStudentValidity = (student, allowEmptyNames) => {
         //empty names are allowed in planScheme and not in tableData
         const checkEmptyNames = allowEmptyNames || student.name.trim() !== ""
         return student.hasOwnProperty("name") && student.hasOwnProperty("id") && checkEmptyNames
     }
     //check name, seatType and numberOfRows validity
-   const checkPropertiesValidity = (upObject) => {
-        const checkNameLength =  upObject.planName.length > 0 && upObject.planName.length < 10;
+    const checkPropertiesValidity = (upObject) => {
+        const checkNameLength = upObject.planName.length > 0 && upObject.planName.length < 10;
         const checkSeatType = seatTypes.includes(upObject.seatType);
         const checkNumberOfRows = upObject.numberOfRows > 0 && upObject.numberOfRows <= 6;
         return checkNameLength && checkSeatType && checkNumberOfRows;
     }
     //check if the planScheme is in sync with the tableData
-    const checkTableSchemeSync = (planScheme,tableData) => {
+    const checkTableSchemeSync = (planScheme, tableData) => {
         planScheme = planScheme.flat();
-        return tableData.every(student => planScheme.some(schemeStudent => schemeStudent.id === student.id)) 
+        return tableData.every(student => planScheme.some(schemeStudent => schemeStudent.id === student.id))
     }
     const ValidateUpload = (upObject) => {
         const checkKeys = Object.keys(plans.value[0]).every(k => upObject.hasOwnProperty(k))
         const checkProperties = checkPropertiesValidity(upObject);
         const checkTableDataLength = upObject.tableData.length > 10
-        const checkTableDataStudents = upObject.tableData.every(student => checkStudentValidity(student,false)) //
-        const checkPlanSchemeLength = upObject.planScheme.length === upObject.numberOfRows 
-        const checkPlanSchemeStudents = upObject.planScheme.flat().every(student => checkStudentValidity(student,true))
+        const checkTableDataStudents = upObject.tableData.every(student => checkStudentValidity(student, false)) //
+        const checkPlanSchemeLength = upObject.planScheme.length === upObject.numberOfRows
+        const checkPlanSchemeStudents = upObject.planScheme.flat().every(student => checkStudentValidity(student, true))
         const checkPlanSchemeSync = checkTableSchemeSync(upObject.planScheme, upObject.tableData)
         return checkKeys && checkProperties && checkTableDataLength && checkTableDataStudents && checkPlanSchemeLength && checkPlanSchemeStudents && checkPlanSchemeSync;
     }
-    
-    
+
+
     return {
-        plans, currentPlanIndex, plansCreator, generatePlanScheme, addIdToStudents, undoChanges, sortItems, deletePlan, shufflePlan, downloadPlan, uploadPlan, ValidateUpload, viewMode
+        plans, currentPlanIndex, plansCreator, generatePlanScheme, addIdToStudents, undoChanges, updateClonedPlan, sortItems, fairDistribute, deletePlan, shufflePlan, downloadPlan, uploadPlan, ValidateUpload, viewMode
     };
 },
     /* Enable this to persist this store : more info : https://prazdevs.github.io/pinia-plugin-persistedstate/frameworks/nuxt-3.html
