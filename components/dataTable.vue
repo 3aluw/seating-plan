@@ -115,6 +115,7 @@ const addNewData = () => {
 const deleteStudent = (index: number) => {
     if (tableData.value.length <= 10) {
         alertStore.createAlert("warning", "You need to have at least 10 names in the table")
+        if(tableData.value[index].name== '') tableData.value[index].name = "A name"
         return
     }
     tableData.value.splice(index, 1)
