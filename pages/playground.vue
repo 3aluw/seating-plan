@@ -28,7 +28,8 @@
                 <!-- actions menu -->
                 <v-menu open-on-hover>
                     <template v-slot:activator="{ props }">
-                        <v-btn class="print:!hidden" variant="text" dark v-bind="props" prepend-icon="mdi-dots-horizontal">
+                        <v-btn class="print:!hidden" variant="text" dark v-bind="props"
+                            prepend-icon="mdi-dots-horizontal">
                             <span class="max-[500px]:!hidden">actions</span>
                         </v-btn>
                     </template>
@@ -83,7 +84,7 @@
                     @click:prepend="zoom -= 10" hide-details></v-slider>
                 <v-spacer class="max-[500px]:!hidden"></v-spacer>
                 <v-toolbar-title class="text-center !font-bold">{{ planStore.plans[planStore.currentPlanIndex].planName
-                    }}</v-toolbar-title>
+                }}</v-toolbar-title>
                 <v-spacer class="max-[500px]:!hidden"></v-spacer>
                 <v-btn prepend-icon="mdi-theme-light-dark" class="max-[600px]:!hidden print:!hidden"
                     @click="darkMode = !darkMode">
@@ -98,10 +99,10 @@
                 <div class="grid " :class="columnClass"
                     v-for="(column, index) in planStore.plans[planStore.currentPlanIndex].planScheme">
 
-                    <div :class="{ 'dark-student-box': darkMode }" class="student-box w-28 h-14 p-2 text-sm sm:text-base sm:p-6 sm:w-40 sm:h-20 sm:font-bold cursor-move"
-                        v-for="student in column" :key="student.id" :data-id="student.id">{{
-                            student.name
-                        }} </div>
+                    <div :class="{ 'dark-student-box': darkMode }"
+                        class="student-box w-28 h-14 p-2 text-sm sm:text-base sm:p-6 sm:w-40 sm:h-20 sm:font-bold cursor-move"
+                        v-for="student in column" :key="student.id" :data-id="student.id">
+                        <span>{{student.name}}</span> <br> <small class="text-xs hidden sm:inline">- {{ student.fieldOne }} -</small></div>
                 </div>
                 <div class="back absolute">Back</div>
             </div>
@@ -268,7 +269,7 @@ const printPlan = (zoom) => {
 }
 
 .student-box {
-    background-color: #2980B9;
+    background-color: #1E6BA8;
     color: #F7F9F9;
     text-align: center;
     border-radius: 1px;
@@ -288,8 +289,8 @@ const printPlan = (zoom) => {
 }
 
 .draggable--over {
-    border: 1px dashed white;
-    background: #bfd9ea;
+    border: 1px dashed black;
+    background: #a5c4dc;
     color: black;
 }
 
