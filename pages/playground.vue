@@ -1,7 +1,7 @@
 <template>
     <div class="playground-container" :class="{ 'dark-playground-container': darkMode }">
 
-        <nav class="navbar flex justify-around py-8">
+        <nav class="navbar flex justify-around py-8 flex-wrap">
             <NuxtLink to="/"> <v-btn variant="plain">Home</v-btn></NuxtLink>
 
             <v-dialog v-model="UploadDialog" width="auto" min-width="400px">
@@ -28,8 +28,8 @@
                 <!-- actions menu -->
                 <v-menu open-on-hover>
                     <template v-slot:activator="{ props }">
-                        <v-btn class="print:!hidden" dark v-bind="props" prepend-icon="mdi-dots-horizontal">
-                            <p class="max-[500px]:!hidden ">actions</p>
+                        <v-btn class="print:!hidden" variant="text" dark v-bind="props" prepend-icon="mdi-dots-horizontal">
+                            <span class="max-[500px]:!hidden">actions</span>
                         </v-btn>
                     </template>
 
@@ -45,8 +45,8 @@
                 <!-- modify menu -->
                 <v-menu open-on-hover>
                     <template class="print:hidden" v-slot:activator="{ props }">
-                        <v-btn dark v-bind="props" prepend-icon="mdi-cog" class="max-[600px]:!hidden print:!hidden">
-                            modify
+                        <v-btn dark v-bind="props" prepend-icon="mdi-cog" class=" print:!hidden">
+                            <span class="max-[500px]:!hidden">modify </span>
                         </v-btn>
                     </template>
                     <v-list>
@@ -81,10 +81,10 @@
                 <v-slider class="print:!hidden" v-model="zoom" append-icon="mdi-magnify-plus-outline"
                     prepend-icon="mdi-magnify-minus-outline" step="10" @click:append="zoom += 10"
                     @click:prepend="zoom -= 10" hide-details></v-slider>
-                <v-spacer></v-spacer>
+                <v-spacer class="max-[500px]:!hidden"></v-spacer>
                 <v-toolbar-title class="text-center !font-bold">{{ planStore.plans[planStore.currentPlanIndex].planName
                     }}</v-toolbar-title>
-                <v-spacer></v-spacer>
+                <v-spacer class="max-[500px]:!hidden"></v-spacer>
                 <v-btn prepend-icon="mdi-theme-light-dark" class="max-[600px]:!hidden print:!hidden"
                     @click="darkMode = !darkMode">
                     Dark/light mode
@@ -98,7 +98,7 @@
                 <div class="grid " :class="columnClass"
                     v-for="(column, index) in planStore.plans[planStore.currentPlanIndex].planScheme">
 
-                    <div :class="{ 'dark-student-box': darkMode }" class="student-box font-bold cursor-move"
+                    <div :class="{ 'dark-student-box': darkMode }" class="student-box w-28 h-14 p-2 text-sm sm:text-base sm:p-6 sm:w-40 sm:h-20 sm:font-bold cursor-move"
                         v-for="student in column" :key="student.id" :data-id="student.id">{{
                             student.name
                         }} </div>
@@ -211,9 +211,6 @@ const printPlan = (zoom) => {
     display: none;
 }
 
-.v-toolbar-title {
-    flex-grow: 2;
-}
 
 .v-list-item {
     padding-inline: 0 !important;
@@ -273,16 +270,12 @@ const printPlan = (zoom) => {
 .student-box {
     background-color: #2980B9;
     color: #F7F9F9;
-    padding: 20px;
     text-align: center;
     border-radius: 1px;
     white-space: normal;
     /* allow text to wrap */
     word-wrap: break-word;
     /* break long words if needed */
-    width: 100%;
-    width: 10rem;
-    height: 5rem;
     /* optional: control how wide each box can grow */
     box-sizing: border-box;
     text-overflow: ellipsis;
