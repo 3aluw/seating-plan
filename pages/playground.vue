@@ -61,19 +61,19 @@
                         </v-list-item>
                         <v-list-item>
                             <v-btn prepend-icon="mdi-auto-fix" color="blue-darken-4" variant="text"
-                                class="w-full !justify-between" @click="planStore.fairDistribute">smart plan</v-btn>
+                                class="w-full !justify-between" @click="planStore.fairDistribute" :disabled="!currentPlan.isSortingCriteriaAllowed">smart plan</v-btn>
                         </v-list-item>
                         <v-list-item>
                             <v-btn prepend-icon="mdi-sort-numeric-ascending" color="blue-darken-4" variant="text"
-                                class="w-full !justify-between" @click="planStore.sortItems('asc')">sort(asc)</v-btn>
+                                class="w-full !justify-between" @click="planStore.sortItems('asc')" :disabled="!currentPlan.isSortingCriteriaAllowed">sort(asc)</v-btn>
                         </v-list-item>
                         <v-list-item>
                             <v-btn prepend-icon="mdi-sort-numeric-descending" color="blue-darken-4" variant="text"
-                                class="w-full !justify-between" @click="planStore.sortItems('desc')">sort(desc)</v-btn>
+                                class="w-full !justify-between" @click="planStore.sortItems('desc')" :disabled="!currentPlan.isSortingCriteriaAllowed">sort(desc)</v-btn>
                         </v-list-item>
                         <v-list-item>
                             <v-btn prepend-icon="mdi-undo" color="blue-darken-4" variant="text"
-                                @click="planStore.undoChanges">Undo changes</v-btn>
+                                @click="planStore.undoChanges">Reset plan</v-btn>
                         </v-list-item>
 
                     </v-list>
@@ -100,9 +100,9 @@
                     v-for="(column, index) in planStore.plans[planStore.currentPlanIndex].planScheme">
 
                     <div :class="{ 'dark-student-box': darkMode }"
-                        class="student-box w-28 h-14 p-2 text-sm sm:text-base sm:p-6 sm:w-40 sm:h-20 sm:font-bold cursor-move"
+                        class="student-box w-28 h-14 p-2 text-sm sm:text-base sm:p-6 sm:w-40 sm:h-20  cursor-move"
                         v-for="student in column" :key="student.id" :data-id="student.id">
-                        <span>{{student.name}}</span> <br> <small class="text-xs hidden sm:inline">- {{ student.fieldOne }} -</small></div>
+                        <span class="sm:font-bold">{{student.name}}</span> <br> <small class="text-xs hidden sm:inline">- {{ student.fieldOne }} -</small></div>
                 </div>
                 <div class="back absolute">Back</div>
             </div>
