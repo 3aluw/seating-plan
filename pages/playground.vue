@@ -37,7 +37,7 @@
                     <v-list>
                         <v-list-item> <v-btn prepend-icon="mdi-printer" color="blue-darken-4" variant="text"
                                 @click="printPlan" class="w-full !justify-between">Print</v-btn></v-list-item>
-                        <v-list-item> <v-btn prepend-icon="mdi-printer" color="blue-darken-4" variant="text"
+                        <v-list-item> <v-btn prepend-icon="mdi-download" color="blue-darken-4" variant="text"
                                 @click="downloadPDF" class="w-full !justify-between">Download PDF</v-btn></v-list-item>
 
                         <v-list-item> <v-btn prepend-icon=" mdi-download " color="blue-darken-4" variant="text"
@@ -64,17 +64,18 @@
                         <v-list-item>
                             <v-btn prepend-icon="mdi-auto-fix" color="blue-darken-4" variant="text"
                                 class="w-full !justify-between" @click="planStore.fairDistribute"
-                                :disabled="!currentPlan.isSortingCriteriaAllowed">smart plan</v-btn>
+                                :disabled="!isSortingCriteriaAllowed">smart plan</v-btn>
                         </v-list-item>
+
                         <v-list-item>
                             <v-btn prepend-icon="mdi-sort-numeric-ascending" color="blue-darken-4" variant="text"
                                 class="w-full !justify-between" @click="planStore.sortItems('asc')"
-                                :disabled="!currentPlan.isSortingCriteriaAllowed">sort(asc)</v-btn>
+                                :disabled="!isSortingCriteriaAllowed">sort(asc)</v-btn>
                         </v-list-item>
                         <v-list-item>
                             <v-btn prepend-icon="mdi-sort-numeric-descending" color="blue-darken-4" variant="text"
                                 class="w-full !justify-between" @click="planStore.sortItems('desc')"
-                                :disabled="!currentPlan.isSortingCriteriaAllowed">sort(desc)</v-btn>
+                                :disabled="!isSortingCriteriaAllowed">sort(desc)</v-btn>
                         </v-list-item>
                         <v-list-item>
                             <v-btn prepend-icon="mdi-undo" color="blue-darken-4" variant="text"
@@ -100,7 +101,7 @@
             <div id="print" :style="zoomStyleObject" :class="{ 'dark-playground-cont': darkMode }"
                 class="playground-cont relative grid gap-8 overflow-scroll shadow-lg mb-5 px-4 py-20"
                 ref="playgroundRef">
-                <div class="front absolute">Front</div>
+                <div class="front ">Front</div>
                 <div class="grid " :class="columnClass"
                     v-for="(column, index) in planStore.plans[planStore.currentPlanIndex].planScheme">
 
@@ -126,6 +127,7 @@ import { usePlanStore } from '~/store/planStore'
 const planStore = usePlanStore();
 const currentPlan = computed(() => planStore.plans[planStore.currentPlanIndex])
 const columnClass = computed(() => currentPlan.value.seatType === "pairs" ? "pairs-column" : "individual-column")
+const isSortingCriteriaAllowed = computed(() => currentPlan.value.criteriaOneTitle ? true : false)
 //used refs
 const playgroundRef = ref(null)
 onMounted(async () => {
@@ -171,7 +173,6 @@ const swapStudents = (draggedElementId, targetElementId) => {
 //show components
 const showChangePlan = ref(false)
 const showModifyPlan = ref(false)
-const showPlayground = ref(false)
 const UploadDialog = ref(false)
 
 
@@ -196,21 +197,18 @@ async function downloadPDF() {
 
     const clone = element.cloneNode(true)
     clone.style.background = '#fff'
-
-
     document.body.appendChild(clone)
-
     const rect = clone.getBoundingClientRect()
 
     let opt = {
-        filename: 'grid.pdf',
-        image: { type: 'png' },
+        margin: 0,
+        filename: currentPlan.value.planName + '.pdf',
         html2canvas: {
             scale: 2,
             useCORS: true,
+
         },
         jsPDF: {
-            unit: 'pt',
             format: 'a4',
             orientation: rect.width > rect.height ? 'landscape' : 'portrait'
         }
@@ -241,7 +239,7 @@ const placesPerRow = computed(() => {
     return seatType == 0 && placesPerRow % 2 ? placesPerRow + 1 : placesPerRow
 })
 
-const printPlan = (zoom) => {
+const printPlan = () => {
     setTimeout(() => window.print(), 1000)
 }
 
@@ -343,7 +341,8 @@ const printPlan = (zoom) => {
 .front,
 .back {
     font-size: 2rem;
-    border: 1px dashed;
+    position: absolute;
+    border: 1px dashed black;
     font-weight: 500;
     padding-inline: 1rem;
     padding-block: 0.2rem;
@@ -408,9 +407,11 @@ const printPlan = (zoom) => {
         color: black;
         border: 1px black solid;
     }
-.student-box small{
-    display: none;
-}
+
+    .student-box small {
+        display: none;
+    }
+
     .mdi-cursor-move {
         display: none;
     }
