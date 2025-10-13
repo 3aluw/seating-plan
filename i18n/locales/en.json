@@ -1,0 +1,52 @@
+{
+  "homePage": {
+    "header": "A good seating plan is part of your success",
+    "subHeader": "An organized seating plan encourages engagement and interaction among students",
+    "greenCard": "BETTER RESULTS",
+    "yellowCard": "GREATER FOCUS",
+    "redCard": "FEWER DISTRACTIONS"
+  },
+  "planDialog": {
+    "stepOneTitle": "Enter plan information",
+    "stepTwoTitle": "Set up your classroom",
+    "stepThreeTitle": "Review your plan",
+    "planName": "Plan Name",
+    "description": "Description (Optional)",
+    "seatingType": "Choose a seating plan model:",
+    "sortingCriteria": "Sorting Criteria",
+    "enableSortingCriteria": "Enable Sorting Criteria",
+    "addNames": "Add Names",
+    "addNamesDescription": "Here you can create a list of attendees. Enter each name on a new line, then click 'Add Data' when you're done.",
+    "planInfo:": "Plan Information:",
+    "numOfAttendants": "Number of Attendees",
+    "yourTable": "Your Table"
+  },
+  "playgroundPage": {
+    "actions": "Actions",
+    "dar;LightTheme": "Dark / Light Theme",
+    "front": "Front",
+    "back": "Back",
+    "print": "Print",
+    "downloadAsPDF": "Download as PDF",
+    "downloadAsJSON": "Download as JSON",
+    "modifyPlan": "Modify Plan",
+    "randomize": "Randomize",
+    "smartPlan": "Smart Plan",
+    "sortAscending": "Sort Ascending",
+    "sortDescending": "Sort Descending",
+    "resetPlan": "Reset Plan"
+  },
+  "basic": {
+    "next": "Next",
+    "back": "Back",
+    "names": "Names",
+    "addData": "Add Data",
+    "clear": "Clear",
+    "modify": "Modify",
+    "finnish": "Finish",
+    "playground": "Playground",
+    "uploadPlan": "Upload a Plan",
+    "createPlan": "Create a New Plan",
+    "createYourPlan": "Create Your Plan"
+  }
+}

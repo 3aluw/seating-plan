@@ -1,0 +1,52 @@
+{
+  "homePage": {
+    "header": "خطة الجلوس الجيدة جزء من نجاحك",
+    "subHeader": "يمكن لخطة الجلوس المنظمة أن تساعد في تعزيز التفاعل والمشاركة بين الطلاب",
+    "greenCard": "نتائج أفضل",
+    "yellowCard": "تركيز أكبر",
+    "redCard": "تشتيت أقل"
+  },
+  "planDialog": {
+    "stepOneTitle": "املأ معلومات الخطة",
+    "stepTwoTitle": "إعداد الصف",
+    "stepThreeTitle": "تحقق من خطتك",
+    "planName": "اسم الخطة",
+    "description": "الوصف (اختياري)",
+    "seatingType": "اختر نموذج خطة الجلوس:",
+    "sortingCriteria": "معيار الترتيب ",
+    "enableSortingCriteria": "تفعيل معيار الترتيب",
+    "addNames": "إضافة الأسماء",
+    "addNamesDescription": "هنا يمكنك إعداد جدول الحضور. أدخل كل اسم في سطر جديد، ثم انقر على إضافة البيانات بعد الانتهاء.",
+    "planInfo:": "معلومات الخطة:",
+    "numOfAttendants": "عدد الحضور",
+    "yourTable": "جدولك"
+  },
+  "playgroundPage": {
+    "actions": "الإجراءات",
+    "dar;LightTheme": "الوضع الداكن / الفاتح",
+    "front": "الأمام",
+    "back": "الخلف",
+    "print": "طباعة",
+    "downloadAsPDF": "تحميل كملف PDF",
+    "downloadAsJSON": "تحميل كملف JSON",
+    "modifyPlan": "تعديل الخطة",
+    "randomize": "عشوائي",
+    "smartPlan": "الخطة الذكية",
+    "sortAscending": "ترتيب تصاعدي",
+    "sortDescending": "ترتيب تنازلي",
+    "resetPlan": "إعادة تعيين الخطة"
+  },
+  "basic": {
+    "next": "التالي",
+    "back": "السابق",
+    "names": "الأسماء",
+    "addData": "إضافة البيانات",
+    "clear": "مسح",
+    "modify": "تعديل",
+    "finnish": "إنهاء",
+    "playground": "ساحة العمل",
+    "uploadPlan": "تحميل خطة",
+    "createPlan": "إنشاء خطة جديدة",
+    "createYourPlan": "أنشئ خطتك"
+  }
+}
