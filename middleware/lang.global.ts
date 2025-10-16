@@ -10,4 +10,5 @@ export default defineNuxtRouteMiddleware((to) => {
     i18n.setLocale(lang)
     current.value = 'ar'
   }
+
 })
