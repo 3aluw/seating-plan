@@ -2,19 +2,19 @@
     <div class="playground-container" :class="{ 'dark-playground-container': darkMode }">
 
         <nav class="navbar flex justify-around py-8 flex-wrap">
-            <NuxtLink to="/"> <v-btn variant="plain">Home</v-btn></NuxtLink>
+            <NuxtLink to="/"> <v-btn variant="plain">{{ $t('basic.home') }}</v-btn></NuxtLink>
 
             <v-dialog v-model="UploadDialog" width="auto" min-width="400px">
                 <template v-slot:activator="{ props }">
 
-                    <v-btn variant="plain" v-bind="props">upload a plan</v-btn>
+                    <v-btn variant="plain" v-bind="props">{{ $t('basic.uploadPlan') }}</v-btn>
 
                 </template>
 
                 <UploadPlan @closeDialog="UploadDialog = false" />
             </v-dialog>
 
-            <v-btn variant="plain" @click="showChangePlan = true">Change plan</v-btn>
+            <v-btn variant="plain" @click="showChangePlan = true">{{ $t('playgroundPage.changePlan') }}</v-btn>
 
         </nav>
 
@@ -30,18 +30,18 @@
                     <template v-slot:activator="{ props }">
                         <v-btn class="print:!hidden" variant="text" dark v-bind="props"
                             prepend-icon="mdi-dots-horizontal">
-                            <span class="max-[500px]:!hidden">actions</span>
+                            <span class="max-[500px]:!hidden">{{ $t('playgroundPage.actions') }}</span>
                         </v-btn>
                     </template>
 
                     <v-list>
                         <v-list-item> <v-btn prepend-icon="mdi-printer" color="blue-darken-4" variant="text"
-                                @click="printPlan" class="w-full !justify-between">Print</v-btn></v-list-item>
+                                @click="printPlan" class="w-full !justify-between">{{ $t('playgroundPage.print') }}</v-btn></v-list-item>
                         <v-list-item> <v-btn prepend-icon="mdi-download" color="blue-darken-4" variant="text"
-                                @click="downloadPDF" class="w-full !justify-between">Download PDF</v-btn></v-list-item>
+                                @click="downloadPDF" class="w-full !justify-between">{{ $t('playgroundPage.downloadAsPDF') }}</v-btn></v-list-item>
 
                         <v-list-item> <v-btn prepend-icon=" mdi-download " color="blue-darken-4" variant="text"
-                                @click="planStore.downloadPlan"> Download Json </v-btn></v-list-item>
+                                @click="planStore.downloadPlan"> {{ $t('playgroundPage.downloadAsJSON') }}</v-btn></v-list-item>
                     </v-list>
                 </v-menu>
 
@@ -49,37 +49,37 @@
                 <v-menu open-on-hover>
                     <template class="print:hidden" v-slot:activator="{ props }">
                         <v-btn dark v-bind="props" prepend-icon="mdi-cog" class=" print:!hidden">
-                            <span class="max-[500px]:!hidden">modify </span>
+                            <span class="max-[500px]:!hidden">{{ $t('basic.modify') }} </span>
                         </v-btn>
                     </template>
                     <v-list>
                         <v-list-item>
                             <v-btn prepend-icon="mdi-file-edit-outline" color="blue-darken-4" variant="text"
-                                class="w-full !justify-between" @click="showModifyPlan = true">modify plan</v-btn>
+                                class="w-full !justify-between" @click="showModifyPlan = true">{{ $t('playgroundPage.modifyPlan') }}</v-btn>
                         </v-list-item>
                         <v-list-item>
                             <v-btn prepend-icon="mdi-autorenew" color="blue-darken-4" variant="text"
-                                class="w-full !justify-between" @click="planStore.shufflePlan">randomize</v-btn>
+                                class="w-full !justify-between" @click="planStore.shufflePlan">{{ $t('playgroundPage.randomize') }}</v-btn>
                         </v-list-item>
                         <v-list-item>
                             <v-btn prepend-icon="mdi-auto-fix" color="blue-darken-4" variant="text"
                                 class="w-full !justify-between" @click="planStore.fairDistribute"
-                                :disabled="!isSortingCriteriaAllowed">smart plan</v-btn>
+                                :disabled="!isSortingCriteriaAllowed">{{ $t('playgroundPage.smartPlan') }}</v-btn>
                         </v-list-item>
 
                         <v-list-item>
                             <v-btn prepend-icon="mdi-sort-numeric-ascending" color="blue-darken-4" variant="text"
                                 class="w-full !justify-between" @click="planStore.sortItems('asc')"
-                                :disabled="!isSortingCriteriaAllowed">sort(asc)</v-btn>
+                                :disabled="!isSortingCriteriaAllowed">{{ $t('playgroundPage.sortAscending') }}</v-btn>
                         </v-list-item>
                         <v-list-item>
                             <v-btn prepend-icon="mdi-sort-numeric-descending" color="blue-darken-4" variant="text"
                                 class="w-full !justify-between" @click="planStore.sortItems('desc')"
-                                :disabled="!isSortingCriteriaAllowed">sort(desc)</v-btn>
+                                :disabled="!isSortingCriteriaAllowed">{{ $t('playgroundPage.sortDescending') }}</v-btn>
                         </v-list-item>
                         <v-list-item>
                             <v-btn prepend-icon="mdi-undo" color="blue-darken-4" variant="text"
-                                @click="planStore.undoChanges">Reset plan</v-btn>
+                                @click="planStore.undoChanges">{{ $t('playgroundPage.resetPlan') }}</v-btn>
                         </v-list-item>
 
                     </v-list>
@@ -94,7 +94,7 @@
                 <v-spacer class="max-[500px]:!hidden"></v-spacer>
                 <v-btn prepend-icon="mdi-theme-light-dark" class="max-[600px]:!hidden print:!hidden"
                     @click="darkMode = !darkMode">
-                    Dark/light mode
+                   {{ $t('playgroundPage.dar;LightTheme') }}
                 </v-btn>
             </v-toolbar>
 
@@ -113,7 +113,7 @@
                                 student.fieldOne }} -</small>
                     </div>
                 </div>
-                <div class="back absolute">Back</div>
+                <div class="back absolute">{{ $t('basic.back') }}</div>
             </div>
         </div>
 
