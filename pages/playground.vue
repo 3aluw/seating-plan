@@ -1,7 +1,7 @@
 <template>
     <div class="playground-container" :class="{ 'dark-playground-container': darkMode }">
         <NavBar pageType="playground" @openDialog="showChangePlan = true" />
-        
+
         <div class="playground-wrapper">
             <!--dialogs-->
             <ModifyPlan v-model="showModifyPlan" v-if="showModifyPlan" />
@@ -20,15 +20,15 @@
 
                     <v-list>
                         <v-list-item> <v-btn prepend-icon="mdi-printer" color="blue-darken-4" variant="text"
-                                @click="printPlan" class="w-full !justify-between">{{ $t('playgroundPage.print')
-                                }}</v-btn></v-list-item>
+                                @click="printPlan" class="w-full !justify-between">
+                                {{ $t('playgroundPage.print') }}</v-btn></v-list-item>
                         <v-list-item> <v-btn prepend-icon="mdi-download" color="blue-darken-4" variant="text"
-                                @click="downloadPDF" class="w-full !justify-between">{{
-                                    $t('playgroundPage.downloadAsPDF') }}</v-btn></v-list-item>
+                                @click="downloadPDF" class="w-full !justify-between">
+                                {{$t('playgroundPage.downloadAsPDF') }}</v-btn></v-list-item>
 
                         <v-list-item> <v-btn prepend-icon=" mdi-download " color="blue-darken-4" variant="text"
-                                @click="planStore.downloadPlan"> {{ $t('playgroundPage.downloadAsJSON')
-                                }}</v-btn></v-list-item>
+                                @click="planStore.downloadPlan"> 
+                                {{ $t('playgroundPage.downloadAsJSON')}}</v-btn></v-list-item>
                     </v-list>
                 </v-menu>
 
@@ -82,7 +82,7 @@
                     @click:prepend="zoom -= 10" hide-details></v-slider>
                 <v-spacer class="max-[500px]:!hidden"></v-spacer>
                 <v-toolbar-title class="text-center !font-bold">{{ planStore.plans[planStore.currentPlanIndex].planName
-                    }}</v-toolbar-title>
+                }}</v-toolbar-title>
                 <v-spacer class="max-[500px]:!hidden"></v-spacer>
                 <v-btn prepend-icon="mdi-theme-light-dark" class="max-[600px]:!hidden print:!hidden"
                     @click="darkMode = !darkMode">
@@ -248,14 +248,14 @@ const printPlan = () => {
     padding-inline: 0 !important;
 }
 
-
+/*  
 .playground-wrapper {
-    /*     margin-inline: 2rem;
+     margin-inline: 2rem;
     background: v-bind('usedStyles.bg');
     outline-color: v-bind('usedStyles.outlineColor');
     padding: 2rem;
-    background-repeat: repeat; */
-}
+    background-repeat: repeat; 
+}*/
 
 .dark-playground-container {
     background: #121212;
