@@ -1,21 +1,6 @@
 <template>
     <div class="conatiner">
-        <nav class="flex justify-around  max-[600px]:flex-col max-[600px]:items-center">
-            <NuxtLink to="/playground"> <v-btn variant="text">{{ $t('basic.playground') }}</v-btn></NuxtLink>
-
-            <v-dialog v-model="UploadDialog" width="auto" min-width="400px" scrim="#396638">
-                <template v-slot:activator="{ props }">
-                    <div class="flex justify-center"> <v-btn variant="text" v-bind="props">{{ $t('basic.uploadPlan')
-                    }}</v-btn>
-                    </div>
-                </template>
-                <UploadPlan @closeDialog="UploadDialog = false" />
-            </v-dialog>
-
-            <v-btn @click="dialog = true" variant="text">{{ $t('basic.createPlan') }}</v-btn>
-
-        </nav>
-
+        <NavBar pageType="home" @openDialog="dialog = true" />
         <div class="main-content my-10 flex justify-between px-10  gap-4">
             <div class="fetures flex flex-col text-center ">
                 <p class="text-2xl px-10 py-5 my-5 ml-20 green-linear ">{{ $t('homePage.greenCard') }}</p>
@@ -87,6 +72,7 @@
 
 <script setup>
 import { usePlanStore } from '~/store/planStore'
+const route = useRoute()
 const PlanStore = usePlanStore();
 const locale = useI18n().locale
 const dialogIcons = {
