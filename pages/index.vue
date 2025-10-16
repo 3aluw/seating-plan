@@ -1,28 +1,14 @@
 <template>
     <div class="conatiner">
-        <nav class="flex justify-around  max-[600px]:flex-col max-[600px]:items-center">
-            <NuxtLink to="/playground"> <v-btn variant="text">playground</v-btn></NuxtLink>
-
-            <v-dialog v-model="UploadDialog" width="auto" min-width="400px" scrim="#396638">
-                <template v-slot:activator="{ props }">
-                    <div class="flex justify-center"> <v-btn variant="text" v-bind="props">upload a plan</v-btn>
-                    </div>
-                </template>
-                <UploadPlan @closeDialog="UploadDialog = false" />
-            </v-dialog>
-
-            <v-btn @click="dialog = true" variant="text" >Create a new plan</v-btn>
-
-        </nav>
-
+        <NavBar pageType="home" @openDialog="dialog = true" />
         <div class="main-content my-10 flex justify-between px-10  gap-4">
             <div class="fetures flex flex-col text-center ">
-                <p class="text-2xl px-10 py-5 my-5 ml-20 green-linear ">BETTER RESULTS</p>
+                <p class="text-2xl px-10 py-5 my-5 ml-20 green-linear ">{{ $t('homePage.greenCard') }}</p>
 
-                <p class="text-2xl px-10 py-5 my-5 ml-10  yellow-linear">MORE FOCUS</p>
+                <p class="text-2xl px-10 py-5 my-5 ml-10  yellow-linear">{{ $t('homePage.yellowCard') }}</p>
 
 
-                <p class="text-2xl px-10 py-5 my-5 red-linear">LESS DISTRACTION</p>
+                <p class="text-2xl px-10 py-5 my-5 red-linear">{{ $t('homePage.redCard') }}</p>
             </div>
             <div class="traingles flex flex-col justify-evenly max-[500px]:hidden">
                 <img class="p-5" src="/Polygon-1.svg">
@@ -30,13 +16,11 @@
                 <img class="p-5" src="/Polygon-2.svg">
             </div>
 
-            <div class="flex justify-start flex-col main-text">
-                <p class="text-5xl pt-5">A <span class="text-purple-600">GOOD </span> seating plan is a part of your
-                    game
-                </p>
-                <p class="pt-3"> A well-organized seating plan can help promote engagement and interaction among
-                    students
-                </p>
+            <div class="flex justify-center flex-col gap-8 main-text">
+                <i18n-t class="text-5xl pt-5" keypath="homePage.header" tag="p">
+                    <span class="text-purple-600">{{ $t("homePage.good") }}</span>
+                </i18n-t>
+                <p> {{ $t('homePage.subHeader') }}</p>
             </div>
 
         </div>
@@ -44,10 +28,8 @@
         <div class="text-center">
             <v-dialog v-model="dialog" @afterLeave="clearPlanInfo" width="auto" scrim="#396638">
                 <template v-slot:activator="{ props }">
-                    <div class="flex justify-center"> <button class="call-btn bt-shake"
-                            v-bind="props">
-                            Create Your
-                            plan</button>
+                    <div class="flex justify-center"> <button class="call-btn bt-shake" v-bind="props">
+                            {{ $t("basic.createPlan") }}</button>
                     </div>
                 </template>
 
@@ -66,15 +48,17 @@
                                 v-if="step == 3" />
                         </v-fade-transition>
 
-
                         <!--Form navigation buttons-->
                         <div class="flex justify-center gap-4">
-                            <v-btn prepend-icon="mdi:mdi-arrow-left" variant="outlined" color="black"
-                                :disabled="step == 1" @click="step -= 1">BACK</v-btn>
-                            <v-btn append-icon="$next" variant="outlined" color="black" v-if="step < 3"
-                                @click="step += 1" :disabled="disableNextButton">NEXT</v-btn>
+                            <v-btn :prepend-icon="dialogIcons[locale].back" variant="outlined" color="black"
+                                :disabled="step == 1" @click="step -= 1">{{ $t('basic.back') }}</v-btn>
+
+                            <v-btn :append-icon="dialogIcons[locale].next" variant="outlined" color="black" v-if="step < 3"
+                                @click="step += 1" :disabled="disableNextButton">{{ $t('basic.next') }}</v-btn>
+
                             <NuxtLink to="/playground"> <v-btn append-icon="$next" variant="flat" color="green-darken-2"
-                                    v-if="step == 3" @click="plansCreator">Finnish</v-btn></NuxtLink>
+                                    v-if="step == 3" @click="plansCreator">{{ $t('basic.finnish') }}</v-btn>
+                            </NuxtLink>
 
                         </div>
 
@@ -82,16 +66,20 @@
                 </v-card>
             </v-dialog>
         </div>
-
     </div>
+    <Footer />
 </template>
 
 <script setup>
 import { usePlanStore } from '~/store/planStore'
+const route = useRoute()
 const PlanStore = usePlanStore();
-
-
-//Emitted Data from child components :
+const locale = useI18n().locale
+const dialogIcons = {
+    'en': { next: 'mdi:mdi-arrow-right', back: 'mdi:mdi-arrow-left' },
+    'ar': { next: 'mdi:mdi-arrow-left', back: 'mdi:mdi-arrow-right' },
+}
+//Emitted Data from dialog components :
 //(PlanInfos comp)
 let planInfos = ref({
     planName: "",

@@ -1,0 +1,646 @@
+import { defineStore, acceptHMRUpdate } from "pinia";
+import { useCloned } from "@vueuse/core";
+import type { IStudent, IPlan, SeatType, PlanScheme } from "~/data/types";
+
+export const usePlanStore = defineStore(
+  "PlanStore",
+  () => {
+    const viewMode = ref(false);
+    const seatTypes = ["pairs", "rows"];
+
+    let plans = ref<IPlan[]>([
+      {
+        planName: "Demo",
+        description: "A plan that you can test",
+        seatType: "pairs",
+        criteriaOneTitle: "score",
+        tableData: [
+          {
+            name: "Ava Sterling",
+            fieldOne: 18,
+            id: 1,
+          },
+          {
+            name: "Nolan Reid",
+            fieldOne: 9.5,
+            id: 2,
+          },
+          {
+            name: "Elira Moss",
+            fieldOne: 19.5,
+            id: 3,
+          },
+          {
+            name: "Kieran Vale",
+            fieldOne: 18.5,
+            id: 4,
+          },
+          {
+            name: "Sienna Cross",
+            fieldOne: 19,
+            id: 5,
+          },
+          {
+            name: "Maddox Ray",
+            fieldOne: 10,
+            id: 6,
+          },
+          {
+            name: "Talia Quinn",
+            fieldOne: 12.5,
+            id: 7,
+          },
+          {
+            name: "Orion Blake",
+            fieldOne: 16,
+            id: 8,
+          },
+          {
+            name: "Freya Monroe",
+            fieldOne: 17,
+            id: 9,
+          },
+          {
+            name: "Jasper Lane",
+            fieldOne: 10.5,
+            id: 10,
+          },
+          {
+            name: "Nyla Voss",
+            fieldOne: 13,
+            id: 11,
+          },
+          {
+            name: "Ronan Hale",
+            fieldOne: 7.25,
+            id: 12,
+          },
+          {
+            name: "Zaria Wynn",
+            fieldOne: 11.25,
+            id: 13,
+          },
+          {
+            name: "Ezra Knox",
+            fieldOne: 14,
+            id: 14,
+          },
+          {
+            name: "Isla Maren",
+            fieldOne: 6.75,
+            id: 15,
+          },
+          {
+            name: "Theo Wells",
+            fieldOne: 14.5,
+            id: 16,
+          },
+          {
+            name: "Liora Skye",
+            fieldOne: 16.5,
+            id: 17,
+          },
+          {
+            name: "Silas Drex",
+            fieldOne: 18.5,
+            id: 18,
+          },
+          {
+            name: "Amaya Drew",
+            fieldOne: 18.5,
+            id: 19,
+          },
+          {
+            name: "Cassian Blue",
+            fieldOne: 17.5,
+            id: 20,
+          },
+          {
+            name: "Elodie Hart",
+            fieldOne: 19,
+            id: 21,
+          },
+          {
+            name: "Kairo Finch",
+            fieldOne: 13.5,
+            id: 22,
+          },
+          {
+            name: "Noa Briar",
+            fieldOne: 7.75,
+            id: 23,
+          },
+          {
+            name: "Phoenix Jude",
+            fieldOne: 19,
+            id: 24,
+          },
+          {
+            name: "Mira Lune",
+            fieldOne: 7,
+            id: 25,
+          },
+          {
+            name: "Declan Frost",
+            fieldOne: 9.5,
+            id: 26,
+          },
+          {
+            name: "Lyra West",
+            fieldOne: 17,
+            id: 27,
+          },
+          {
+            name: "Jace Rowan",
+            fieldOne: 15.5,
+            id: 28,
+          },
+        ],
+        numberOfRows: 4,
+        planScheme: [
+          [
+            {
+              name: "Ava Sterling",
+              fieldOne: 18,
+              id: 1,
+            },
+            {
+              name: "Nolan Reid",
+              fieldOne: 9.5,
+              id: 2,
+            },
+            {
+              name: "Elira Moss",
+              fieldOne: 19.5,
+              id: 3,
+            },
+            {
+              name: "Kieran Vale",
+              fieldOne: 18.5,
+              id: 4,
+            },
+            {
+              name: "Sienna Cross",
+              fieldOne: 19,
+              id: 5,
+            },
+            {
+              name: "Maddox Ray",
+              fieldOne: 10,
+              id: 6,
+            },
+            {
+              name: "Talia Quinn",
+              fieldOne: 12.5,
+              id: 7,
+            },
+            {
+              name: "",
+              id: 29,
+            },
+          ],
+          [
+            {
+              name: "Orion Blake",
+              fieldOne: 16,
+              id: 8,
+            },
+            {
+              name: "Freya Monroe",
+              fieldOne: 17,
+              id: 9,
+            },
+            {
+              name: "Jasper Lane",
+              fieldOne: 10.5,
+              id: 10,
+            },
+            {
+              name: "Nyla Voss",
+              fieldOne: 13,
+              id: 11,
+            },
+            {
+              name: "Ronan Hale",
+              fieldOne: 7.25,
+              id: 12,
+            },
+            {
+              name: "Zaria Wynn",
+              fieldOne: 11.25,
+              id: 13,
+            },
+            {
+              name: "Ezra Knox",
+              fieldOne: 14,
+              id: 14,
+            },
+            {
+              name: "",
+              id: 30,
+            },
+          ],
+          [
+            {
+              name: "Isla Maren",
+              fieldOne: 6.75,
+              id: 15,
+            },
+            {
+              name: "Theo Wells",
+              fieldOne: 14.5,
+              id: 16,
+            },
+            {
+              name: "Liora Skye",
+              fieldOne: 16.5,
+              id: 17,
+            },
+            {
+              name: "Silas Drex",
+              fieldOne: 18.5,
+              id: 18,
+            },
+            {
+              name: "Amaya Drew",
+              fieldOne: 18.5,
+              id: 19,
+            },
+            {
+              name: "Cassian Blue",
+              fieldOne: 17.5,
+              id: 20,
+            },
+            {
+              name: "Elodie Hart",
+              fieldOne: 19,
+              id: 21,
+            },
+            {
+              name: "",
+              id: 31,
+            },
+          ],
+          [
+            {
+              name: "Kairo Finch",
+              fieldOne: 13.5,
+              id: 22,
+            },
+            {
+              name: "Noa Briar",
+              fieldOne: 7.75,
+              id: 23,
+            },
+            {
+              name: "Phoenix Jude",
+              fieldOne: 19,
+              id: 24,
+            },
+            {
+              name: "Mira Lune",
+              fieldOne: 7,
+              id: 25,
+            },
+            {
+              name: "Declan Frost",
+              fieldOne: 9.5,
+              id: 26,
+            },
+            {
+              name: "Lyra West",
+              fieldOne: 17,
+              id: 27,
+            },
+            {
+              name: "Jace Rowan",
+              fieldOne: 15.5,
+              id: 28,
+            },
+            {
+              name: "",
+              id: 32,
+            },
+          ],
+        ],
+      },
+    ]);
+
+    //create a clone of the current table -will use it to undo changes-
+    let currentPlanIndex = ref(0);
+
+    const generatePlanScheme = (
+      tableData: IStudent[],
+      seatType: SeatType,
+      numberOfRows: number
+    ) => {
+      const currentPlan = plans.value[currentPlanIndex.value];
+      if (currentPlan.tableData.length === currentPlan.numberOfRows) return;
+      const students = tableData;
+      const rows = numberOfRows;
+      const total = students.length;
+
+      if (total === rows) return [[...students]];
+
+      const base = Math.floor(total / rows);
+      let extra = total % rows;
+
+      // Compute how many students per row
+      const studentsPerRow = Array.from({ length: rows }, (_, i) =>
+        i < extra ? base + 1 : base
+      );
+
+      // Now split students based on that
+      const result = [];
+      let start = 0;
+
+      for (const count of studentsPerRow) {
+        result.push(students.slice(start, start + count));
+        start += count;
+      }
+
+      const planScheme = addBlankStudents(seatType, result);
+      return planScheme;
+    };
+    //INTERNAL : adds blank students to the planScheme to ensure rows has equal number of students
+    const addBlankStudents = (seatType: SeatType, planScheme: PlanScheme) => {
+      const isPairType = seatType === "pairs";
+      const blankStudent = () => ({
+        name: "",
+        fieldOne: undefined,
+        id: planScheme.reduce((acc, row) => acc + row.length, 0) + 1,
+      });
+      const firstRow = planScheme[0];
+
+      // Make first row even if seatType is 'pairs' and it's odd
+      if (isPairType && firstRow.length % 2 !== 0) {
+        firstRow.push(blankStudent());
+      }
+
+      const targetLength = firstRow.length;
+
+      planScheme.forEach((row, index) => {
+        if (index === 0) return;
+        const missing = targetLength - row.length;
+        for (let i = 0; i < missing; i++) {
+          row.push(blankStudent());
+        }
+      });
+
+      return planScheme;
+    };
+    // adds ID to each student in the DataTable
+    const addIdToStudents = (tableData: IStudent[]) => {
+      return tableData.map((student, index) => {
+        return { ...student, id: index + 1 };
+      });
+    };
+
+    const plansCreator = (
+      planName: string,
+      description: string,
+      seatType: SeatType,
+      criteriaOneTitle: string|undefined,
+      tableData:IStudent[],
+      numberOfRows:number
+    ) => {
+      tableData = addIdToStudents(tableData);
+      const planScheme = generatePlanScheme(tableData, seatType, numberOfRows);
+      if(!planScheme) return;
+      plans.value.push({
+        planName: planName,
+        description: description,
+        seatType: seatType,
+        criteriaOneTitle: criteriaOneTitle,
+        tableData: tableData,
+        numberOfRows: numberOfRows,
+        planScheme: planScheme,
+      });
+
+      //switch to the new created plan & update the cloned plan
+      currentPlanIndex.value = plans.value.length - 1;
+      updateClonedPlan();
+    };
+    const deletePlan = (index:number) => {
+      plans.value.splice(index, 1);
+    };
+
+    const shufflePlan = () => {
+      const { tableData, seatType, numberOfRows } =
+        plans.value[currentPlanIndex.value];
+      // clone the tableData then shuffle the clone then create new planScheme
+      let deck = useCloned(tableData).cloned.value;
+      for (var i = deck.length - 1; i > 0; i--) {
+        const swapIndex = Math.floor(Math.random() * (i + 1));
+        const currentCard = deck[i];
+        const cardToSwap = deck[swapIndex];
+        deck[i] = cardToSwap;
+        deck[swapIndex] = currentCard;
+      }
+      plans.value[currentPlanIndex.value].planScheme = generatePlanScheme(
+        deck,
+        seatType,
+        numberOfRows
+      )!;
+    };
+    // copy of the plan -used to undo changes-
+    let clonedPlan = ref();
+
+    const updateClonedPlan = () => {
+      const { cloned } = useCloned(plans.value[currentPlanIndex.value]);
+      clonedPlan.value = cloned.value;
+    };
+
+    //state functions
+    const undoChanges = () => {
+      plans.value[currentPlanIndex.value] = useCloned(
+        clonedPlan.value
+      ).cloned.value;
+    };
+
+    const sortItems = (sortType: "asc"| "desc") => {
+      let tableData = plans.value[currentPlanIndex.value].planScheme.flat();
+      const asc = sortType === "asc";
+      if (asc) {
+        tableData.sort((a, b) => b.fieldOne! - a.fieldOne!);
+      } else {
+        tableData.sort((a, b) => a.fieldOne! - b.fieldOne!);
+      }
+      plans.value[currentPlanIndex.value].planScheme = generatePlanScheme(
+        tableData,
+        plans.value[currentPlanIndex.value].seatType,
+        plans.value[currentPlanIndex.value].numberOfRows
+      )!;
+    };
+    const fairDistribute = () => {
+      const { planScheme, numberOfRows, seatType } =
+        plans.value[currentPlanIndex.value];
+      // Clone and slightly shuffle to introduce randomness
+      const flatPlanScheme = planScheme.flat();
+      //add median score to blank student object to put the in middle when sorting
+      const realStudentsSorted = flatPlanScheme
+        .filter((student) => student.name.trim() !== "")
+        .sort((a, b) => b.fieldOne! - a.fieldOne!);
+      const mid = Math.floor(realStudentsSorted.length / 2);
+      const medianScore =
+        flatPlanScheme.length % 2 === 0
+          ? (realStudentsSorted[mid - 1].fieldOne! +
+              realStudentsSorted[mid].fieldOne!) /
+            2
+          : realStudentsSorted[mid].fieldOne;
+      flatPlanScheme.forEach((student) => {
+        if (student.fieldOne === undefined) student.fieldOne = medianScore;
+      });
+
+      // Sort tableData by fieldOne descending
+      flatPlanScheme.sort((a, b) => b.fieldOne! - a.fieldOne!);
+      // set fieldOne to undefined for blank objects
+      flatPlanScheme.forEach((student) => {
+        if (!student.name) student.fieldOne = undefined; // Remove
+      });
+      // Create empty newPlanScheme
+      const newPlanScheme:PlanScheme = Array.from({ length: numberOfRows }, () => []);
+
+      let round = 0;
+
+      while (flatPlanScheme.length > 0) {
+        const direction = round % 2 === 0 ? 1 : -1;
+
+        if (seatType === "rows") {
+          const slice = flatPlanScheme.splice(0, numberOfRows);
+
+          for (let i = 0; i < slice.length; i++) {
+            const teamIndex = direction === 1 ? i : numberOfRows - 1 - i;
+            newPlanScheme[teamIndex].push(slice[i]);
+          }
+        } else if (seatType === "pairs") {
+          const bestGroup = flatPlanScheme.splice(
+            0,
+            Math.min(numberOfRows, flatPlanScheme.length)
+          );
+          const worstGroup = flatPlanScheme.splice(-bestGroup.length);
+
+          // Shuffle the worst group for random pairing
+          for (let i = worstGroup.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [worstGroup[i], worstGroup[j]] = [worstGroup[j], worstGroup[i]];
+          }
+
+          for (let i = 0; i < bestGroup.length; i++) {
+            const teamIndex = direction === 1 ? i : numberOfRows - 1 - i;
+
+            // Add pair: best + worst
+            newPlanScheme[teamIndex].push(bestGroup[i]);
+            if (worstGroup[i]) {
+              newPlanScheme[teamIndex].push(worstGroup[i]);
+            }
+          }
+        }
+
+        round++;
+      }
+
+      plans.value[currentPlanIndex.value].planScheme = newPlanScheme;
+    };
+
+    const downloadPlan = () => {
+      const filename = `${plans.value[currentPlanIndex.value].planName}.json`;
+      const data = plans.value[currentPlanIndex.value];
+
+      const blob = new Blob([JSON.stringify(data)]);
+      const link = document.createElement("a");
+      link.download = filename;
+      link.href = window.URL.createObjectURL(blob);
+      link.click();
+    };
+
+    const uploadPlan = (upObject:IPlan) => {
+      if (ValidateUpload(upObject)) {
+        plans.value.push(upObject);
+        currentPlanIndex.value = plans.value.length - 1;
+        updateClonedPlan();
+        return true;
+      }
+      return false;
+    };
+    const checkStudentValidity = (student:IStudent, allowEmptyNames:boolean) => {
+      //empty names are allowed in planScheme and not in tableData
+      const checkEmptyNames = allowEmptyNames || student.name.trim() !== "";
+      return (
+        student.hasOwnProperty("name") &&
+        student.hasOwnProperty("id") &&
+        checkEmptyNames
+      );
+    };
+    //check name, seatType and numberOfRows validity
+    const checkPropertiesValidity = (upObject:IPlan) => {
+      const checkNameLength =
+        upObject.planName.length > 0 && upObject.planName.length < 10;
+      const checkSeatType = seatTypes.includes(upObject.seatType);
+      const checkNumberOfRows =
+        upObject.numberOfRows > 0 && upObject.numberOfRows <= 6;
+      return checkNameLength && checkSeatType && checkNumberOfRows;
+    };
+    //check if the planScheme is in sync with the tableData
+    const checkTableSchemeSync = (planScheme:PlanScheme, tableData:IStudent[]) => {
+      const flatPlanScheme = planScheme.flat();
+      return tableData.every((student) =>
+        flatPlanScheme.some((schemeStudent) => schemeStudent.id === student.id)
+      );
+    };
+    const ValidateUpload = (upObject:IPlan) => {
+      const checkKeys = Object.keys(plans.value[0]).every((k) =>
+        upObject.hasOwnProperty(k)
+      );
+      const checkProperties = checkPropertiesValidity(upObject);
+      const checkTableDataLength = upObject.tableData.length > 10;
+      const checkTableDataStudents = upObject.tableData.every((student) =>
+        checkStudentValidity(student, false)
+      ); //
+      const checkPlanSchemeLength =
+        upObject.planScheme.length === upObject.numberOfRows;
+      const checkPlanSchemeStudents = upObject.planScheme
+        .flat()
+        .every((student) => checkStudentValidity(student, true));
+      const checkPlanSchemeSync = checkTableSchemeSync(
+        upObject.planScheme,
+        upObject.tableData
+      );
+      return (
+        checkKeys &&
+        checkProperties &&
+        checkTableDataLength &&
+        checkTableDataStudents &&
+        checkPlanSchemeLength &&
+        checkPlanSchemeStudents &&
+        checkPlanSchemeSync
+      );
+    };
+
+    return {
+      plans,
+      currentPlanIndex,
+      plansCreator,
+      generatePlanScheme,
+      addIdToStudents,
+      undoChanges,
+      updateClonedPlan,
+      sortItems,
+      fairDistribute,
+      deletePlan,
+      shufflePlan,
+      downloadPlan,
+      uploadPlan,
+      ValidateUpload,
+      viewMode,
+    };
+  }
+  /* Enable this to persist this store : more info : https://prazdevs.github.io/pinia-plugin-persistedstate/frameworks/nuxt-3.html
+    {
+      persist: true}
+    */
+);
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(usePlanStore, import.meta.hot));
+}

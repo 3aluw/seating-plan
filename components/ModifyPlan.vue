@@ -2,7 +2,7 @@
     <v-dialog width="auto" v-model="showModifyPlan">
         <v-sheet width="1000" class="mx-auto p-4">
             <v-form @submit.prevent class="bg-white">
-                <p class="bg-white my-6 text-2xl">Change plan infos:</p>
+                <p class="bg-white my-6 text-2xl"></p>
                 <v-text-field v-model="clonedPlan.planName" :counter="10" label="Plan name*"
                     maxlength="10"></v-text-field>
                 <v-text-field v-model="clonedPlan.description" label="Description (optional)"></v-text-field>
@@ -136,6 +136,7 @@ const regeneratePlanScheme = () => {
     const newTableData = planStore.addIdToStudents(clonedPlan.value.tableData)
     clonedPlan.value.tableData = newTableData
     const newPlanScheme = planStore.generatePlanScheme(clonedPlan.value.tableData, clonedPlan.value.seatType, clonedPlan.value.numberOfRows)
+    if(!newPlanScheme) return
     clonedPlan.value.planScheme = newPlanScheme
 }
 </script>

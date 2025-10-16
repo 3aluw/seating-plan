@@ -1,0 +1,91 @@
+{
+ "head":{
+  "title": "Seating Plan Generator",
+  "description": "Create and manage seating plans easily with our intuitive tool."
+ },
+  "homePage": {
+    "good" : "Good",
+    "header": "A {0} seating plan is part of your success",
+    "subHeader": "An organized seating plan encourages engagement and interaction among students",
+    "greenCard": "BETTER RESULTS",
+    "yellowCard": "GREATER FOCUS",
+    "redCard": "FEWER DISTRACTIONS"
+  },
+  "planDialog": {
+    "stepOneTitle": "Enter plan information",
+    "stepTwoTitle": "Set up your classroom",
+    "stepThreeTitle": "Review your plan",
+    "planName": "Plan Name",
+    "description": "Description (Optional)",
+    "seatingType": "Choose a seating plan model:",
+    "sortingCriteria": "Sorting Criteria",
+    "sortingCriteriaTooltip": "You can add a criterion to help you sort the data — for example, a teacher might use students’ marks as a sorting criterion.",
+    "enableSortingCriteria": "Enable Sorting Criteria",
+    "setCriteriaTitle":"Set a criteria title ",
+    "addNames": "Add Names",
+    "addNamesDescription": "Here, you can create a list of attendees. Type each name on a separate line, then click 'Add Data' when you’re finished",
+    "namesListLabel" : "Enter each name on a new line",
+    "valuesListLabel" : "Enter each value on a new line ",
+    "numOfRows": "Number of Rows",
+    "planInfo:": "Plan Information:",
+    "numOfAttendants": "Number of Attendees",
+    "yourTable": "Your Table"
+  },
+  "playgroundPage": {
+    "actions": "Actions",
+    "changePlan": "Change Plan",
+    "dar;LightTheme": "Dark / Light Theme",
+    "front": "Front",
+    "back": "Back",
+    "print": "Print",
+    "downloadAsPDF": "Download as PDF",
+    "downloadAsJSON": "Download as JSON",
+    "modifyPlan": "Modify Plan",
+    "randomize": "Randomize",
+    "smartPlan": "Smart Plan",
+    "sortAscending": "Sort Ascending",
+    "sortDescending": "Sort Descending",
+    "resetPlan": "Reset Plan"
+  },
+  "footer":{
+    "dev" : "3aluw",
+  "builtBy": "Built by {0} with ❤️"
+  },
+   "validation": {
+    "checkType": {
+      "missingType": "Choose a type"
+    },
+    "name": {
+      "required": "Name is required.",
+      "tooLong": "Name should be shorter"
+    },
+    "names": {
+      "notEnough": "To proceed, you need to add at least 10 names",
+      "emptyRows": "Empty rows will be deleted",
+      "tooLong": "Long names will be cut to 30 characters"
+    },
+    "criteria": {
+      "emptyRows": "Empty rows will be converted to 0",
+      "nonNumeric": "Non-numeric values will be converted to 0"
+    },
+    "criteriaTitle": {
+      "missing": "Enter a criteria name"
+    }
+  },
+  "basic": {
+    "home":"Home",
+    "next": "Next",
+    "back": "Back",
+    "close": "close",
+    "names": "Names",
+    "addData": "Add Data",
+    "clear": "Clear",
+    "modify": "Modify",
+    "finnish": "Finish",
+    "playground": "Playground",
+    "uploadPlan": "Upload a Plan",
+    "createPlan": "Create a New Plan",
+    "createYourPlan": "Create Your Plan",
+    "defaultCriteriaTitle": "score"
+  }
+}

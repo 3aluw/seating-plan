@@ -3,13 +3,14 @@ export interface IStudent {
     name: string,
     fieldOne?: number | undefined
 }
-export type  seatType = "pairs" | "rows"
+export type  SeatType = "pairs" | "rows"
+export type PlanScheme = IStudent[][]
 export interface IPlan {
     planName: string,
     description: string,
-    seatType: seatType,
+    seatType: SeatType,
     numberOfRows:number,
-    criteriaOneTitle: string,
+    criteriaOneTitle: string | undefined,
     tableData: IStudent[],
-    planScheme: IStudent[][]
+    planScheme: PlanScheme
 }
