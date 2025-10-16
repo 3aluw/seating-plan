@@ -5,6 +5,9 @@ import * as directives from 'vuetify/directives'
 
 export default defineNuxtPlugin(nuxtApp => {
   const vuetify = createVuetify({
+     locale: {
+    locale: 'ar',
+  },
     ssr: true,
     components,
     directives,
