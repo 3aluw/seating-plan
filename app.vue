@@ -15,7 +15,13 @@
 <script setup>
 import { useAlertStore } from '~/store/alertStore';
 const alertStore = useAlertStore()
-
+const i18n = useI18n()
+    useHead({
+      htmlAttrs: {
+        lang: i18n.locale, // Dynamically set the lang attribute based on the current locale
+        dir: i18n.localeProperties.value.dir, // Dynamically set the dir attribute based on the current locale
+      },
+    });
 /* Unused viewMode option logic
  import { useBreakpoints } from '@vueuse/core'
 import { usePlanStore } from '~/store/planStore'
