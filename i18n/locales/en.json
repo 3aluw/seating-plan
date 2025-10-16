@@ -16,15 +16,18 @@
     "description": "Description (Optional)",
     "seatingType": "Choose a seating plan model:",
     "sortingCriteria": "Sorting Criteria",
+    "sortingCriteriaTooltip": "You can add a criterion to help you sort the data — for example, a teacher might use students’ marks as a sorting criterion.",
     "enableSortingCriteria": "Enable Sorting Criteria",
     "addNames": "Add Names",
-    "addNamesDescription": "Here you can create a list of attendees. Enter each name on a new line, then click 'Add Data' when you're done.",
+    "addNamesDescription": "Here, you can create a list of attendees. Type each name on a separate line, then click 'Add Data' when you’re finished",
+    "numOfRows": "Number of Rows",
     "planInfo:": "Plan Information:",
     "numOfAttendants": "Number of Attendees",
     "yourTable": "Your Table"
   },
   "playgroundPage": {
     "actions": "Actions",
+    "changePlan": "Change Plan",
     "dar;LightTheme": "Dark / Light Theme",
     "front": "Front",
     "back": "Back",
@@ -43,8 +46,10 @@
   "builtBy": "Built by {0} with ❤️"
   },
   "basic": {
+    "home":"Home",
     "next": "Next",
     "back": "Back",
+    "close": "close",
     "names": "Names",
     "addData": "Add Data",
     "clear": "Clear",
