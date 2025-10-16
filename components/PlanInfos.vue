@@ -3,7 +3,7 @@
     <v-sheet width="1000" max-width="100%" class="mx-auto">
         <h1 class="text-center text-3xl my-2 mb-10 font-bold uppercase">{{ $t('planDialog.stepOneTitle') }}</h1>
         <v-form @submit.prevent>
-            <v-text-field v-model="planInfos.planName" :rules="nameRule" :counter="10" label="Plan name*"
+            <v-text-field v-model="planInfos.planName" :rules="nameRule" :counter="10" :label="$t('planDialog.planName')"
                 maxlength="10"></v-text-field>
             <v-text-field v-model="planInfos.description" :label="$t('planDialog.description')"></v-text-field>
 

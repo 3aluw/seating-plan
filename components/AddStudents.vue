@@ -17,7 +17,7 @@
                 </div>
                 <v-text-field :rules="criteriaTitleRule" v-if="isSortingCriteriaAllowed" hide-details maxlength="10"
                     :counter="10" variant="filled" placeholder="this will help you to sort. ie: marks"
-                    label="Set a criteria title (optional)" v-model="namesTable.criteriaOneTitle"></v-text-field>
+                    :label="$t('planDialog.setCriteriaTitle')" v-model="namesTable.criteriaOneTitle"></v-text-field>
             </div>
             <h2 class="text-xl py-4">{{ $t('planDialog.addNames') }}</h2>
             {{ $t('planDialog.addNamesDescription') }}

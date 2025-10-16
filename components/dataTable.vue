@@ -4,8 +4,8 @@
 
             <thead>
                 <tr class="bg-blue-200 text-black">
-                    <th class="text-left text-black ">Names</th>
-                    <th class="text-left text-black w-1/2" v-if="isSortingCriteriaAllowed">{{ criteriaTitle
+                    <th class="text-black ">{{ $t('basic.names') }}</th>
+                    <th class="text-black w-1/2" v-if="isSortingCriteriaAllowed">{{ criteriaTitle
                         ?? 'Criteria' }}</th>
                 </tr>
             </thead>
@@ -25,11 +25,11 @@
                 </tr>
                 <tr>
                     <td class="px-0">
-                        <v-textarea class="h-full" label="Enter each name on a new line" v-model="newNames" rows="2"
+                        <v-textarea class="h-full" :label="$t('planDialog.namesListLabel')" v-model="newNames" rows="2"
                             auto-grow :rules="namesRule"></v-textarea>
                     </td>
                     <td class="px-0 w-1/2" v-if="isSortingCriteriaAllowed">
-                        <v-textarea class="h-full" :rules="criteriaRules" label="enter new values's list" auto-grow
+                        <v-textarea class="h-full" :rules="criteriaRules" :label="$t('planDialog.valuesListLabel')" auto-grow
                             v-model="newCriteriaValues" rows="2"></v-textarea>
                     </td>
                 </tr>
@@ -37,9 +37,9 @@
         </v-table>
 
         <div class="flex justify-center ">
-            <v-btn class="mx-4" @click="addNewData" color="teal-lighten-2" :disabled="!allowAddNewData">Add data</v-btn>
+            <v-btn class="mx-4" @click="addNewData" color="teal-lighten-2" :disabled="!allowAddNewData">{{ $t("basic.addData") }}</v-btn>
 
-             <v-btn class="mx-4" v-if="props.isInitialTable" @click="clearTable" color="red-lighten-2">clear</v-btn> 
+             <v-btn class="mx-4" v-if="props.isInitialTable" @click="clearTable" color="red-lighten-2">{{ $t("basic.clear") }}</v-btn> 
         </div>
     </div>
 </template>
