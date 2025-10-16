@@ -8,6 +8,7 @@
         <p class="pt-2" v-if="locale === 'en'">
             If you feel like it, buy me a <a href="https://buymeacoffee.com/3aluw" rel="noopener" target="_blank"
                 class="underline text-blue-600">coffee</a> and make my day! ☕️💛
+                
         </p>
     </div>
 </template>

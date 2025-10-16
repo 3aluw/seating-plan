@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxtjs/tailwindcss",
     "@vueuse/nuxt",
-    "@nuxtjs/i18n"
+    "@nuxtjs/i18n",
   ],
   i18n: {
     defaultLocale: "en",
@@ -19,6 +19,12 @@ export default defineNuxtConfig({
     ],
     langDir: "i18n/locales/",
     detectBrowserLanguage: false, // we'll handle ?lang manually
+  },
+  app: {
+    head: {
+      charset: "utf-8",
+      viewport: "width=device-width,initial-scale=1",
+    },
   },
   pinia: {
     autoImports: [

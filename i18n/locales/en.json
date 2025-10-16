@@ -1,5 +1,8 @@
 {
-
+ "head":{
+  "title": "Seating Plan Generator",
+  "description": "Create and manage seating plans easily with our intuitive tool."
+ },
   "homePage": {
     "good" : "Good",
     "header": "A {0} seating plan is part of your success",
