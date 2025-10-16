@@ -1,15 +1,14 @@
+    <!-- Step 2 in plan modal -->
 <template>
     <v-sheet width="1000" max-width="100%" class="mx-auto mb-10">
-        <h1 class="text-center text-3xl my-2 mb-10 font-bold uppercase">Set up your class</h1>
+        <h1 class="text-center text-3xl my-2 mb-10 font-bold uppercase">{{ $t('planDialog.stepTwoTitle') }}</h1>
         <div class="add-names-cont">
             <div class="">
-                <h2 class="text-xl py-4">Sorting criteria</h2>
+                <h2 class="text-xl py-4">{{ $t('planDialog.sortingCriteria') }}</h2>
 
-                <div class="flex align-center">Enable sorting criteria
-                    <v-tooltip text="You can add a criteria that can help you to sort...(ie: a
-                    teacher can
-                    use marks as an sorting criteria).">
-                        <template  v-slot:activator="{ props }">
+                <div class="flex align-center">{{ $t('planDialog.enableSortingCriteria') }}
+                    <v-tooltip :text="$t('planDialog.sortingCriteriaTooltip')">
+                        <template v-slot:activator="{ props }">
                             <v-icon icon="mdi-information-outline" variant="plain" color="grey" v-bind="props"></v-icon>
                         </template>
 
@@ -20,17 +19,16 @@
                     :counter="10" variant="filled" placeholder="this will help you to sort. ie: marks"
                     label="Set a criteria title (optional)" v-model="namesTable.criteriaOneTitle"></v-text-field>
             </div>
-            <h2 class="text-xl py-4">Add names</h2>
-            Here you can set up a able of your attendants, Enter each name in new line; click add data after you
-            complete.
+            <h2 class="text-xl py-4">{{ $t('planDialog.addNames') }}</h2>
+            {{ $t('planDialog.addNamesDescription') }}
 
             <data-table v-model="namesTable.tableData" :criteria-title="namesTable.criteriaOneTitle"
                 :is-initial-table="true"></data-table>
         </div>
         <div class="insert-rows-cont" v-if="namesTable.tableData.length > 0">
-            <h2 class="text-xl py-4 ">How many rows are there?</h2>
-            <v-slider v-model="namesTable.numberOfRows" :max="maxNumberOfRows" :min="1" :step="1"
-                thumb-label></v-slider>
+            <h2 class="text-xl py-4 "> {{ $t('planDialog.numOfRows') }}</h2>
+            <v-slider v-model="namesTable.numberOfRows" :max="maxNumberOfRows" thumb-label="always" :min="1"
+                :step="1"></v-slider>
         </div>
     </v-sheet>
 </template>

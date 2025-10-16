@@ -1,12 +1,13 @@
+    <!-- Step 1 in plan modal -->
 <template>
     <v-sheet width="1000" max-width="100%" class="mx-auto">
-        <h1 class="text-center text-3xl my-2 mb-10 font-bold uppercase">Fill plan info</h1>
+        <h1 class="text-center text-3xl my-2 mb-10 font-bold uppercase">{{ $t('planDialog.stepOneTitle') }}</h1>
         <v-form @submit.prevent>
             <v-text-field v-model="planInfos.planName" :rules="nameRule" :counter="10" label="Plan name*"
                 maxlength="10"></v-text-field>
-            <v-text-field v-model="planInfos.description" label="Description (optional)"></v-text-field>
+            <v-text-field v-model="planInfos.description" :label="$t('planDialog.description')"></v-text-field>
 
-            chose a sitting plan model :
+           {{ $t('planDialog.seatingType') }}
             <v-container fluid class="types-cont">
                 <v-row>
                     <v-col cols="6">
