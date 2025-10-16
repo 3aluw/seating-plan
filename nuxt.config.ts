@@ -1,7 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   css: [
-    "vuetify/lib/styles/main.sass",
     "@mdi/font/css/materialdesignicons.min.css",
   ],
   modules: [
@@ -14,9 +13,10 @@ export default defineNuxtConfig({
     defaultLocale: "en",
     strategy: "no_prefix", // no /en or /ar in the URL
     locales: [
-      { code: "en", name: "English", dir: "ltr", },
-      { code: "ar", name: "العربية", dir: "rtl", },
+      { code: "en", name: "English", dir: "ltr", file: "en.json" },
+      { code: "ar", name: "العربية", dir: "rtl", file: "ar.json" },
     ],
+    langDir: "i18n/locales/",
     detectBrowserLanguage: false, // we'll handle ?lang manually
   },
   pinia: {
