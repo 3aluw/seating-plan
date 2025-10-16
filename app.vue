@@ -24,6 +24,8 @@ useHead({
     { property: 'og:title', content: t('head.title') },
     { property: 'og:description', content: t('head.description') },
     { property: 'og:image', content: 'https://seating-plan.vercel.app/ogImage.jpg' },
+    { property: 'og:image:width', content: '1200' },
+    { property: 'og:image:height', content: '630' },
     { property: 'og:url', content: 'https://seating-plan.vercel.app/' },
     { property: 'og:type', content: 'website' },
     { name: 'twitter:card', content: 'summary_large_image' }, // optional Twitter support
