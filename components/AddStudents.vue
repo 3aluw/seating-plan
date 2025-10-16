@@ -7,7 +7,7 @@
                 <h2 class="text-xl py-4">{{ $t('planDialog.sortingCriteria') }}</h2>
 
                 <div class="flex align-center">{{ $t('planDialog.enableSortingCriteria') }}
-                    <v-tooltip :text="$t('planDialog.sortingCriteriaTooltip')">
+                    <v-tooltip :text="$t('planDialog.sortingCriteriaTooltip')" :location="'top'">
                         <template v-slot:activator="{ props }">
                             <v-icon icon="mdi-information-outline" variant="plain" color="grey" v-bind="props"></v-icon>
                         </template>
@@ -36,6 +36,7 @@
 <script setup>
 import { useAlertStore } from '~/store/alertStore';
 const alertStore = useAlertStore()
+const { t } = useI18n()
 // emit and update planInfos
 const props = defineProps({
     modelValue: Object,
@@ -58,7 +59,7 @@ const updateCriteriaData = () => {
         namesTable.value.tableData.forEach(student => student.fieldOne = undefined)
     }
     else {
-        namesTable.value.criteriaOneTitle = 'score';
+        namesTable.value.criteriaOneTitle = t('basic.defaultCriteriaTitle');
         namesTable.value.tableData.forEach(student => student.fieldOne = 0)
     }
 
@@ -67,27 +68,9 @@ const updateCriteriaData = () => {
 
 /*From rules */
 const criteriaTitleRule = [
-    value => {
-        if (value && namesTable.value.criteriaOneTitle || !value) return true;
-        return "Enter a criteria name"
-    }
+  (value) => {
+    if ((value && namesTable.value.criteriaOneTitle) || !value) return true
+    return t('validation.criteriaTitle.missing')
+  },
 ]
-
-
-const namesRule = [
-    value => {
-        if (value && (namesTable.value.tableData.length + value?.split('\n').length < 10)) return "To proceed You need to add at least 10 names"
-        if (value && /\n\s*\n/.test('\n' + value)) return "Empty rows will be deleted"
-        if (value && value?.split('\n').some((name) => name.length > 30)) return "Long names will be cut to 30 characters"
-        return true
-    },
-]
-const criteriaRules = [
-    value => {
-        if (value && /\n\s*\n/.test('\n' + value)) return "Empty rows will be converted to 0"
-        else if (value && (value.match(/^\s*\S.*$/gm)?.some((criteriaValue) => isNaN(Number(criteriaValue))))) { return "Non-numeric values will be converted to 0" }
-        return true
-    },
-]
-
 </script>

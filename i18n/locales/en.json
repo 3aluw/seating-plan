@@ -48,6 +48,27 @@
     "dev" : "3aluw",
   "builtBy": "Built by {0} with ❤️"
   },
+   "validation": {
+    "checkType": {
+      "missingType": "Choose a type"
+    },
+    "name": {
+      "required": "Name is required.",
+      "tooLong": "Name should be shorter"
+    },
+    "names": {
+      "notEnough": "To proceed, you need to add at least 10 names",
+      "emptyRows": "Empty rows will be deleted",
+      "tooLong": "Long names will be cut to 30 characters"
+    },
+    "criteria": {
+      "emptyRows": "Empty rows will be converted to 0",
+      "nonNumeric": "Non-numeric values will be converted to 0"
+    },
+    "criteriaTitle": {
+      "missing": "Enter a criteria name"
+    }
+  },
   "basic": {
     "home":"Home",
     "next": "Next",
@@ -61,6 +82,7 @@
     "playground": "Playground",
     "uploadPlan": "Upload a Plan",
     "createPlan": "Create a New Plan",
-    "createYourPlan": "Create Your Plan"
+    "createYourPlan": "Create Your Plan",
+    "defaultCriteriaTitle": "score"
   }
 }

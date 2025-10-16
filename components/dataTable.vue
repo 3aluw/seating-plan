@@ -29,17 +29,19 @@
                             auto-grow :rules="namesRule"></v-textarea>
                     </td>
                     <td class="px-0 w-1/2" v-if="isSortingCriteriaAllowed">
-                        <v-textarea class="h-full" :rules="criteriaRules" :label="$t('planDialog.valuesListLabel')" auto-grow
-                            v-model="newCriteriaValues" rows="2"></v-textarea>
+                        <v-textarea class="h-full" :rules="criteriaRules" :label="$t('planDialog.valuesListLabel')"
+                            auto-grow v-model="newCriteriaValues" rows="2"></v-textarea>
                     </td>
                 </tr>
             </tbody>
         </v-table>
 
         <div class="flex justify-center ">
-            <v-btn class="mx-4" @click="addNewData" color="teal-lighten-2" :disabled="!allowAddNewData">{{ $t("basic.addData") }}</v-btn>
+            <v-btn class="mx-4" @click="addNewData" color="teal-lighten-2" :disabled="!allowAddNewData">{{
+                $t("basic.addData") }}</v-btn>
 
-             <v-btn class="mx-4" v-if="props.isInitialTable" @click="clearTable" color="red-lighten-2">{{ $t("basic.clear") }}</v-btn> 
+            <v-btn class="mx-4" v-if="props.isInitialTable" @click="clearTable" color="red-lighten-2">{{
+                $t("basic.clear") }}</v-btn>
         </div>
     </div>
 </template>
@@ -47,11 +49,11 @@
 import { useAlertStore } from '~/store/alertStore';
 import type { IStudent } from "~/data/types.ts"
 const alertStore = useAlertStore()
-
+const { t } = useI18n()
 const props = defineProps({
     modelValue: Array<IStudent>,
     criteriaTitle: String || undefined,
-    isInitialTable : Boolean
+    isInitialTable: Boolean
 })
 const isSortingCriteriaAllowed = computed(() => props.criteriaTitle === undefined ? false : true)
 const emit = defineEmits(['update:modelValue'])
@@ -115,7 +117,7 @@ const addNewData = () => {
 const deleteStudent = (index: number) => {
     if (tableData.value.length <= 10) {
         alertStore.createAlert("warning", "You need to have at least 10 names in the table")
-        if(tableData.value[index].name== '') tableData.value[index].name = "A name"
+        if (tableData.value[index].name == '') tableData.value[index].name = "A name"
         return
     }
     tableData.value.splice(index, 1)
@@ -125,24 +127,35 @@ const clearTable = () => {
 }
 
 //it is used to transform empty values to 0  
-const validateFieldOneValue = (index: number) =>{
+const validateFieldOneValue = (index: number) => {
     let value = tableData.value[index].fieldOne
     tableData.value[index].fieldOne = Number(value) || 0; // Convert to number or default to 0
 
-} 
+}
 //form rules
 const namesRule = [
-    (value: string) => {
-        if (value && (tableData.value.length + value?.split('\n').length < 10)) return "To proceed You need to add at least 10 names"
-        if (value && /\n\s*\n/.test('\n' + value)) return "Empty rows will be deleted"
-        if (value && value?.split('\n').some((name) => name.length > 30)) return "Long names will be cut to 30 characters"
+    (value:string) => {
+        if (value && (tableData.value.length + value?.split('\n').length < 10))
+            return t('validation.names.notEnough')
+        if (value && /\n\s*\n/.test('\n' + value))
+            return t('validation.names.emptyRows')
+        if (value && value?.split('\n').some((name) => name.length > 30))
+            return t('validation.names.tooLong')
         return true
     },
 ]
+
 const criteriaRules = [
-    (value: string) => {
-        if (value && /\n\s*\n/.test('\n' + value)) return "Empty rows will be converted to 0"
-        else if (value && (value.match(/^\s*\S.*$/gm)?.some((criteriaValue) => isNaN(Number(criteriaValue))))) { return "Non-numeric values will be converted to 0" }
+    (value:string) => {
+        if (value && /\n\s*\n/.test('\n' + value))
+            return t('validation.criteria.emptyRows')
+        else if (
+            value &&
+            value
+                .match(/^\s*\S.*$/gm)
+                ?.some((criteriaValue) => isNaN(Number(criteriaValue)))
+        )
+            return t('validation.criteria.nonNumeric')
         return true
     },
 ]

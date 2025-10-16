@@ -12,7 +12,7 @@
                 <v-row>
                     <v-col cols="6">
 
-                        <v-checkbox v-model="planInfos.seatType" value="pairs" :rules="checkTypeRule">
+                        <v-checkbox v-model="planInfos.seatType" value="pairs" :rules="seatingTypeRule">
                             <template v-slot:label>
                                 <div class="border-2">
                                     <v-tooltip location="bottom">
@@ -59,7 +59,7 @@
 
 <script setup>
 
-
+const { t } = useI18n()
 // emit and update planInfos
 const props = defineProps({
     modelValue: Object,
@@ -77,25 +77,20 @@ const planInfos = computed({
 
 
 /*form rules */
-const requiredRule = [
-    value => {
-        if (value) return true
 
-        return 'This field is required'
-    }]
-const checkTypeRule = [
-    () => {
-        return planInfos.value.seatType ? true : "Chose a type"
-    }
+const seatingTypeRule = [
+  () => {
+    return planInfos.value.seatType ? true : t('validation.checkType.missingType')
+  }
 ]
+
 const nameRule = [
-    value => {
-        if (!value) return 'Name is required.'
-        if (value?.length > 15) return "name should be shorter"
-        return true
-    },
+  (value) => {
+    if (!value) return t('validation.name.required')
+    if (value?.length > 15) return t('validation.name.tooLong')
+    return true
+  },
 ]
-
 </script>
 <style scoped>
 .v-selection-control {

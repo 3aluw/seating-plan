@@ -47,6 +47,27 @@
     "dev": "عبد الله",
     "builtBy": "تم تطوير هذا الموقع بواسطة: {0}"
   },
+  "validation": {
+    "checkType": {
+      "missingType": "اختر نوع الجلوس"
+    },
+    "name": {
+      "required": "الاسم مطلوب.",
+      "tooLong": "يجب أن يكون الاسم أقصر"
+    },
+    "names": {
+      "notEnough": "للمتابعة، تحتاج إلى إضافة ما لا يقل عن 10 أسماء",
+      "emptyRows": "سيتم حذف الصفوف الفارغة",
+      "tooLong": "سيتم تقصير الأسماء الطويلة إلى 30 حرفًا"
+    },
+    "criteria": {
+      "emptyRows": "سيتم تحويل الصفوف الفارغة إلى 0",
+      "nonNumeric": "سيتم تحويل القيم غير الرقمية إلى 0"
+    },
+    "criteriaTitle": {
+      "missing": "أدخل اسم المعيار"
+    }
+  },
   "basic": {
     "home": "الصفحة الرئيسية",
     "next": "التالي",
@@ -60,6 +81,8 @@
     "playground": "ساحة العمل",
     "uploadPlan": "تحميل خطة",
     "createPlan": "إنشاء خطة جديدة",
-    "createYourPlan": "أنشئ خطتك"
+    "createYourPlan": "أنشئ خطتك",
+    "defaultCriteriaTitle": "العلامة"
+
   }
 }
