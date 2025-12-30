@@ -23,6 +23,7 @@
     "@mdi/font": "^7.1.96",
     "@pinia/nuxt": "^0.4.7",
     "@shopify/draggable": "^1.1.4",
+    "@vercel/analytics": "^1.6.1",
     "html2pdf.js": "^0.10.0",
     "pinia": "^2.0.33",
     "sass": "^1.60.0",
