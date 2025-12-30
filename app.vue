@@ -7,12 +7,14 @@
       </v-chip>
     </div> -->
     <NuxtPage />
+    <Analytics />
     <div class="alert-cont" v-if="alertStore.alert">
       <v-alert max-width="30rem" :title="alertStore.alert.text" :type="alertStore.alert.type" />
     </div>
   </div>
 </template>
 <script setup>
+import { Analytics } from '@vercel/analytics/nuxt';
 import { useAlertStore } from '~/store/alertStore';
 const alertStore = useAlertStore()
 const i18n = useI18n()
